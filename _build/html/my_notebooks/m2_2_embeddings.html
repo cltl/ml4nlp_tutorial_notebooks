@@ -1,0 +1,1570 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>M2.1 Word Embeddings &#8212; My sample book</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=e01d92e3" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'my_notebooks/m2_2_embeddings';</script>
+    <script src="../_static/toggle_sidebar.js?v=490e729f"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="M2.3 Neural Networks" href="m2_3_neural_networks.html" />
+    <link rel="prev" title="M2.1 Support Vector Machines" href="m2_1_support_vector_machines.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo_vu.png" class="logo__image only-light" alt="My sample book - Home"/>
+    <script>document.write(`<img src="../_static/logo_vu.png" class="logo__image only-dark" alt="My sample book - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Module 1 - Basic ML models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="m1_1_feature_engineering.html">M1.1 Feature Engineering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="m1_2_linear_and_logistic_regression.html">M1.2 Linear and Logistic Regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="m1_3_naive_bayes.html">M1.3 Naive Bayes Classifier</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Module 2 - Advanced ML models</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="m2_1_support_vector_machines.html">M2.1 Support Vector Machines</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">M2.1 Word Embeddings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="m2_3_neural_networks.html">M2.3 Neural Networks</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Module 3 - Deep Learning models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="m3_1_convolutional_neural_network.html">M3.1 Convolutional Neural Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="m3_2_recurrent_neural_network.html">M3.2 Recurrent Neural Networks and LSTMs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="m3_3_transformer.html">M3.3 Transformers</a></li>
+
+
+
+
+
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/my_notebooks/m2_2_embeddings.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>M2.1 Word Embeddings</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-objectives">Learning Objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#loading-word-embeddings">1. Loading Word Embeddings</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#understanding-the-data-structure">Understanding the Data Structure</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-similarity-between-words">2. Computing Similarity Between Words</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-1-understanding-similarity-scores">Exercise 1: Understanding Similarity Scores</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#finding-most-similar-words">3. Finding Most Similar Words</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-2-explore-different-words">Exercise 2: Explore Different Words</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vector-arithmetic-and-analogies">4. Vector Arithmetic and Analogies</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizing-word-embeddings">5. Visualizing Word Embeddings</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-t-sne">What is t-SNE</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-the-gensim-library-faster-package">6. Using the Gensim Library (Faster Package)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#common-operations-with-keyedvectors">Common Operations with KeyedVectors</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exploring-biases-in-word-embeddings">7. Exploring Biases in Word Embeddings</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#practical-application-building-a-simple-semantic-search">8. Practical Application - Building a Simple Semantic Search</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#self-check-questions">Self-Check Questions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ideas-for-personal-experiments">Ideas for personal experiments</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="m2-1-word-embeddings">
+<h1>M2.1 Word Embeddings<a class="headerlink" href="#m2-1-word-embeddings" title="Link to this heading">#</a></h1>
+<p><a class="reference external" href="https://github.com/cltl/ml4nlp_tutorial_notebooks/blob/main/my_notebooks/m2_2_embeddings.ipynb"><img alt="View notebooks on Github" src="https://img.shields.io/static/v1.svg?logo=github&amp;label=Repo&amp;message=View%20On%20Github&amp;color=lightgrey" /></a>
+<a class="reference external" href="https://colab.research.google.com/github/cltl/ml4nlp_tutorial_notebooks/blob/main/my_notebooks/m2_2_embeddings.ipynb"><img alt="Open In Collab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p>
+<section id="learning-objectives">
+<h2>Learning Objectives<a class="headerlink" href="#learning-objectives" title="Link to this heading">#</a></h2>
+<p>In this notebook, you will:</p>
+<ol class="arabic simple">
+<li><p>Load and explore pre-trained word embeddings (Word2Vec)</p></li>
+<li><p>Understand the structure and properties of word vectors</p></li>
+<li><p>Implement similarity and analogy functions from scratch</p></li>
+<li><p>Visualize word embeddings in 2D space</p></li>
+<li><p>Learn to use the Gensim library for easy word embedding comparison</p></li>
+<li><p>Explore biases in word embeddings</p></li>
+</ol>
+</section>
+<hr class="docutils" />
+<section id="loading-word-embeddings">
+<h2>1. Loading Word Embeddings<a class="headerlink" href="#loading-word-embeddings" title="Link to this heading">#</a></h2>
+<p>We’ll start by loading Word2Vec embeddings and examining their structure.
+This helps us understand that embeddings are simply:</p>
+<ul class="simple">
+<li><p><strong>A vocabulary</strong> (words/tokens)</p></li>
+<li><p><strong>Vectors</strong> (numerical representations for each word)</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ignore warning messages for cleaner output of the website</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">gensim.downloader</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">load_word2vec_raw</span><span class="p">(</span><span class="n">model_name</span><span class="o">=</span><span class="s1">&#39;word2vec-google-news-300&#39;</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">100000</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Load Word2Vec model and extract raw components.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        model_name: Name of the pre-trained model</span>
+<span class="sd">        limit: Maximum number of words to load (for memory efficiency)</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        word2idx: Dictionary mapping words to indices</span>
+<span class="sd">        index_to_word: Dictionary mapping indices to words</span>
+<span class="sd">        embeddings: Numpy array of shape (vocab_size, embedding_dim)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Loading </span><span class="si">{</span><span class="n">model_name</span><span class="si">}</span><span class="s2"> model (first </span><span class="si">{</span><span class="n">limit</span><span class="si">}</span><span class="s2"> words)...&quot;</span><span class="p">)</span>
+    
+    <span class="c1"># Load the model using gensim</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">gensim</span><span class="o">.</span><span class="n">downloader</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span>
+    
+    <span class="c1"># Extract vocabulary and vectors</span>
+    <span class="n">words</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">index_to_key</span><span class="p">[:</span><span class="n">limit</span><span class="p">])</span>
+    
+    <span class="c1"># Create mappings</span>
+    <span class="n">word2idx</span> <span class="o">=</span> <span class="p">{</span><span class="n">word</span><span class="p">:</span> <span class="n">idx</span> <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">word</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">words</span><span class="p">)}</span>
+    <span class="n">idx2word</span> <span class="o">=</span> <span class="p">{</span><span class="n">idx</span><span class="p">:</span> <span class="n">word</span> <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">word</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">words</span><span class="p">)}</span>
+    
+    <span class="c1"># Get embedding matrix</span>
+    <span class="n">embeddings</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">model</span><span class="p">[</span><span class="n">word</span><span class="p">]</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">words</span><span class="p">])</span>
+    
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Loaded </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">words</span><span class="p">)</span><span class="si">}</span><span class="s2"> words&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Embedding dimension: </span><span class="si">{</span><span class="n">embeddings</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">word2idx</span><span class="p">,</span> <span class="n">idx2word</span><span class="p">,</span> <span class="n">embeddings</span>
+
+<span class="c1"># Load the embeddings</span>
+<span class="n">word_to_idx</span><span class="p">,</span> <span class="n">idx2word</span><span class="p">,</span> <span class="n">embedding_matrix</span> <span class="o">=</span> <span class="n">load_word2vec_raw</span><span class="p">(</span><span class="n">limit</span><span class="o">=</span><span class="mi">50000</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loading word2vec-google-news-300 model (first 50000 words)...
+Loaded 50000 words
+Embedding dimension: 300
+</pre></div>
+</div>
+</div>
+</div>
+<section id="understanding-the-data-structure">
+<h3>Understanding the Data Structure<a class="headerlink" href="#understanding-the-data-structure" title="Link to this heading">#</a></h3>
+<p>Let’s examine what we just loaded:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="mi">50</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;EXAMINING THE EMBEDDING STRUCTURE&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="mi">50</span><span class="p">)</span>
+
+<span class="c1"># 1. The embedding matrix</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">1. Embedding Matrix Shape: </span><span class="si">{</span><span class="n">embedding_matrix</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;   - We have </span><span class="si">{</span><span class="n">embedding_matrix</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> words&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;   - Each word is represented by </span><span class="si">{</span><span class="n">embedding_matrix</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> numbers&quot;</span><span class="p">)</span>
+
+<span class="c1"># 2. Sample vocabulary</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">2. First 20 words in vocabulary:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">([</span><span class="n">idx2word</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">20</span><span class="p">)])</span>
+
+<span class="c1"># 3. A single word vector</span>
+<span class="n">sample_word</span> <span class="o">=</span> <span class="s2">&quot;computer&quot;</span>
+<span class="k">if</span> <span class="n">sample_word</span> <span class="ow">in</span> <span class="n">word_to_idx</span><span class="p">:</span>
+    <span class="n">vector</span> <span class="o">=</span> <span class="n">embedding_matrix</span><span class="p">[</span><span class="n">word_to_idx</span><span class="p">[</span><span class="n">sample_word</span><span class="p">]]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">3. Vector for &#39;</span><span class="si">{</span><span class="n">sample_word</span><span class="si">}</span><span class="s2">&#39;:&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;   Shape: </span><span class="si">{</span><span class="n">vector</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;   First 10 dimensions: </span><span class="si">{</span><span class="n">vector</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;   Min value: </span><span class="si">{</span><span class="n">vector</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">, Max value: </span><span class="si">{</span><span class="n">vector</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;   Mean: </span><span class="si">{</span><span class="n">vector</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">, Std: </span><span class="si">{</span><span class="n">vector</span><span class="o">.</span><span class="n">std</span><span class="p">()</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>==================================================
+EXAMINING THE EMBEDDING STRUCTURE
+==================================================
+
+1. Embedding Matrix Shape: (50000, 300)
+   - We have 50000 words
+   - Each word is represented by 300 numbers
+
+2. First 20 words in vocabulary:
+[&#39;&lt;/s&gt;&#39;, &#39;in&#39;, &#39;for&#39;, &#39;that&#39;, &#39;is&#39;, &#39;on&#39;, &#39;##&#39;, &#39;The&#39;, &#39;with&#39;, &#39;said&#39;, &#39;was&#39;, &#39;the&#39;, &#39;at&#39;, &#39;not&#39;, &#39;as&#39;, &#39;it&#39;, &#39;be&#39;, &#39;from&#39;, &#39;by&#39;, &#39;are&#39;]
+
+3. Vector for &#39;computer&#39;:
+   Shape: (300,)
+   First 10 dimensions: [ 0.10742188 -0.20117188  0.12304688  0.21191406 -0.09130859  0.21679688
+ -0.13183594  0.08300781  0.20214844  0.04785156]
+   Min value: -0.5352, Max value: 0.4219
+   Mean: -0.0125, Std: 0.1514
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="computing-similarity-between-words">
+<h2>2. Computing Similarity Between Words<a class="headerlink" href="#computing-similarity-between-words" title="Link to this heading">#</a></h2>
+<p>A key premise of word embedding is that <strong>words with similar meanings have similar vectors</strong>. However, when we compare vectors, there are different ways of looking at “similarity.” A common approach is to compute the <strong>cosine similarity</strong> between them. For cosine similarity, we don’t care how “long” a vector is, but rather in what direction it is pointing in the vector space. The cosine similarity calculates the angle between two vectors (which we measure via the cosine), so neglecting the length, it essentially asks: “how much should I rotate vector A so that it aligns with vector B?” In the figure below, we see a 2D vector space using three words: apple, banana, and boat. The cosine similarity between apple and banana is the angle between the two vectors. We also see that in vector space, if vectors are close to each other, they are often also semantically similar. But for now, let’s put this to the test!</p>
+<div class="math notranslate nohighlight">
+\[\text{cosine similarity} = \frac{\mathbf{A} \cdot \mathbf{B}}{||\mathbf{A}|| \times ||\mathbf{B}||}\]</div>
+ <p align="center">
+    <img src="https://www.researchgate.net/publication/341360737/figure/fig1/AS:890901874343942@1589418967903/The-angle-or-cosine-distance-between-words-along-two-dimensions-latent-factors.ppme" alt="kindqueen" style="max-width:20%;">
+</p><div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">cosine_similarity</span><span class="p">(</span><span class="n">vec1</span><span class="p">,</span> <span class="n">vec2</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute cosine similarity between two vectors or between a matrix of vectors and a single vector.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        vec1: First vector (numpy array) or matrix of vectors (shape: [n, d])</span>
+<span class="sd">        vec2: Second vector (numpy array, shape: [d])</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Similarity score(s) between -1 and 1.</span>
+<span class="sd">        If vec1 is 1D, returns a scalar.</span>
+<span class="sd">        If vec1 is 2D, returns a 1D array of similarities for each row in vec1, e.g. [sim_1, sim_2, ..., sim_n].</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">dot_product</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">vec1</span><span class="p">,</span> <span class="n">vec2</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">vec1</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">norm1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">vec1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">norm1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">vec1</span><span class="p">)</span>
+    <span class="n">norm2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">vec2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">dot_product</span> <span class="o">/</span> <span class="p">(</span><span class="n">norm1</span> <span class="o">*</span> <span class="n">norm2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Test it out</span>
+<span class="n">word1</span><span class="p">,</span> <span class="n">word2</span> <span class="o">=</span> <span class="s2">&quot;computer&quot;</span><span class="p">,</span> <span class="s2">&quot;laptop&quot;</span>
+<span class="k">if</span> <span class="n">word1</span> <span class="ow">in</span> <span class="n">word_to_idx</span> <span class="ow">and</span> <span class="n">word2</span> <span class="ow">in</span> <span class="n">word_to_idx</span><span class="p">:</span>
+    <span class="n">vec1</span> <span class="o">=</span> <span class="n">embedding_matrix</span><span class="p">[</span><span class="n">word_to_idx</span><span class="p">[</span><span class="n">word1</span><span class="p">]]</span>
+    <span class="n">vec2</span> <span class="o">=</span> <span class="n">embedding_matrix</span><span class="p">[</span><span class="n">word_to_idx</span><span class="p">[</span><span class="n">word2</span><span class="p">]]</span>
+    
+    <span class="n">similarity</span> <span class="o">=</span> <span class="n">cosine_similarity</span><span class="p">(</span><span class="n">vec1</span><span class="p">,</span> <span class="n">vec2</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Similarity between &#39;</span><span class="si">{</span><span class="n">word1</span><span class="si">}</span><span class="s2">&#39; and &#39;</span><span class="si">{</span><span class="n">word2</span><span class="si">}</span><span class="s2">&#39;: </span><span class="si">{</span><span class="n">similarity</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Compare with dissimilar words</span>
+<span class="n">word3</span> <span class="o">=</span> <span class="s2">&quot;banana&quot;</span>
+<span class="k">if</span> <span class="n">word3</span> <span class="ow">in</span> <span class="n">word_to_idx</span><span class="p">:</span>
+    <span class="n">vec3</span> <span class="o">=</span> <span class="n">embedding_matrix</span><span class="p">[</span><span class="n">word_to_idx</span><span class="p">[</span><span class="n">word3</span><span class="p">]]</span>
+    <span class="n">similarity2</span> <span class="o">=</span> <span class="n">cosine_similarity</span><span class="p">(</span><span class="n">vec1</span><span class="p">,</span> <span class="n">vec3</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Similarity between &#39;</span><span class="si">{</span><span class="n">word1</span><span class="si">}</span><span class="s2">&#39; and &#39;</span><span class="si">{</span><span class="n">word3</span><span class="si">}</span><span class="s2">&#39;: </span><span class="si">{</span><span class="n">similarity2</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Similarity between &#39;computer&#39; and &#39;laptop&#39;: 0.6640
+Similarity between &#39;computer&#39; and &#39;banana&#39;: 0.0908
+</pre></div>
+</div>
+</div>
+</div>
+<section id="exercise-1-understanding-similarity-scores">
+<h3>Exercise 1: Understanding Similarity Scores<a class="headerlink" href="#exercise-1-understanding-similarity-scores" title="Link to this heading">#</a></h3>
+<p>Try computing similarity between different word pairs. What do you notice?</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute similarities between these word pairs</span>
+<span class="n">word_pairs</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="s2">&quot;king&quot;</span><span class="p">,</span> <span class="s2">&quot;queen&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;king&quot;</span><span class="p">,</span> <span class="s2">&quot;man&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;king&quot;</span><span class="p">,</span> <span class="s2">&quot;apple&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;happy&quot;</span><span class="p">,</span> <span class="s2">&quot;joyful&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;happy&quot;</span><span class="p">,</span> <span class="s2">&quot;sad&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;car&quot;</span><span class="p">,</span> <span class="s2">&quot;automobile&quot;</span><span class="p">),</span>
+<span class="p">]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Similarity scores for word pairs:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">50</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">w1</span><span class="p">,</span> <span class="n">w2</span> <span class="ow">in</span> <span class="n">word_pairs</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">w1</span> <span class="ow">in</span> <span class="n">word_to_idx</span> <span class="ow">and</span> <span class="n">w2</span> <span class="ow">in</span> <span class="n">word_to_idx</span><span class="p">:</span>
+        <span class="n">v1</span> <span class="o">=</span> <span class="n">embedding_matrix</span><span class="p">[</span><span class="n">word_to_idx</span><span class="p">[</span><span class="n">w1</span><span class="p">]]</span>
+        <span class="n">v2</span> <span class="o">=</span> <span class="n">embedding_matrix</span><span class="p">[</span><span class="n">word_to_idx</span><span class="p">[</span><span class="n">w2</span><span class="p">]]</span>
+        <span class="n">sim</span> <span class="o">=</span> <span class="n">cosine_similarity</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">v2</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">w1</span><span class="si">:</span><span class="s2">15</span><span class="si">}</span><span class="s2"> &lt;-&gt; </span><span class="si">{</span><span class="n">w2</span><span class="si">:</span><span class="s2">15</span><span class="si">}</span><span class="s2"> : </span><span class="si">{</span><span class="n">sim</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Similarity scores for word pairs:
+--------------------------------------------------
+king            &lt;-&gt; queen           : 0.6511
+king            &lt;-&gt; man             : 0.2294
+king            &lt;-&gt; apple           : 0.1083
+happy           &lt;-&gt; joyful          : 0.4238
+happy           &lt;-&gt; sad             : 0.5355
+car             &lt;-&gt; automobile      : 0.5838
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Observation:</strong></p>
+<ul class="simple">
+<li><p>What do you see when you look at the cosine similarities between the different embeddings? semantically similar words have as expected a much higher similarity. However, we also see that words like “happy” and “sad” have a high similarity (even higher than “happy” and “joyful”), showing that antonyms do give high similarity scores as well.</p></li>
+</ul>
+</section>
+</section>
+<section id="finding-most-similar-words">
+<h2>3. Finding Most Similar Words<a class="headerlink" href="#finding-most-similar-words" title="Link to this heading">#</a></h2>
+<p>Now let’s implement a function to find the most similar words to a given word. This requires computing similarity with ALL words in vocabulary!</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">find_most_similar_embedding</span><span class="p">(</span><span class="n">target_vector</span><span class="p">,</span> <span class="n">embeddings</span><span class="p">,</span> <span class="n">idx2word</span><span class="p">,</span> <span class="n">top_n</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">exclude_indices</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;  Find most similar words to a target vector. (also used later on)  &quot;&quot;&quot;</span>
+
+    <span class="c1">#  Compute cosine similarities</span>
+    <span class="n">similarities</span> <span class="o">=</span> <span class="n">cosine_similarity</span><span class="p">(</span><span class="n">embeddings</span><span class="p">,</span> <span class="n">target_vector</span><span class="p">)</span>
+
+    <span class="c1"># Exclude specified indices by setting similarity to -inf</span>
+    <span class="k">if</span> <span class="n">exclude_indices</span><span class="p">:</span>
+        <span class="n">similarities</span> <span class="o">=</span> <span class="n">similarities</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">exclude_indices</span><span class="p">:</span>
+            <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">idx</span> <span class="o">&lt;</span> <span class="n">similarities</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                <span class="n">similarities</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span>
+
+    <span class="n">top_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">similarities</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">][:</span><span class="n">top_n</span><span class="p">]</span>
+    <span class="k">return</span> <span class="p">[(</span><span class="n">idx2word</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">similarities</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">top_indices</span><span class="p">]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">find_similar_words</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">word_to_idx</span><span class="p">,</span> <span class="n">idx2word</span><span class="p">,</span> <span class="n">embeddings</span><span class="p">,</span> <span class="n">top_n</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;    Find the most similar words to a given word.  &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">word</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">word_to_idx</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">word</span><span class="si">}</span><span class="s2">&#39; not found in vocabulary&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[]</span>
+    
+    <span class="c1"># Get the vector for the input word</span>
+    <span class="n">word_vector</span> <span class="o">=</span> <span class="n">embeddings</span><span class="p">[</span><span class="n">word_to_idx</span><span class="p">[</span><span class="n">word</span><span class="p">]]</span>
+    
+    <span class="c1"># Use the helper function to find most similar embeddings</span>
+    <span class="n">exclude_idx</span> <span class="o">=</span> <span class="p">{</span><span class="n">word_to_idx</span><span class="p">[</span><span class="n">word</span><span class="p">]}</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">find_most_similar_embedding</span><span class="p">(</span>
+        <span class="n">word_vector</span><span class="p">,</span> <span class="n">embeddings</span><span class="p">,</span> <span class="n">idx2word</span><span class="p">,</span> <span class="n">top_n</span><span class="o">=</span><span class="n">top_n</span><span class="p">,</span> <span class="n">exclude_indices</span><span class="o">=</span><span class="n">exclude_idx</span>
+    <span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">results</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Test the function</span>
+<span class="n">test_words</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;computer&quot;</span><span class="p">,</span> <span class="s2">&quot;happy&quot;</span><span class="p">,</span> <span class="s2">&quot;france&quot;</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">test_words</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">word_to_idx</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Most similar words to &#39;</span><span class="si">{</span><span class="n">word</span><span class="si">}</span><span class="s2">&#39;:&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">50</span><span class="p">)</span>
+        <span class="n">similar_words</span> <span class="o">=</span> <span class="n">find_similar_words</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">word_to_idx</span><span class="p">,</span> <span class="n">idx2word</span><span class="p">,</span> 
+                                         <span class="n">embedding_matrix</span><span class="p">,</span> <span class="n">top_n</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">similar_word</span><span class="p">,</span> <span class="n">score</span> <span class="ow">in</span> <span class="n">similar_words</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">similar_word</span><span class="si">:</span><span class="s2">20</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">score</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Most similar words to &#39;computer&#39;:
+--------------------------------------------------
+  computers            0.7979
+  laptop               0.6640
+  laptop_computer      0.6549
+  Computer             0.6473
+  laptop_computers     0.5585
+  PC                   0.5540
+  laptops              0.5518
+  PCs                  0.5517
+
+Most similar words to &#39;happy&#39;:
+--------------------------------------------------
+  glad                 0.7409
+  pleased              0.6632
+  ecstatic             0.6627
+  overjoyed            0.6599
+  thrilled             0.6514
+  satisfied            0.6438
+  proud                0.6360
+  delighted            0.6272
+</pre></div>
+</div>
+</div>
+</div>
+<section id="exercise-2-explore-different-words">
+<h3>Exercise 2: Explore Different Words<a class="headerlink" href="#exercise-2-explore-different-words" title="Link to this heading">#</a></h3>
+<p>Try finding similar words for terms from linguistics, your research, or daily life!</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># TODO: Try adding your own words here</span>
+<span class="n">my_words</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Friday&quot;</span><span class="p">,</span> <span class="s2">&quot;Obama&quot;</span><span class="p">,</span> <span class="s2">&quot;America&quot;</span><span class="p">,</span> <span class="s2">&quot;Netherlands&quot;</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">my_words</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">word_to_idx</span><span class="p">:</span>
+        <span class="n">similar</span> <span class="o">=</span> <span class="n">find_similar_words</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">word_to_idx</span><span class="p">,</span> <span class="n">idx2word</span><span class="p">,</span> 
+                                   <span class="n">embedding_matrix</span><span class="p">,</span> <span class="n">top_n</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;- </span><span class="si">{</span><span class="n">word</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="p">[</span><span class="n">w</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">w</span><span class="p">,</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">similar</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Sorry could not find &#39;</span><span class="si">{</span><span class="n">word</span><span class="si">}</span><span class="s2">&#39; in vocabulary.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- Friday: [&#39;Thursday&#39;, &#39;Monday&#39;, &#39;Wednesday&#39;, &#39;Tuesday&#39;, &#39;Saturday&#39;]
+- Obama: [&#39;Barack_Obama&#39;, &#39;President_Barack_Obama&#39;, &#39;McCain&#39;, &#39;Clinton&#39;, &#39;Illinois_senator&#39;]
+- America: [&#39;United_States&#39;, &#39;American&#39;, &#39;Europe&#39;, &#39;nation&#39;, &#39;world&#39;]
+- Netherlands: [&#39;Belgium&#39;, &#39;Dutch&#39;, &#39;Denmark&#39;, &#39;Germany&#39;, &#39;Sweden&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="vector-arithmetic-and-analogies">
+<h2>4. Vector Arithmetic and Analogies<a class="headerlink" href="#vector-arithmetic-and-analogies" title="Link to this heading">#</a></h2>
+<p>One of the most fascinating properties of word embeddings:</p>
+<p><strong>Semantic relationships are encoded as vector relationships!</strong></p>
+<p>Check the illustration below, we have the four words “king”, “queen”, “man”, “women”. Via our word embeddings we obtain a vector for each word, which are illustrated as 2D vectors in the example below, but real word embeddings are much larger, e.g. 300 dimentions in the word2vec embeddings we are working with. While these vectors are trained based on the distributions they are trained on, they learned to encode complex semantic relationships too (see the original paper, (<a class="reference external" href="https://aclanthology.org/N13-1090.pdf">Mikolov et al., 2013</a>) about this, it’s a nice read :) ) . So when we take the vector of Man and substract the vector of Woman from it, we get a new vector which represents the difference between the two vectors, which in this case is mostly the gender of the word (and potential biases as we will see at the end of this notebook). To confirm this gender relationship we can do some analogy problems.</p>
+<p>A famous analogy example using word embeddings:</p>
+<ul class="simple">
+<li><p>king - man + woman ≈ queen</p></li>
+</ul>
+<p align="center">
+    <img src="https://pbs.twimg.com/media/F1pB0v7XoAEdKmm.jpg:large" alt="kindqueen" style="max-width:20%;">
+</p>
+<p>Let’s implement this from scratch!</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">solve_analogy</span><span class="p">(</span><span class="n">word_a</span><span class="p">,</span> <span class="n">word_b</span><span class="p">,</span> <span class="n">word_c</span><span class="p">,</span> <span class="n">word_to_idx</span><span class="p">,</span> <span class="n">idx2word</span><span class="p">,</span> 
+                  <span class="n">embeddings</span><span class="p">,</span> <span class="n">top_n</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Solve analogies: word_a is to word_b as word_c is to ???.</span>
+<span class="sd">    Uses an inner helper to find most similar words to a target vector.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+    <span class="c1"># Check vocabulary presence</span>
+    <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="p">[</span><span class="n">word_a</span><span class="p">,</span> <span class="n">word_b</span><span class="p">,</span> <span class="n">word_c</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">word</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">word_to_idx</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">word</span><span class="si">}</span><span class="s2">&#39; not found in vocabulary&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">[]</span>
+
+    <span class="c1"># Retrieve vectors</span>
+    <span class="n">vec_a</span> <span class="o">=</span> <span class="n">embeddings</span><span class="p">[</span><span class="n">word_to_idx</span><span class="p">[</span><span class="n">word_a</span><span class="p">]]</span>
+    <span class="n">vec_b</span> <span class="o">=</span> <span class="n">embeddings</span><span class="p">[</span><span class="n">word_to_idx</span><span class="p">[</span><span class="n">word_b</span><span class="p">]]</span>
+    <span class="n">vec_c</span> <span class="o">=</span> <span class="n">embeddings</span><span class="p">[</span><span class="n">word_to_idx</span><span class="p">[</span><span class="n">word_c</span><span class="p">]]</span>
+
+    <span class="c1"># Analogy vector: vec_b - vec_a + vec_c</span>
+    <span class="n">target_vector</span> <span class="o">=</span> <span class="n">vec_b</span> <span class="o">-</span> <span class="n">vec_a</span> <span class="o">+</span> <span class="n">vec_c</span>
+
+    <span class="c1"># Prepare exclude indices (exclude the three input words)</span>
+    <span class="n">exclude_indices</span> <span class="o">=</span> <span class="p">[</span><span class="n">word_to_idx</span><span class="p">[</span><span class="n">w</span><span class="p">]</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="p">[</span><span class="n">word_a</span><span class="p">,</span> <span class="n">word_b</span><span class="p">,</span> <span class="n">word_c</span><span class="p">]]</span>
+
+    <span class="c1"># Use helper to get the most similar words</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">find_most_similar_embedding</span><span class="p">(</span><span class="n">target_vector</span><span class="p">,</span> <span class="n">embeddings</span><span class="p">,</span> <span class="n">idx2word</span><span class="p">,</span>
+                                       <span class="n">top_n</span><span class="o">=</span><span class="n">top_n</span><span class="p">,</span> <span class="n">exclude_indices</span><span class="o">=</span><span class="n">exclude_indices</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">results</span>
+
+
+<span class="c1"># Test with famous examples</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ANALOGY TESTS&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="mi">50</span><span class="p">)</span>
+
+<span class="n">analogies</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="s2">&quot;king&quot;</span><span class="p">,</span> <span class="s2">&quot;man&quot;</span><span class="p">,</span> <span class="s2">&quot;queen&quot;</span><span class="p">),</span>  <span class="c1"># king - man + queen ≈ woman</span>
+    <span class="p">(</span><span class="s2">&quot;Paris&quot;</span><span class="p">,</span> <span class="s2">&quot;France&quot;</span><span class="p">,</span> <span class="s2">&quot;Rome&quot;</span><span class="p">),</span>  <span class="c1"># Paris - France + Rome ≈ Italy</span>
+    <span class="p">(</span><span class="s2">&quot;walking&quot;</span><span class="p">,</span> <span class="s2">&quot;walked&quot;</span><span class="p">,</span> <span class="s2">&quot;swimming&quot;</span><span class="p">),</span>  <span class="c1"># walking - walked + swimming ≈ swam</span>
+<span class="p">]</span>
+
+<span class="k">for</span> <span class="n">word_a</span><span class="p">,</span> <span class="n">word_b</span><span class="p">,</span> <span class="n">word_c</span> <span class="ow">in</span> <span class="n">analogies</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="n">word_a</span><span class="si">}</span><span class="s2"> is to </span><span class="si">{</span><span class="n">word_b</span><span class="si">}</span><span class="s2"> as </span><span class="si">{</span><span class="n">word_c</span><span class="si">}</span><span class="s2"> is to...?&quot;</span><span class="p">)</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">solve_analogy</span><span class="p">(</span><span class="n">word_a</span><span class="p">,</span> <span class="n">word_b</span><span class="p">,</span> <span class="n">word_c</span><span class="p">,</span> <span class="n">word_to_idx</span><span class="p">,</span> 
+                           <span class="n">idx2word</span><span class="p">,</span> <span class="n">embedding_matrix</span><span class="p">,</span> <span class="n">top_n</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">word</span><span class="p">,</span> <span class="n">score</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">word</span><span class="si">:</span><span class="s2">15</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">score</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ANALOGY TESTS
+==================================================
+
+king is to man as queen is to...?
+  woman           (0.7187)
+  girl            (0.5883)
+  lady            (0.5754)
+
+Paris is to France as Rome is to...?
+  Italy           (0.7115)
+  Sicily          (0.5600)
+  Italians        (0.5600)
+
+walking is to walked as swimming is to...?
+  swam            (0.7226)
+  swim            (0.7098)
+  swimmers        (0.6162)
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Observation</strong>: We see for these few cases that the word embeddings capture very well the concept of royalty, the country-capital realtionship, and the concept of past tense!</p>
+</section>
+<section id="visualizing-word-embeddings">
+<h2>5. Visualizing Word Embeddings<a class="headerlink" href="#visualizing-word-embeddings" title="Link to this heading">#</a></h2>
+<p>Word embeddings are 300-dimensional, and we poort humans can usually only see in 3D which makes vizualizing word embeddings a bit of a problem. To understand what is going on in this complex vector high dimensional vector space we have some tricks to rely on using  ✨ <em>dimensionality reduction</em> ✨. Via dimensionality reduction methods we wish to reduce the 300D to 2D in a way that let’s us retain some properties, such as how close points are in the original space. A popular method we will use is <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.manifold.TSNE.html">t-SNE</a>, but an alternative method <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html">PCA</a> is also relevant in other cases.</p>
+<section id="what-is-t-sne">
+<h3>What is t-SNE<a class="headerlink" href="#what-is-t-sne" title="Link to this heading">#</a></h3>
+<p>t-SNE (t-Distributed Stochastic Neighbor Embedding) helps us visualize high-dimensional data by finding a 2D representation that preserves relationships between points. The key idea is that words that are similar in the original 300D space should appear close together in the 2D plot.</p>
+<p><strong>Things you can interpret:</strong></p>
+<ul class="simple">
+<li><p><strong>Words close together are semantically related</strong> : if “king” and “queen” are near each other, they share meaning</p></li>
+<li><p><strong>Clusters reveal semantic groups</strong> : family words, countries, or emotions often form visible clusters</p></li>
+<li><p><strong>Local neighborhoods matter</strong> : look at what words surround a specific word to understand its semantic context</p></li>
+</ul>
+<p><strong>Things to be careful about:</strong></p>
+<ul class="simple">
+<li><p><strong>Distances between distant clusters are less meaningful</strong> : t-SNE preserves local structure well, but the space between far-apart clusters doesn’t tell you much</p></li>
+<li><p><strong>The axes don’t mean anything specific</strong> : unlike some other methods, x and y don’t represent interpretable dimensions</p></li>
+<li><p><strong>Different runs can look different</strong> : the same data might produce rotated or flipped plots, which is fine—focus on which words are grouped together, not their absolute positions</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.manifold</span><span class="w"> </span><span class="kn">import</span> <span class="n">TSNE</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">visualize_words_2d</span><span class="p">(</span><span class="n">words</span><span class="p">,</span> <span class="n">word_to_idx</span><span class="p">,</span> <span class="n">embeddings</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">color_map</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">legend_labels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">return_fig</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Visualize word embeddings in 2D space with color coding.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        words: List of words to visualize</span>
+<span class="sd">        word_to_idx: Word to index mapping</span>
+<span class="sd">        embeddings: Embedding matrix</span>
+<span class="sd">        method: &#39;tsne&#39; or &#39;pca&#39;</span>
+<span class="sd">        figsize: Figure size tuple</span>
+<span class="sd">        color_map: List of colors for each word (optional)</span>
+<span class="sd">        legend_labels: Dict mapping color to label for legend (optional)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">valid_words</span> <span class="o">=</span> <span class="p">[</span><span class="n">w</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">words</span> <span class="k">if</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">word_to_idx</span><span class="p">]</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">valid_words</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Not enough valid words to visualize&quot;</span><span class="p">)</span>
+        <span class="k">return</span>
+
+    <span class="n">vectors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">embeddings</span><span class="p">[</span><span class="n">word_to_idx</span><span class="p">[</span><span class="n">w</span><span class="p">]]</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">valid_words</span><span class="p">])</span>
+
+    <span class="c1"># We want to reduce it to a 2D plot, so set n_components=2</span>
+    <span class="n">reducer</span> <span class="o">=</span> <span class="n">TSNE</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span> <span class="n">perplexity</span><span class="o">=</span><span class="nb">min</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">valid_words</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+
+    <span class="n">vectors_2d</span> <span class="o">=</span> <span class="n">reducer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span>
+
+    <span class="c1"># Only create a new figure if return_fig is False (default single plot behavior)</span>
+    <span class="k">if</span> <span class="n">return_fig</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="n">figsize</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">color_map</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">word</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">valid_words</span><span class="p">):</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">vectors_2d</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">vectors_2d</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> 
+                        <span class="n">c</span><span class="o">=</span><span class="n">color_map</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="p">(</span><span class="n">vectors_2d</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">vectors_2d</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+        <span class="c1"># Add legend</span>
+        <span class="k">if</span> <span class="n">legend_labels</span><span class="p">:</span>
+            <span class="n">handles</span> <span class="o">=</span> <span class="p">[</span><span class="n">plt</span><span class="o">.</span><span class="n">Line2D</span><span class="p">([</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span> 
+                                  <span class="n">markerfacecolor</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+                       <span class="k">for</span> <span class="n">color</span><span class="p">,</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">legend_labels</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">handles</span><span class="o">=</span><span class="n">handles</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">vectors_2d</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">vectors_2d</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">word</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">valid_words</span><span class="p">):</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="p">(</span><span class="n">vectors_2d</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">vectors_2d</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Word Embeddings Visualization (TSNE)&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Dimension 1&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Dimension 2&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+    
+    <span class="c1"># Only call tight_layout and show if this is a standalone plot</span>
+    <span class="k">if</span> <span class="n">return_fig</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="k">elif</span> <span class="n">return_fig</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">plt</span><span class="o">.</span><span class="n">gcf</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example: Visualize family relationships with gender color</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Visualizing family relationships:&quot;</span><span class="p">)</span>
+<span class="n">family_words</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;man&quot;</span><span class="p">,</span> <span class="s2">&quot;woman&quot;</span><span class="p">,</span> <span class="s2">&quot;boy&quot;</span><span class="p">,</span> <span class="s2">&quot;girl&quot;</span><span class="p">,</span> <span class="s2">&quot;father&quot;</span><span class="p">,</span> <span class="s2">&quot;mother&quot;</span><span class="p">,</span> 
+                <span class="s2">&quot;son&quot;</span><span class="p">,</span> <span class="s2">&quot;daughter&quot;</span><span class="p">,</span> <span class="s2">&quot;grandfather&quot;</span><span class="p">,</span> <span class="s2">&quot;grandmother&quot;</span><span class="p">]</span>
+<span class="n">family_colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="s1">&#39;red&#39;</span><span class="p">]</span>
+<span class="n">family_legend</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;blue&#39;</span><span class="p">:</span> <span class="s1">&#39;Male&#39;</span><span class="p">,</span> <span class="s1">&#39;red&#39;</span><span class="p">:</span> <span class="s1">&#39;Female&#39;</span><span class="p">}</span>
+<span class="n">visualize_words_2d</span><span class="p">(</span><span class="n">family_words</span><span class="p">,</span> <span class="n">word_to_idx</span><span class="p">,</span> <span class="n">embedding_matrix</span><span class="p">,</span> <span class="n">color_map</span><span class="o">=</span><span class="n">family_colors</span><span class="p">,</span> <span class="n">legend_labels</span><span class="o">=</span><span class="n">family_legend</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Visualizing family relationships:
+</pre></div>
+</div>
+<img alt="../_images/40a1ae20bf50ae9ba6a5c284ecc18743ba589477a5583ad68f08a3b7d283943c.png" src="../_images/40a1ae20bf50ae9ba6a5c284ecc18743ba589477a5583ad68f08a3b7d283943c.png" />
+</div>
+</div>
+<p><strong>Observation</strong>:</p>
+<ul class="simple">
+<li><p>We see that for these family relationships the t-SNE plot highlights some clear patterns:</p>
+<ol class="arabic simple">
+<li><p>The gender relationship is very consistent, for each family relationship, the male variant is to the bottom-right of the female variant.</p></li>
+<li><p>Moreover, the more family terms: son, mother etc, are in a separate cluster (bottom right) than the less family related terms (top left): woman, man, boy, girl.</p></li>
+<li><p>For the family terms we also see a nice order, first grandmother, then mother, then dauther.</p></li>
+</ol>
+</li>
+</ul>
+<p><strong>Q:</strong> What other relationship patterns do you see?</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Visualizing countries and capitals - side by side comparison:&quot;</span><span class="p">)</span>
+
+<span class="c1"># Define countries and capitals separately</span>
+<span class="n">countries</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;France&quot;</span><span class="p">,</span> <span class="s2">&quot;Germany&quot;</span><span class="p">,</span> <span class="s2">&quot;Italy&quot;</span><span class="p">,</span> <span class="s2">&quot;Spain&quot;</span><span class="p">,</span> <span class="s2">&quot;England&quot;</span><span class="p">,</span> <span class="s2">&quot;Netherlands&quot;</span><span class="p">,</span> <span class="s2">&quot;Belgium&quot;</span><span class="p">]</span>
+<span class="n">capitals</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Paris&quot;</span><span class="p">,</span> <span class="s2">&quot;Berlin&quot;</span><span class="p">,</span> <span class="s2">&quot;Rome&quot;</span><span class="p">,</span> <span class="s2">&quot;Madrid&quot;</span><span class="p">,</span> <span class="s2">&quot;London&quot;</span><span class="p">,</span> <span class="s2">&quot;Amsterdam&quot;</span><span class="p">,</span> <span class="s2">&quot;Brussels&quot;</span><span class="p">]</span>
+
+<span class="c1"># Create 3 separate plots</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+<span class="c1"># Plot 1: Countries only (blue)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">visualize_words_2d</span><span class="p">(</span><span class="n">countries</span><span class="p">,</span> <span class="n">word_to_idx</span><span class="p">,</span> <span class="n">embedding_matrix</span><span class="p">,</span> 
+                   <span class="n">color_map</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;blue&#39;</span><span class="p">]</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">countries</span><span class="p">),</span> <span class="n">return_fig</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Countries Only&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+
+<span class="c1"># Plot 2: Capitals only (red)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">visualize_words_2d</span><span class="p">(</span><span class="n">capitals</span><span class="p">,</span> <span class="n">word_to_idx</span><span class="p">,</span> <span class="n">embedding_matrix</span><span class="p">,</span> 
+                   <span class="n">color_map</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;red&#39;</span><span class="p">]</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">capitals</span><span class="p">),</span> <span class="n">return_fig</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Capitals Only&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+
+<span class="c1"># Plot 3: Both together (with legend)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">geo_words</span> <span class="o">=</span> <span class="n">countries</span> <span class="o">+</span> <span class="n">capitals</span>
+<span class="n">geo_colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;blue&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">countries</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="s1">&#39;red&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">capitals</span><span class="p">)</span>
+<span class="n">geo_legend</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;blue&#39;</span><span class="p">:</span> <span class="s1">&#39;Country&#39;</span><span class="p">,</span> <span class="s1">&#39;red&#39;</span><span class="p">:</span> <span class="s1">&#39;Capital&#39;</span><span class="p">}</span>
+<span class="n">visualize_words_2d</span><span class="p">(</span><span class="n">geo_words</span><span class="p">,</span> <span class="n">word_to_idx</span><span class="p">,</span> <span class="n">embedding_matrix</span><span class="p">,</span> 
+                   <span class="n">color_map</span><span class="o">=</span><span class="n">geo_colors</span><span class="p">,</span> <span class="n">legend_labels</span><span class="o">=</span><span class="n">geo_legend</span><span class="p">,</span> <span class="n">return_fig</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Countries and Capitals&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Visualizing countries and capitals - side by side comparison:
+</pre></div>
+</div>
+<img alt="../_images/14752198ca89bb5359924a16a5f7c991276f30b39ead1d12da289c4fcbf49208.png" src="../_images/14752198ca89bb5359924a16a5f7c991276f30b39ead1d12da289c4fcbf49208.png" />
+</div>
+</div>
+<p><strong>Observation</strong>:</p>
+<ul class="simple">
+<li><p>Keep in mind that each time the t-SNE plot is generated the direction can change.</p></li>
+<li><p>For the capitals and countries we see some geographical information: the netherlands is closest to belgium, germany and then france.</p></li>
+<li><p>When visualizing the capitals and countries via t-SNE we already see some limitations of this method. There are many structures in the data now: geographical (where on the map it is), relational (the fact a capital is in a country). For many of the country capitals here we do see that the closest city to a country is it’s capital (except for Belgium).</p></li>
+</ul>
+</section>
+</section>
+<section id="using-the-gensim-library-faster-package">
+<h2>6. Using the Gensim Library (Faster Package)<a class="headerlink" href="#using-the-gensim-library-faster-package" title="Link to this heading">#</a></h2>
+<p>Now that you understand what’s happening under the hood, let’s see how to use the Gensim library for production work. It’s much faster and has more features!</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">gensim.downloader</span>
+
+<span class="c1"># Load model with Gensim wrapper</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Loading model with Gensim KeyedVectors...&quot;</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">gensim</span><span class="o">.</span><span class="n">downloader</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;word2vec-google-news-300&#39;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Model vocabulary size: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">model</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Embedding dimensions: </span><span class="si">{</span><span class="n">model</span><span class="o">.</span><span class="n">vector_size</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loading model with Gensim KeyedVectors...
+
+Model vocabulary size: 3000000
+Embedding dimensions: 300
+</pre></div>
+</div>
+</div>
+</div>
+<section id="common-operations-with-keyedvectors">
+<h3>Common Operations with KeyedVectors<a class="headerlink" href="#common-operations-with-keyedvectors" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 1. Finding similar words</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">1. Most similar words to &#39;computer&#39;:&quot;</span><span class="p">)</span>
+<span class="n">similar</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">most_similar</span><span class="p">(</span><span class="s1">&#39;computer&#39;</span><span class="p">,</span> <span class="n">topn</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">word</span><span class="p">,</span> <span class="n">score</span> <span class="ow">in</span> <span class="n">similar</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;   </span><span class="si">{</span><span class="n">word</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">score</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># 2. Computing similarity</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">2. Similarity between words:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;   computer &lt;-&gt; laptop: </span><span class="si">{</span><span class="n">model</span><span class="o">.</span><span class="n">similarity</span><span class="p">(</span><span class="s1">&#39;computer&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;laptop&#39;</span><span class="p">)</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;   computer &lt;-&gt; banana: </span><span class="si">{</span><span class="n">model</span><span class="o">.</span><span class="n">similarity</span><span class="p">(</span><span class="s1">&#39;computer&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;banana&#39;</span><span class="p">)</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># 3. Solving analogies</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">3. Analogy: king - man + woman =&quot;</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">most_similar</span><span class="p">(</span><span class="n">positive</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;king&#39;</span><span class="p">,</span> <span class="s1">&#39;woman&#39;</span><span class="p">],</span> 
+                            <span class="n">negative</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;man&#39;</span><span class="p">],</span> <span class="n">topn</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">word</span><span class="p">,</span> <span class="n">score</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;   </span><span class="si">{</span><span class="n">word</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">score</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># 4. Finding odd one out</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">4. Which word doesn&#39;t match?&quot;</span><span class="p">)</span>
+<span class="n">words</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;breakfast&#39;</span><span class="p">,</span> <span class="s1">&#39;lunch&#39;</span><span class="p">,</span> <span class="s1">&#39;dinner&#39;</span><span class="p">,</span> <span class="s1">&#39;car&#39;</span><span class="p">]</span>
+<span class="n">oddone</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">doesnt_match</span><span class="p">(</span><span class="n">words</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;   Words: </span><span class="si">{</span><span class="n">words</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;   Odd one out: </span><span class="si">{</span><span class="n">oddone</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># 5. Get vector for a word</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">5. Accessing word vector:&quot;</span><span class="p">)</span>
+<span class="n">vector</span> <span class="o">=</span> <span class="n">model</span><span class="p">[</span><span class="s1">&#39;computer&#39;</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;   Shape: </span><span class="si">{</span><span class="n">vector</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;   First 5 values: </span><span class="si">{</span><span class="n">vector</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1. Most similar words to &#39;computer&#39;:
+   computers: 0.7979
+   laptop: 0.6640
+   laptop_computer: 0.6549
+   Computer: 0.6473
+   com_puter: 0.6082
+
+2. Similarity between words:
+   computer &lt;-&gt; laptop: 0.6640
+   computer &lt;-&gt; banana: 0.0908
+
+3. Analogy: king - man + woman =
+   queen: 0.7118
+   monarch: 0.6190
+   princess: 0.5902
+
+4. Which word doesn&#39;t match?
+   Words: [&#39;breakfast&#39;, &#39;lunch&#39;, &#39;dinner&#39;, &#39;car&#39;]
+   Odd one out: car
+
+5. Accessing word vector:
+   Shape: (300,)
+   First 5 values: [ 0.10742188 -0.20117188  0.12304688  0.21191406 -0.09130859]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="exploring-biases-in-word-embeddings">
+<h2>7. Exploring Biases in Word Embeddings<a class="headerlink" href="#exploring-biases-in-word-embeddings" title="Link to this heading">#</a></h2>
+<p>Word embeddings learn from text data, which reflects societal biases. Let’s investigate gender bias in our embeddings.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">explore_gender_bias</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Explore gender bias in word embeddings.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;GENDER BIAS ANALYSIS&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)</span>
+    
+    <span class="c1"># 1. Direct gender associations</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">1. Words most associated with &#39;he&#39; vs &#39;she&#39;:&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)</span>
+
+    <span class="c1"># Occupations to test</span>
+    <span class="n">occupations</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;doctor&#39;</span><span class="p">,</span> <span class="s1">&#39;nurse&#39;</span><span class="p">,</span> <span class="s1">&#39;engineer&#39;</span><span class="p">,</span> <span class="s1">&#39;teacher&#39;</span><span class="p">,</span> 
+                   <span class="s1">&#39;programmer&#39;</span><span class="p">,</span> <span class="s1">&#39;secretary&#39;</span><span class="p">,</span> <span class="s1">&#39;CEO&#39;</span><span class="p">,</span> <span class="s1">&#39;assistant&#39;</span><span class="p">,</span>
+                   <span class="s1">&#39;scientist&#39;</span><span class="p">,</span> <span class="s1">&#39;homemaker&#39;</span><span class="p">,</span> <span class="s1">&#39;professor&#39;</span><span class="p">,</span> <span class="s1">&#39;receptionist&#39;</span><span class="p">]</span>
+    
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39;Occupation&#39;</span><span class="si">:</span><span class="s2">&lt;15</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;Similarity to HE&#39;</span><span class="si">:</span><span class="s2">&lt;20</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;Similarity to SHE&#39;</span><span class="si">:</span><span class="s2">&lt;20</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;Difference&#39;</span><span class="si">:</span><span class="s2">&lt;15</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)</span>
+    
+    <span class="k">for</span> <span class="n">occupation</span> <span class="ow">in</span> <span class="n">occupations</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">occupation</span> <span class="ow">in</span> <span class="n">model</span><span class="p">:</span>
+            <span class="n">sim_he</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">similarity</span><span class="p">(</span><span class="n">occupation</span><span class="p">,</span> <span class="s1">&#39;he&#39;</span><span class="p">)</span>
+            <span class="n">sim_she</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">similarity</span><span class="p">(</span><span class="n">occupation</span><span class="p">,</span> <span class="s1">&#39;she&#39;</span><span class="p">)</span>
+            <span class="n">diff</span> <span class="o">=</span> <span class="n">sim_he</span> <span class="o">-</span> <span class="n">sim_she</span>
+            
+            <span class="n">bias_marker</span> <span class="o">=</span> <span class="s2">&quot;→ HE&quot;</span> <span class="k">if</span> <span class="n">diff</span> <span class="o">&gt;</span> <span class="mf">0.01</span> <span class="k">else</span> <span class="s2">&quot;→ SHE&quot;</span> <span class="k">if</span> <span class="n">diff</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mf">0.01</span> <span class="k">else</span> <span class="s2">&quot;neutral&quot;</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">occupation</span><span class="si">:</span><span class="s2">&lt;15</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">sim_he</span><span class="si">:</span><span class="s2">&lt;20.4f</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">sim_she</span><span class="si">:</span><span class="s2">&lt;20.4f</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">diff</span><span class="si">:</span><span class="s2">&lt;10.4f</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">bias_marker</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    
+    <span class="c1"># 2. Analogy-based bias</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">2. Gender analogies:&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)</span>
+    
+    <span class="c1"># Test: man is to X as woman is to Y</span>
+    <span class="n">male_terms</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;king&#39;</span><span class="p">,</span> <span class="s1">&#39;prince&#39;</span><span class="p">,</span> <span class="s1">&#39;father&#39;</span><span class="p">,</span> <span class="s1">&#39;brother&#39;</span><span class="p">,</span> <span class="s1">&#39;actor&#39;</span><span class="p">,</span> <span class="s1">&#39;hero&#39;</span><span class="p">]</span>
+    
+    <span class="k">for</span> <span class="n">male_term</span> <span class="ow">in</span> <span class="n">male_terms</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">male_term</span> <span class="ow">in</span> <span class="n">model</span><span class="p">:</span>
+            <span class="c1"># Find: man - male_term + woman = ?</span>
+            <span class="n">results</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">most_similar</span><span class="p">(</span><span class="n">positive</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;woman&#39;</span><span class="p">,</span> <span class="n">male_term</span><span class="p">],</span> 
+                                        <span class="n">negative</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;man&#39;</span><span class="p">],</span> <span class="n">topn</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">man:</span><span class="si">{</span><span class="n">male_term</span><span class="si">}</span><span class="s2"> :: woman:?&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">word</span><span class="p">,</span> <span class="n">score</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;   </span><span class="si">{</span><span class="n">word</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">score</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+    
+    <span class="c1"># 3. Visualization of gendered words</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">3. Visualizing gendered word space:&quot;</span><span class="p">)</span>
+    <span class="n">gendered_words</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;he&#39;</span><span class="p">,</span> <span class="s1">&#39;she&#39;</span><span class="p">,</span> <span class="s1">&#39;man&#39;</span><span class="p">,</span> <span class="s1">&#39;woman&#39;</span><span class="p">,</span> <span class="s1">&#39;king&#39;</span><span class="p">,</span> <span class="s1">&#39;queen&#39;</span><span class="p">,</span>
+                      <span class="s1">&#39;father&#39;</span><span class="p">,</span> <span class="s1">&#39;mother&#39;</span><span class="p">,</span> <span class="s1">&#39;boy&#39;</span><span class="p">,</span> <span class="s1">&#39;girl&#39;</span><span class="p">,</span> <span class="s1">&#39;actor&#39;</span><span class="p">,</span> <span class="s1">&#39;actress&#39;</span><span class="p">,</span>
+                      <span class="s1">&#39;brother&#39;</span><span class="p">,</span> <span class="s1">&#39;sister&#39;</span><span class="p">,</span> <span class="s1">&#39;prince&#39;</span><span class="p">,</span> <span class="s1">&#39;princess&#39;</span><span class="p">]</span>
+    
+    <span class="n">gendered_words</span> <span class="o">=</span> <span class="p">[</span><span class="n">w</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">gendered_words</span> <span class="k">if</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">model</span><span class="p">]</span>
+    
+    <span class="c1"># Get vectors</span>
+    <span class="n">vectors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">model</span><span class="p">[</span><span class="n">w</span><span class="p">]</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">gendered_words</span><span class="p">])</span>
+    
+    <span class="c1"># Reduce to 2D</span>
+    <span class="n">tsne</span> <span class="o">=</span> <span class="n">TSNE</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span> <span class="n">perplexity</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+    <span class="n">vectors_2d</span> <span class="o">=</span> <span class="n">tsne</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span>
+    
+    <span class="c1"># Plot with color coding</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+    
+    <span class="n">male_indices</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">w</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">gendered_words</span><span class="p">)</span> 
+                    <span class="k">if</span> <span class="n">w</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;he&#39;</span><span class="p">,</span> <span class="s1">&#39;man&#39;</span><span class="p">,</span> <span class="s1">&#39;king&#39;</span><span class="p">,</span> <span class="s1">&#39;father&#39;</span><span class="p">,</span> <span class="s1">&#39;boy&#39;</span><span class="p">,</span> <span class="s1">&#39;actor&#39;</span><span class="p">,</span> <span class="s1">&#39;brother&#39;</span><span class="p">,</span> <span class="s1">&#39;prince&#39;</span><span class="p">]]</span>
+    <span class="n">female_indices</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">w</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">gendered_words</span><span class="p">)</span> 
+                      <span class="k">if</span> <span class="n">w</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;she&#39;</span><span class="p">,</span> <span class="s1">&#39;woman&#39;</span><span class="p">,</span> <span class="s1">&#39;queen&#39;</span><span class="p">,</span> <span class="s1">&#39;mother&#39;</span><span class="p">,</span> <span class="s1">&#39;girl&#39;</span><span class="p">,</span> <span class="s1">&#39;actress&#39;</span><span class="p">,</span> <span class="s1">&#39;sister&#39;</span><span class="p">,</span> <span class="s1">&#39;princess&#39;</span><span class="p">]]</span>
+    
+    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">vectors_2d</span><span class="p">[</span><span class="n">male_indices</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">vectors_2d</span><span class="p">[</span><span class="n">male_indices</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> 
+               <span class="n">c</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Male&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">vectors_2d</span><span class="p">[</span><span class="n">female_indices</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">vectors_2d</span><span class="p">[</span><span class="n">female_indices</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> 
+               <span class="n">c</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Female&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+    
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">word</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">gendered_words</span><span class="p">):</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="p">(</span><span class="n">vectors_2d</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">vectors_2d</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),</span> 
+                    <span class="n">fontsize</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+    
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Gender Bias in Word Embeddings&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Dimension 1&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Dimension 2&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># Run the bias analysis</span>
+<span class="n">explore_gender_bias</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>GENDER BIAS ANALYSIS
+============================================================
+
+1. Words most associated with &#39;he&#39; vs &#39;she&#39;:
+------------------------------------------------------------
+Occupation      Similarity to HE     Similarity to SHE    Difference     
+------------------------------------------------------------
+doctor          0.2744               0.2774               -0.0030    neutral
+nurse           0.1223               0.3694               -0.2471    → SHE
+engineer        0.1076               0.0033               0.1044     → HE
+teacher         0.1609               0.2819               -0.1210    → SHE
+programmer      0.0702               0.0691               0.0012     neutral
+secretary       0.0891               0.0978               -0.0087    neutral
+CEO             -0.0199              -0.0980              0.0781     → HE
+assistant       0.1251               0.1221               0.0030     neutral
+scientist       0.0709               0.0720               -0.0012    neutral
+homemaker       0.1307               0.3984               -0.2678    → SHE
+professor       0.0889               0.1106               -0.0217    → SHE
+receptionist    0.1435               0.3838               -0.2403    → SHE
+
+
+2. Gender analogies:
+------------------------------------------------------------
+
+man:king :: woman:?
+   queen (0.7118)
+   monarch (0.6190)
+   princess (0.5902)
+
+man:prince :: woman:?
+   princess (0.7041)
+   duchess (0.6230)
+   monarch (0.6020)
+
+man:father :: woman:?
+   mother (0.8463)
+   daughter (0.7900)
+   husband (0.7560)
+
+man:brother :: woman:?
+   sister (0.8103)
+   daughter (0.7647)
+   mother (0.7524)
+
+man:actor :: woman:?
+   actress (0.8603)
+   actresses (0.6597)
+   thesp (0.6291)
+
+man:hero :: woman:?
+   heroine (0.6873)
+   heroes (0.6017)
+   heroines (0.5402)
+
+
+3. Visualizing gendered word space:
+</pre></div>
+</div>
+<img alt="../_images/f45951a7eee36015cb49af497368549d91b7eea8eb958abd2b11e2618c4fff5c.png" src="../_images/f45951a7eee36015cb49af497368549d91b7eea8eb958abd2b11e2618c4fff5c.png" />
+</div>
+</div>
+<p><strong>Observation questions:</strong></p>
+<ul class="simple">
+<li><p>Are certain professions more associated with one gender?</p></li>
+<li><p>Do the analogies reveal stereotypical associations?</p></li>
+<li><p>What are the implications for using these embeddings in NLP systems?</p></li>
+<li><p>How might we address these biases?</p></li>
+</ul>
+</section>
+<section id="practical-application-building-a-simple-semantic-search">
+<h2>8. Practical Application - Building a Simple Semantic Search<a class="headerlink" href="#practical-application-building-a-simple-semantic-search" title="Link to this heading">#</a></h2>
+<p>Let’s build a simple semantic search engine that finds relevant documents based on meaning rather than exact keyword matching.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">simple_semantic_search</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">documents</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">top_k</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Search documents based on semantic similarity to query.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        query: Search query string</span>
+<span class="sd">        documents: List of document strings</span>
+<span class="sd">        model: Word2Vec model</span>
+<span class="sd">        top_k: Number of top results to return</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        List of (doc_index, similarity_score) tuples</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_document_vector</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Average word vectors in a document.&quot;&quot;&quot;</span>
+        <span class="n">words</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="n">vectors</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">words</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">model</span><span class="p">:</span>
+                <span class="n">vectors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">model</span><span class="p">[</span><span class="n">word</span><span class="p">])</span>
+        
+        <span class="k">if</span> <span class="n">vectors</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">vectors</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">vector_size</span><span class="p">)</span>
+    
+    <span class="c1"># Get query vector</span>
+    <span class="n">query_vector</span> <span class="o">=</span> <span class="n">get_document_vector</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
+    
+    <span class="c1"># Compute similarity with each document</span>
+    <span class="n">similarities</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">doc</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">documents</span><span class="p">):</span>
+        <span class="n">doc_vector</span> <span class="o">=</span> <span class="n">get_document_vector</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
+        
+        <span class="c1"># Compute cosine similarity</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">query_vector</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">doc_vector</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">similarity</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">query_vector</span><span class="p">,</span> <span class="n">doc_vector</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">query_vector</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">doc_vector</span><span class="p">)</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">similarity</span> <span class="o">=</span> <span class="mi">0</span>
+        
+        <span class="n">similarities</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">i</span><span class="p">,</span> <span class="n">similarity</span><span class="p">))</span>
+    
+    <span class="c1"># Sort by similarity (descending)</span>
+    <span class="n">similarities</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">similarities</span><span class="p">[:</span><span class="n">top_k</span><span class="p">]</span>
+
+<span class="c1"># Example documents</span>
+<span class="n">documents</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;Machine learning algorithms can learn patterns from data without explicit programming&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Natural language processing helps computers understand and generate human language&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Python is a popular programming language for data science and artificial intelligence&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Deep neural networks have revolutionized computer vision and speech recognition&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;The weather today is sunny with a high of 25 degrees celsius&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Cooking pasta requires boiling water and adding salt for flavor&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Linguistics studies the structure and evolution of human language&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Phonology examines the sound systems of languages across cultures&quot;</span>
+<span class="p">]</span>
+
+<span class="c1"># Test queries</span>
+<span class="n">queries</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;AI and machine learning&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;studying language structure&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;how to cook food&quot;</span>
+<span class="p">]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;SEMANTIC SEARCH DEMONSTRATION&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">query</span> <span class="ow">in</span> <span class="n">queries</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Query: &#39;</span><span class="si">{</span><span class="n">query</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)</span>
+    
+    <span class="n">results</span> <span class="o">=</span> <span class="n">simple_semantic_search</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">documents</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">top_k</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+    
+    <span class="k">for</span> <span class="n">rank</span><span class="p">,</span> <span class="p">(</span><span class="n">doc_idx</span><span class="p">,</span> <span class="n">score</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="n">rank</span><span class="si">}</span><span class="s2">. [Score: </span><span class="si">{</span><span class="n">score</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">]&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;   </span><span class="si">{</span><span class="n">documents</span><span class="p">[</span><span class="n">doc_idx</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>SEMANTIC SEARCH DEMONSTRATION
+============================================================
+
+Query: &#39;AI and machine learning&#39;
+------------------------------------------------------------
+
+1. [Score: 0.5282]
+   Machine learning algorithms can learn patterns from data without explicit programming
+
+2. [Score: 0.4628]
+   Natural language processing helps computers understand and generate human language
+
+3. [Score: 0.3853]
+   Phonology examines the sound systems of languages across cultures
+
+Query: &#39;studying language structure&#39;
+------------------------------------------------------------
+
+1. [Score: 0.7582]
+   Linguistics studies the structure and evolution of human language
+
+2. [Score: 0.6005]
+   Natural language processing helps computers understand and generate human language
+
+3. [Score: 0.5619]
+   Phonology examines the sound systems of languages across cultures
+
+Query: &#39;how to cook food&#39;
+------------------------------------------------------------
+
+1. [Score: 0.6168]
+   Cooking pasta requires boiling water and adding salt for flavor
+
+2. [Score: 0.3246]
+   Natural language processing helps computers understand and generate human language
+
+3. [Score: 0.2746]
+   Machine learning algorithms can learn patterns from data without explicit programming
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Observations</strong></p>
+<ul class="simple">
+<li><p>Notice how the search finds relevant documents even without exact keyword matches</p></li>
+<li><p>“AI and machine learning” finds documents about neural networks and algorithms</p></li>
+<li><p>“studying language structure” finds linguistics-related documents</p></li>
+<li><p>This is the foundation of modern semantic search engines!</p></li>
+</ul>
+</section>
+<section id="self-check-questions">
+<h2>Self-Check Questions<a class="headerlink" href="#self-check-questions" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>What are word embeddings and how do they represent words?</p></li>
+<li><p>How can you measure similarity between two words using their embeddings?</p></li>
+<li><p>What does vector arithmetic (e.g., king - man + woman) reveal about semantic relationships?</p></li>
+<li><p>Why do word embeddings sometimes reflect biases present in training data?</p></li>
+<li><p>How can dimensionality reduction techniques help us understand word embeddings? What are their limitations?</p></li>
+<li><p>What are some practical applications of word embeddings in NLP?</p></li>
+<li><p>How might you detect biases in word embeddings?</p></li>
+</ol>
+</section>
+<section id="ideas-for-personal-experiments">
+<h2>Ideas for personal experiments<a class="headerlink" href="#ideas-for-personal-experiments" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Try different words and analogies with your domain of interest</p></li>
+<li><p>Explore embeddings in other languages</p></li>
+<li><p>Investigate different types of biases (racial, cultural, etc.)</p></li>
+<li><p>Learn about newer embedding methods (GloVe, FastText, contextual embeddings like BERT)</p></li>
+<li><p>Build a more sophisticated semantic search system</p></li>
+</ul>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Mikolov et al. (2013). “Efficient Estimation of Word Representations in Vector Space”</p></li>
+<li><p>Bolukbasi et al. (2016). “Man is to Computer Programmer as Woman is to Homemaker? Debiasing Word Embeddings”</p></li>
+<li><p>Gensim documentation: <a class="reference external" href="https://radimrehurek.com/gensim/">https://radimrehurek.com/gensim/</a></p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./my_notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="m2_1_support_vector_machines.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">M2.1 Support Vector Machines</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="m2_3_neural_networks.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">M2.3 Neural Networks</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-objectives">Learning Objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#loading-word-embeddings">1. Loading Word Embeddings</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#understanding-the-data-structure">Understanding the Data Structure</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-similarity-between-words">2. Computing Similarity Between Words</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-1-understanding-similarity-scores">Exercise 1: Understanding Similarity Scores</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#finding-most-similar-words">3. Finding Most Similar Words</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-2-explore-different-words">Exercise 2: Explore Different Words</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vector-arithmetic-and-analogies">4. Vector Arithmetic and Analogies</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizing-word-embeddings">5. Visualizing Word Embeddings</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-t-sne">What is t-SNE</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-the-gensim-library-faster-package">6. Using the Gensim Library (Faster Package)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#common-operations-with-keyedvectors">Common Operations with KeyedVectors</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exploring-biases-in-word-embeddings">7. Exploring Biases in Word Embeddings</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#practical-application-building-a-simple-semantic-search">8. Practical Application - Building a Simple Semantic Search</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#self-check-questions">Self-Check Questions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ideas-for-personal-experiments">Ideas for personal experiments</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By The Jupyter Book Community
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

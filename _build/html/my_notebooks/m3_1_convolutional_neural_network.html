@@ -1,0 +1,1825 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>M3.1 Convolutional Neural Network &#8212; My sample book</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=e01d92e3" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'my_notebooks/m3_1_convolutional_neural_network';</script>
+    <script src="../_static/toggle_sidebar.js?v=490e729f"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="M3.2 Recurrent Neural Networks and LSTMs" href="m3_2_recurrent_neural_network.html" />
+    <link rel="prev" title="M2.3 Neural Networks" href="m2_3_neural_networks.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo_vu.png" class="logo__image only-light" alt="My sample book - Home"/>
+    <script>document.write(`<img src="../_static/logo_vu.png" class="logo__image only-dark" alt="My sample book - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Module 1 - Basic ML models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="m1_1_feature_engineering.html">M1.1 Feature Engineering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="m1_2_linear_and_logistic_regression.html">M1.2 Linear and Logistic Regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="m1_3_naive_bayes.html">M1.3 Naive Bayes Classifier</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Module 2 - Advanced ML models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="m2_1_support_vector_machines.html">M2.1 Support Vector Machines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="m2_2_embeddings.html">M2.1 Word Embeddings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="m2_3_neural_networks.html">M2.3 Neural Networks</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Module 3 - Deep Learning models</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">M3.1 Convolutional Neural Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="m3_2_recurrent_neural_network.html">M3.2 Recurrent Neural Networks and LSTMs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="m3_3_transformer.html">M3.3 Transformers</a></li>
+
+
+
+
+
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/my_notebooks/m3_1_convolutional_neural_network.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>M3.1 Convolutional Neural Network</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-objectives">Learning Objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction-why-cnns-for-text">1. Introduction: Why CNNs for Text?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#building-blocks">2. Building Blocks</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#convolution-for-text">2.1 Convolution for Text</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pooling">2.2 Pooling</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#load-standard-packages"><em>Load Standard Packages</em></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-preparation-building-the-tokenizer">3 Data Preparation: Building the Tokenizer</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#preprocess-the-data-and-tokenize">Preprocess the data and tokenize</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cnn-model-for-sentiment-classification">4. CNN Model for Sentiment Classification</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-architecture">4.1 Model Architecture</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#training-and-evaluation">4.2 Training and Evaluation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parameter-exploration">5. Parameter Exploration</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#effect-of-kernel-size">5.1 Effect of Kernel Size</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#effect-of-number-of-filters">5.2 Effect of Number of Filters</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#todo-stride">5.3 [TODO] Stride</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multiple-kernel-sizes-parallel-convolutions">5.4 Multiple Kernel Sizes (Parallel Convolutions)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#toy-dataset-understanding-limitations">6. Toy Dataset: Understanding Limitations</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#n-gram-statistics">6.1✨ N-Gram Statistics ✨</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#calculate-n-gram-statistics-for-n-1-2-3-4">Calculate: N-gram statistics for N=1,2,3,4</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-toy-dataset">Generate Toy Dataset</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#convert-data-strings-to-list-of-numbers">Convert Data: strings to list of numbers</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#experiment-with-kernel-sizes">6.2 Experiment with Kernel Sizes</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#self-check-questions">7. Self-Check Questions</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+   <!-- # Convolutional Neural Networks for Text Classification -->
+<section class="tex2jax_ignore mathjax_ignore" id="m3-1-convolutional-neural-network">
+<h1>M3.1 Convolutional Neural Network<a class="headerlink" href="#m3-1-convolutional-neural-network" title="Link to this heading">#</a></h1>
+<p><a class="reference external" href="https://github.com/cltl/ml4nlp_tutorial_notebooks/blob/main/my_notebooks/m3_1_convolutional_neural_network.ipynb"><img alt="View notebooks on Github" src="https://img.shields.io/static/v1.svg?logo=github&amp;label=Repo&amp;message=View%20On%20Github&amp;color=lightgrey" /></a>
+<a class="reference external" href="https://colab.research.google.com/github/cltl/ml4nlp_tutorial_notebooks/blob/main/my_notebooks/m3_1_convolutional_neural_network.ipynb"><img alt="Open In Collab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p>
+<p>In this tutorial, we explore how Convolutional Neural Networks (CNNs), originally developed for computer vision, can be applied to text classification tasks.</p>
+<section id="learning-objectives">
+<h2>Learning Objectives<a class="headerlink" href="#learning-objectives" title="Link to this heading">#</a></h2>
+<p>By working through this notebook, you will learn:</p>
+<ul class="simple">
+<li><p>Tokenization: first use-case of tokenizing our data, transforming the input text into numbers</p></li>
+<li><p>Use case of training a CNN model for sentiment classification</p></li>
+<li><p>Ablation of the CNN parameters: kernel size and number of features</p></li>
+<li><p>Toy Dataset experiments: how does CNN detect different N-grams?</p></li>
+</ul>
+</section>
+<section id="introduction-why-cnns-for-text">
+<h2>1. Introduction: Why CNNs for Text?<a class="headerlink" href="#introduction-why-cnns-for-text" title="Link to this heading">#</a></h2>
+<p>CNNs were originally designed for images where detecting patterns (like edges or shapes) matters more than their exact position. This property is called <strong>translation invariance</strong>. In short a cat is a cat, if it is on the left of an image or not. In general this approximation does not hold for text, the meaning of a string “this was an awesome movie” can be completely changed if it is follwed by the text “I would be lying if I said …”. But again we follow the Machine Learning mantra and use this approximation, as it turns out to be a very useful one for many text applications.</p>
+<p align="center" >
+    <img src="https://gracewlindsay.com/wp-content/uploads/2018/05/fncom-08-00135-g001.jpg" alt="cnn_humans_fig" style="max-width:40%; background-color: white;">
+</p>
+<p>For text classification tasks like sentiment analysis, similar intuition applies. When determining if a review is positive or negative, certain phrases serve as strong indicators regardless of where they appear in the text:</p>
+<ul class="simple">
+<li><p>“absolutely amazing”</p></li>
+<li><p>“bored to death”</p></li>
+<li><p>“waste of time”</p></li>
+</ul>
+<p>We care that these phrases occur, not their exact position. CNNs can learn to detect such n-gram patterns and use them for classification.</p>
+</section>
+<section id="building-blocks">
+<h2>2. Building Blocks<a class="headerlink" href="#building-blocks" title="Link to this heading">#</a></h2>
+<p>A typical CNN architecture for text classification consists of:</p>
+<ol class="arabic simple">
+<li><p><strong>Embedding layer</strong>: converts words to dense vectors</p></li>
+<li><p><strong>Convolutional layer</strong>: detects n-gram patterns with sliding windows</p></li>
+<li><p><strong>Pooling layer</strong>: aggregates pattern detections across positions</p></li>
+<li><p><strong>Dense layer</strong>: performs final classification</p></li>
+</ol>
+<p><strong>Source</strong>: Please see this blogpost for more information (also the source of many of the figures): <a class="reference external" href="https://lena-voita.github.io/nlp_course/models/convolutional.html">https://lena-voita.github.io/nlp_course/models/convolutional.html</a></p>
+<p align="center" >
+    <img src="https://lena-voita.github.io/resources/lectures/models/cnn/typical_cnn_with_cat-min.png" alt="cnn_main_fig" style="max-width:40%; background-color: white;">
+</p><section id="convolution-for-text">
+<h3>2.1 Convolution for Text<a class="headerlink" href="#convolution-for-text" title="Link to this heading">#</a></h3>
+<p>Unlike images (2D), text is 1-dimensional. A convolutional filter slides over word embeddings with a fixed window size (kernel size).</p>
+<ul class="simple">
+<li><p><strong>Kernel size</strong>: number of consecutive words the filter examines (e.g., 3 for trigrams)</p></li>
+<li><p><strong>Number of filters</strong>: how many different patterns to learn</p></li>
+<li><p>Each filter acts as a pattern detector, computing similarity between its weights and the input window</p></li>
+</ul>
+</section>
+<section id="pooling">
+<h3>2.2 Pooling<a class="headerlink" href="#pooling" title="Link to this heading">#</a></h3>
+<p>After convolution extracts features at each position, pooling aggregates them:</p>
+<ul class="simple">
+<li><p><strong>Max pooling</strong>: takes the maximum activation for each filter across all positions</p></li>
+<li><p><strong>Global max pooling</strong>: applies max pooling over the entire sequence
+This gives us a fixed-size representation regardless of input length, answering “did this pattern occur anywhere?”</p></li>
+</ul>
+</section>
+<section id="load-standard-packages">
+<h3><em>Load Standard Packages</em><a class="headerlink" href="#load-standard-packages" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>We will load some other specific ones later in the document when we need them</p></li>
+<li><p>For our machine learning packages we will again use <code class="docutils literal notranslate"><span class="pre">pytorch</span></code> or <code class="docutils literal notranslate"><span class="pre">torch</span></code>. For this notebook we will use the subpackage <code class="docutils literal notranslate"><span class="pre">nn</span></code>, so keep in mind that we import this from torch so you know where it came from.</p>
+<ul>
+<li><p>FYI: The main machine learning package these days are indeed <code class="docutils literal notranslate"><span class="pre">pytorch</span></code> and <code class="docutils literal notranslate"><span class="pre">keras</span></code>, a package we will see for the next tutorial notebook about RNNs, but let’s focus on torch for now.</p></li>
+</ul>
+</li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ignore warning messages for cleaner output of the website</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+
+<span class="c1"># Import necessary libraries</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch.optim</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">optim</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch.utils.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dataset</span><span class="p">,</span> <span class="n">DataLoader</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">train_test_split</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_dataset</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tqdm</span><span class="w"> </span><span class="kn">import</span> <span class="n">tqdm</span>
+
+<span class="c1"># Set random seeds for reproducibility</span>
+<span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+
+<span class="c1"># Check if GPU is available</span>
+<span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s1">&#39;cuda&#39;</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s1">&#39;cpu&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Using device: </span><span class="si">{</span><span class="n">device</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Using device: cuda
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="data-preparation-building-the-tokenizer">
+<h2>3 Data Preparation: Building the Tokenizer<a class="headerlink" href="#data-preparation-building-the-tokenizer" title="Link to this heading">#</a></h2>
+<p>Untill now we have seen three different ways to process text data:</p>
+<ol class="arabic simple">
+<li><p>In a Bag-Of-Words (BOW) setup, where we just count the words to obtain a <code class="docutils literal notranslate"><span class="pre">DictVectorizer</span></code> (one-hot representation)</p></li>
+<li><p>Using pre-trained Word Embeddings (e.g. Word2Vec)</p></li>
+</ol>
+<p>We will now walk you through a more common approach, which does preserve the order of the words in a sentence (unlike the BOW setup).
+This approach contains the following steps:</p>
+<ol class="arabic simple">
+<li><p>We preprocess the text to remove irrelevant parts of the data (for ease of computation, but newer models don’t really do this anymore)</p></li>
+<li><p>We construct a <code class="docutils literal notranslate"><span class="pre">Tokenizer</span></code> for our corpus. While tokenization can mean many thing, in Machine Learning a tokenizer is basically a dictionary which maps each input word to a number (e.g. “apple” -&gt; 42). However, a corpus often contains many words only once or sometimes twice, a phenomena known as <a class="reference external" href="https://en.wikipedia.org/wiki/Zipf%27s_law">Zipf’s Law</a> tells us that for many corpuses if we order all the words based on their frequency, the frequency of the n-th word (which we say has <em>rank</em> n) is 1/n. As illustrated by the equation and plot below, we obtain a lot very uncommon words. Learning all these words will result in a lot of noise for our predictions (if we only have 1 case of a word, it’s not a very reliable predictor), and it takes us way more computation to learn the relationship for all of them. Therefore a common practice for smaller models and datasets is to only keep the top N most frequent words, and replace the others with a special token <code class="docutils literal notranslate"><span class="pre">&lt;UNK&gt;</span></code>.</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[{\displaystyle \ {\mathsf {word\ frequency}}\ \propto \ {\frac {1}{\ {\mathsf {word\ rank}}\ }}~.}\]</div>
+<p align="center" >
+    <img src="https://www.researchgate.net/publication/282200883/figure/fig3/AS:647173804945438@1531309667829/A-Zipf-distribution-of-word-frequencies.png" alt="zipfslaw_fig" style="max-width:20%; background-color: white;">
+</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load IMDB dataset</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Loading IMDB dataset...&quot;</span><span class="p">)</span>
+<span class="n">imdb_train_full</span> <span class="o">=</span> <span class="n">load_dataset</span><span class="p">(</span><span class="s1">&#39;imdb&#39;</span><span class="p">,</span> <span class="n">split</span><span class="o">=</span><span class="s1">&#39;train&#39;</span><span class="p">)</span>
+<span class="n">imdb_test</span> <span class="o">=</span> <span class="n">load_dataset</span><span class="p">(</span><span class="s1">&#39;imdb&#39;</span><span class="p">,</span> <span class="n">split</span><span class="o">=</span><span class="s1">&#39;test&#39;</span><span class="p">)</span>
+
+<span class="c1"># shuffle data</span>
+<span class="n">imdb_train_full</span><span class="o">.</span><span class="n">shuffle</span><span class="p">()</span>
+<span class="n">imdb_test</span><span class="o">.</span><span class="n">shuffle</span><span class="p">()</span>
+
+<span class="c1"># Extract texts and labels</span>
+<span class="n">X_train_full</span><span class="p">,</span> <span class="n">y_train_full</span> <span class="o">=</span> <span class="n">imdb_train_full</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">],</span> <span class="n">imdb_train_full</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span>
+<span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">imdb_test</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">],</span> <span class="n">imdb_test</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span>
+
+
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_val</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_val</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
+    <span class="n">X_train_full</span><span class="p">,</span> <span class="n">y_train_full</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loading IMDB dataset...
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Train samples: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Validation samples: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">X_val</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Test samples: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Train samples: 22500
+Validation samples: 2500
+Test samples: 25000
+</pre></div>
+</div>
+</div>
+</div>
+<section id="preprocess-the-data-and-tokenize">
+<h3>Preprocess the data and tokenize<a class="headerlink" href="#preprocess-the-data-and-tokenize" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Preprocess data</p></li>
+<li><p>Create a Tokenizer</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">string</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">nltk</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">nltk.corpus</span><span class="w"> </span><span class="kn">import</span> <span class="n">stopwords</span>
+
+<span class="n">nltk</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="s1">&#39;stopwords&#39;</span><span class="p">,</span> <span class="n">quiet</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">STOPWORDS_SET</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">stopwords</span><span class="o">.</span><span class="n">words</span><span class="p">(</span><span class="s1">&#39;english&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">preprocess_data</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">remove_stopwords</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="c1"># Convert to lowercase</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="c1"># Remove punctuation (simple version)</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">ch</span> <span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="n">text</span> <span class="k">if</span> <span class="n">ch</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">string</span><span class="o">.</span><span class="n">punctuation</span><span class="p">])</span>
+
+    <span class="c1">#  We don&#39;t do this right now but common options are:</span>
+    <span class="k">if</span> <span class="n">remove_stopwords</span><span class="p">:</span>
+        <span class="n">words</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="n">words</span> <span class="o">=</span> <span class="p">[</span><span class="n">w</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">words</span> <span class="k">if</span> <span class="n">w</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">STOPWORDS_SET</span><span class="p">]</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">words</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">text</span>
+
+<span class="c1"># Build vocabulary from training data</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">build_vocab</span><span class="p">(</span><span class="n">texts</span><span class="p">,</span> <span class="n">max_vocab_size</span><span class="o">=</span><span class="mi">10000</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Build vocabulary from texts.&quot;&quot;&quot;</span>
+    <span class="n">word_counts</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">texts</span><span class="p">:</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">preprocess_data</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+        <span class="n">words</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="n">word_counts</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">words</span><span class="p">)</span>
+    
+    <span class="c1"># Print original number of unique words</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Original vocabulary size (unique words): </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">word_counts</span><span class="p">)</span><span class="si">}</span><span class="s2"> - so we only keep </span><span class="si">{</span><span class="mi">100</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">max_vocab_size</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nb">len</span><span class="p">(</span><span class="n">word_counts</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%&quot;</span><span class="p">)</span>
+    
+    <span class="c1"># Keep most common words</span>
+    <span class="n">most_common</span> <span class="o">=</span> <span class="n">word_counts</span><span class="o">.</span><span class="n">most_common</span><span class="p">(</span><span class="n">max_vocab_size</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span>  <span class="c1"># -2 for PAD and UNK</span>
+    
+    <span class="c1"># Create word to index mapping</span>
+    <span class="n">word2idx</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;&lt;PAD&gt;&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;&lt;UNK&gt;&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+    <span class="k">for</span> <span class="n">word</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">most_common</span><span class="p">:</span>
+        <span class="n">word2idx</span><span class="p">[</span><span class="n">word</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">word2idx</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">word2idx</span>
+
+<span class="c1"># Build vocabulary</span>
+<span class="n">vocab</span> <span class="o">=</span> <span class="n">build_vocab</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">max_vocab_size</span><span class="o">=</span><span class="mi">10000</span><span class="p">)</span>
+<span class="n">index2word</span> <span class="o">=</span> <span class="p">{</span><span class="n">idx</span><span class="p">:</span> <span class="n">word</span> <span class="k">for</span> <span class="n">word</span><span class="p">,</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">vocab</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Vocabulary size: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">vocab</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Original vocabulary size (unique words): 114321 - so we only keep 8.75%
+Vocabulary size: 10000
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">texts_to_sequences</span><span class="p">(</span><span class="n">texts</span><span class="p">,</span> <span class="n">word2idx</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">256</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert texts to sequences of indices.&quot;&quot;&quot;</span>
+    <span class="n">sequences</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">texts</span><span class="p">:</span>
+        <span class="c1"># words = text.lower().split()</span>
+        <span class="n">words</span> <span class="o">=</span> <span class="n">preprocess_data</span><span class="p">(</span><span class="n">text</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="n">seq</span> <span class="o">=</span> <span class="p">[</span><span class="n">word2idx</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">word2idx</span><span class="p">[</span><span class="s1">&#39;&lt;UNK&gt;&#39;</span><span class="p">])</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">words</span><span class="p">]</span>
+        <span class="c1"># Truncate or pad</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">max_length</span><span class="p">:</span>
+            <span class="n">seq</span> <span class="o">=</span> <span class="n">seq</span><span class="p">[:</span><span class="n">max_length</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">seq</span> <span class="o">=</span> <span class="n">seq</span> <span class="o">+</span> <span class="p">[</span><span class="n">word2idx</span><span class="p">[</span><span class="s1">&#39;&lt;PAD&gt;&#39;</span><span class="p">]]</span> <span class="o">*</span> <span class="p">(</span><span class="n">max_length</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">seq</span><span class="p">))</span>
+        <span class="n">sequences</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">sequences</span><span class="p">)</span>
+
+<span class="c1"># Convert to sequences</span>
+<span class="n">MAX_LENGTH</span> <span class="o">=</span> <span class="mi">256</span>
+<span class="n">X_train_seq</span> <span class="o">=</span> <span class="n">texts_to_sequences</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">vocab</span><span class="p">,</span> <span class="n">MAX_LENGTH</span><span class="p">)</span>
+<span class="n">X_test_seq</span> <span class="o">=</span> <span class="n">texts_to_sequences</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">vocab</span><span class="p">,</span> <span class="n">MAX_LENGTH</span><span class="p">)</span>
+<span class="n">X_val_seq</span> <span class="o">=</span> <span class="n">texts_to_sequences</span><span class="p">(</span><span class="n">X_val</span><span class="p">,</span> <span class="n">vocab</span><span class="p">,</span> <span class="n">MAX_LENGTH</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Training sequences shape: </span><span class="si">{</span><span class="n">X_train_seq</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Test sequences shape: </span><span class="si">{</span><span class="n">X_test_seq</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Training sequences shape: (22500, 256)
+Test sequences shape: (25000, 256)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sample_idx</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">max_words</span> <span class="o">=</span> <span class="mi">10</span>
+
+<span class="n">x_train_samlple</span> <span class="o">=</span> <span class="n">X_train</span><span class="p">[</span><span class="n">sample_idx</span><span class="p">]</span>
+<span class="n">X_train_seq_sample</span> <span class="o">=</span> <span class="n">X_train_seq</span><span class="p">[</span><span class="n">sample_idx</span><span class="p">]</span>
+<span class="n">x_train_recast</span> <span class="o">=</span> <span class="p">[</span><span class="n">index2word</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">X_train_seq_sample</span><span class="p">]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="o">*</span><span class="mi">40</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Example sequence (first training example):&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;- Input string (original):&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">x_train_samlple</span><span class="p">[:</span><span class="nb">min</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">x_train_samlple</span><span class="p">))]</span> <span class="o">+</span> <span class="s2">&quot;...&quot;</span><span class="p">)</span>  <span class="c1"># Show first 100 chars</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot; - First 10 words:                       &quot;</span><span class="p">,</span> <span class="nb">repr</span><span class="p">(</span><span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">x_train_samlple</span><span class="o">.</span><span class="n">split</span><span class="p">()[:</span><span class="n">max_words</span><span class="p">])))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot; - Sequence indices (first 10):          &quot;</span><span class="p">,</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">X_train_seq_sample</span><span class="p">[:</span><span class="n">max_words</span><span class="p">]))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot; - Recasted words from indices (first 10):&quot;</span><span class="p">,</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">x_train_recast</span><span class="p">[:</span><span class="n">max_words</span><span class="p">]))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="o">*</span><span class="mi">40</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>========================================
+Example sequence (first training example):
+- Input string (original):
+I was p***ed when I couldn&#39;t see this one when it was screening at the Philly Film Fest last year, s...
+ - First 10 words:                        &quot;I, was, p***ed, when, I, couldn&#39;t, see, this, one, when&quot;
+ - Sequence indices (first 10):           10, 14, 1, 51, 10, 404, 66, 11, 29, 51
+ - Recasted words from indices (first 10): i, was, &lt;UNK&gt;, when, i, couldnt, see, this, one, when
+========================================
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Observation:</strong> In the above example we see an example of an input sentence, which is tokenized to numbers, and then using the tokenizer back into words. We see that in this process some information has been lost (purposefully). Namely we don’t know if a word was uppercase or lowercase before, and some words such as “CURIOUS-YELLOW” are replaced by our unknown token symbol <code class="docutils literal notranslate"><span class="pre">&lt;UNK&gt;</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create PyTorch datasets class</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">TextDataset</span><span class="p">(</span><span class="n">Dataset</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sequences</span><span class="p">,</span> <span class="n">labels</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">LongTensor</span><span class="p">(</span><span class="n">sequences</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">labels</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">LongTensor</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">)</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">idx</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">labels</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+
+<span class="n">train_dataset</span> <span class="o">=</span> <span class="n">TextDataset</span><span class="p">(</span><span class="n">X_train_seq</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="n">test_dataset</span> <span class="o">=</span> <span class="n">TextDataset</span><span class="p">(</span><span class="n">X_test_seq</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+<span class="n">val_dataset</span> <span class="o">=</span>  <span class="n">TextDataset</span><span class="p">(</span><span class="n">X_val_seq</span><span class="p">,</span> <span class="n">y_val</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Note:</strong> For the next experiments we only use the three dataset variables. Pytorch makes it very easy for us to train a model for a dataset, but it does ask of us that we present our dataset first in a dataset class, which is why we create the small dataset class above.</p>
+</section>
+</section>
+<section id="cnn-model-for-sentiment-classification">
+<h2>4. CNN Model for Sentiment Classification<a class="headerlink" href="#cnn-model-for-sentiment-classification" title="Link to this heading">#</a></h2>
+<hr class="docutils" />
+<section id="model-architecture">
+<h3>4.1 Model Architecture<a class="headerlink" href="#model-architecture" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>The important components for the CNN layer are <code class="docutils literal notranslate"><span class="pre">nn.Conv1d()</span></code> from pytorch, which takes care of most of the complicated parts for us. Check out the documentation here to understand what parameters we can give it.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">TextCNN</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;CNN for text classification.&quot;&quot;&quot;</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vocab_size</span><span class="p">,</span> <span class="n">embedding_dim</span><span class="p">,</span> <span class="n">num_filters</span><span class="p">,</span> <span class="n">kernel_size</span><span class="p">,</span> <span class="n">num_classes</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">TextCNN</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        
+        <span class="c1"># Embedding layer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">embedding</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Embedding</span><span class="p">(</span><span class="n">vocab_size</span><span class="p">,</span> <span class="n">embedding_dim</span><span class="p">,</span> <span class="n">padding_idx</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        
+        <span class="c1"># Convolutional layer</span>
+        <span class="c1"># Input: (batch, embedding_dim, sequence_length)</span>
+        <span class="c1"># Output: (batch, num_filters, sequence_length - kernel_size + 1)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conv</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv1d</span><span class="p">(</span>
+            <span class="n">in_channels</span><span class="o">=</span><span class="n">embedding_dim</span><span class="p">,</span>
+            <span class="n">out_channels</span><span class="o">=</span><span class="n">num_filters</span><span class="p">,</span>
+            <span class="n">kernel_size</span><span class="o">=</span><span class="n">kernel_size</span>
+        <span class="p">)</span>
+        
+        <span class="c1"># Activation function and Classifica</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">relu</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fc</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">num_filters</span><span class="p">,</span> <span class="n">num_classes</span><span class="p">)</span> <span class="c1"># Classification layer</span>
+        
+        <span class="c1"># we set the pooling function here as a variable. Note the lack of brackets &quot;()&quot; at the end, which means we are not calling the function yet</span>
+        <span class="c1"># we could later also add another pooling function and switch between them</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pool</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_pool1d</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">max_pool1d</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">2</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="c1"># convert each token_id to an embedding (vector)</span>
+        <span class="n">embedded</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">embedding</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>           <span class="c1"># (batch, seq_len, embed_dim)</span>
+        <span class="n">embedded</span> <span class="o">=</span> <span class="n">embedded</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>    <span class="c1"># (batch, embed_dim, seq_len)</span>
+        
+        <span class="c1">#  Apply convolutional layer and pooling</span>
+        <span class="n">conv_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conv</span><span class="p">(</span><span class="n">embedded</span><span class="p">)</span>         <span class="c1"># (batch, num_filters, conv_seq_len)</span>
+        <span class="n">activated</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="n">conv_out</span><span class="p">)</span>        <span class="c1"># (batch, num_filters, conv_seq_len)</span>
+        <span class="n">pooled</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pool</span><span class="p">(</span><span class="n">activated</span><span class="p">)</span>
+
+        <span class="c1"># Output predicted class (0 or 1), input is the number of filters)</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc</span><span class="p">(</span><span class="n">pooled</span><span class="p">)</span>               <span class="c1"># (batch, num_classes)</span>
+        <span class="k">return</span> <span class="n">output</span>
+    
+
+<span class="c1"># Create model</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">TextCNN</span><span class="p">(</span>
+    <span class="n">vocab_size</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">vocab</span><span class="p">),</span>
+    <span class="n">embedding_dim</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+    <span class="n">num_filters</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+    <span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="n">num_classes</span><span class="o">=</span><span class="mi">2</span>
+<span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TextCNN(
+  (embedding): Embedding(10000, 100, padding_idx=0)
+  (conv): Conv1d(100, 100, kernel_size=(3,), stride=(1,))
+  (relu): ReLU()
+  (fc): Linear(in_features=100, out_features=2, bias=True)
+)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="training-and-evaluation">
+<h3>4.2 Training and Evaluation<a class="headerlink" href="#training-and-evaluation" title="Link to this heading">#</a></h3>
+<p>Some training specifications:</p>
+<ul class="simple">
+<li><p>As discussed in tutorial notebook  M2.3 Neural Networks, when we train a neural network, we need to specify a loss function, and an optimizer.</p>
+<ul>
+<li><p>We use the <code class="docutils literal notranslate"><span class="pre">Adam</span></code> optimizer, which is currently one of the most widely used optimizer (and invented by a guy from the UvA, called Max Welling and some other dude named Kingma). The <code class="docutils literal notranslate"><span class="pre">Adam</span></code> is a tad more fancy optimizer than the classical <code class="docutils literal notranslate"><span class="pre">Stochastic</span> <span class="pre">Gradient</span> <span class="pre">Descent</span></code> (SGD). The main benefit of <code class="docutils literal notranslate"><span class="pre">Adam</span></code> is that it is more stable (i.e. we optimize it in the best possible way to get the best model).</p></li>
+<li><p>For classification tasks a typical loss function is the <code class="docutils literal notranslate"><span class="pre">CrossEntropyLoss()</span></code>, see the previous tutorial notebooks for more info.</p></li>
+</ul>
+</li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">train_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">train_dataset</span><span class="p">,</span> <span class="n">val_dataset</span><span class="p">,</span> <span class="n">test_dataset</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="n">train_loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">train_dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">val_loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">val_dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">)</span>
+    <span class="n">test_loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">test_dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">)</span>
+
+    <span class="n">criterion</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">CrossEntropyLoss</span><span class="p">()</span>
+    <span class="n">optimizer</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="n">lr</span><span class="p">)</span>
+
+    <span class="n">history</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;train_loss&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;train_acc&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;val_acc&#39;</span><span class="p">:</span> <span class="p">[]}</span>
+    <span class="n">best_val_acc</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">best_epoch</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">best_model_path</span> <span class="o">=</span> <span class="s2">&quot;best_model.pt&quot;</span>
+
+    <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">epochs</span><span class="p">):</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+        <span class="n">train_loss</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">train_correct</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">train_total</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">for</span> <span class="n">sequences</span><span class="p">,</span> <span class="n">labels</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">train_loader</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Epoch </span><span class="si">{</span><span class="n">epoch</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">epochs</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">disable</span><span class="o">=</span><span class="ow">not</span> <span class="n">verbose</span><span class="p">):</span>
+            <span class="n">sequences</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">sequences</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">),</span> <span class="n">labels</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+            <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+            <span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">sequences</span><span class="p">)</span>
+            <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+            <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+            <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+
+            <span class="n">train_loss</span> <span class="o">+=</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">predicted</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">train_total</span> <span class="o">+=</span> <span class="n">labels</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">train_correct</span> <span class="o">+=</span> <span class="p">(</span><span class="n">predicted</span> <span class="o">==</span> <span class="n">labels</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+
+        <span class="n">train_acc</span> <span class="o">=</span> <span class="n">train_correct</span> <span class="o">/</span> <span class="n">train_total</span>
+        <span class="n">avg_train_loss</span> <span class="o">=</span> <span class="n">train_loss</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">train_loader</span><span class="p">)</span>
+
+        <span class="c1"># Validation</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+        <span class="n">val_correct</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">val_total</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">sequences</span><span class="p">,</span> <span class="n">labels</span> <span class="ow">in</span> <span class="n">val_loader</span><span class="p">:</span>
+                <span class="n">sequences</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">sequences</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">),</span> <span class="n">labels</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+                <span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">sequences</span><span class="p">)</span>
+                <span class="n">_</span><span class="p">,</span> <span class="n">predicted</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="n">val_total</span> <span class="o">+=</span> <span class="n">labels</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+                <span class="n">val_correct</span> <span class="o">+=</span> <span class="p">(</span><span class="n">predicted</span> <span class="o">==</span> <span class="n">labels</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+        <span class="n">val_acc</span> <span class="o">=</span> <span class="n">val_correct</span> <span class="o">/</span> <span class="n">val_total</span>
+
+        <span class="n">history</span><span class="p">[</span><span class="s1">&#39;train_loss&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">avg_train_loss</span><span class="p">)</span>
+        <span class="n">history</span><span class="p">[</span><span class="s1">&#39;train_acc&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">train_acc</span><span class="p">)</span>
+        <span class="n">history</span><span class="p">[</span><span class="s1">&#39;val_acc&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">val_acc</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">val_acc</span> <span class="o">&gt;</span> <span class="n">best_val_acc</span><span class="p">:</span>
+            <span class="n">best_val_acc</span> <span class="o">=</span> <span class="n">val_acc</span>
+            <span class="n">best_epoch</span> <span class="o">=</span> <span class="n">epoch</span>
+            <span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">(),</span> <span class="n">best_model_path</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Epoch </span><span class="si">{</span><span class="n">epoch</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">: Train Loss=</span><span class="si">{</span><span class="n">avg_train_loss</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">, Train Acc=</span><span class="si">{</span><span class="n">train_acc</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">, Val Acc=</span><span class="si">{</span><span class="n">val_acc</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Load best model</span>
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Loading best model from epoch </span><span class="si">{</span><span class="n">best_epoch</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2"> with Val Acc=</span><span class="si">{</span><span class="n">best_val_acc</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">best_model_path</span><span class="p">))</span>
+
+    <span class="c1"># Test set evaluation</span>
+    <span class="n">test_correct</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">test_total</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+    <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">sequences</span><span class="p">,</span> <span class="n">labels</span> <span class="ow">in</span> <span class="n">test_loader</span><span class="p">:</span>
+            <span class="n">sequences</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">sequences</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">),</span> <span class="n">labels</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+            <span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">sequences</span><span class="p">)</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">predicted</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">test_total</span> <span class="o">+=</span> <span class="n">labels</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">test_correct</span> <span class="o">+=</span> <span class="p">(</span><span class="n">predicted</span> <span class="o">==</span> <span class="n">labels</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+    <span class="n">test_acc</span> <span class="o">=</span> <span class="n">test_correct</span> <span class="o">/</span> <span class="n">test_total</span>
+
+    <span class="k">return</span> <span class="n">history</span><span class="p">,</span> <span class="n">test_acc</span>
+
+<span class="c1"># Create model</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">TextCNN</span><span class="p">(</span>
+    <span class="n">vocab_size</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">vocab</span><span class="p">),</span>
+    <span class="n">embedding_dim</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+    <span class="n">num_filters</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+    <span class="n">kernel_size</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">num_classes</span><span class="o">=</span><span class="mi">2</span>
+<span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+
+<span class="c1"># Train the model</span>
+<span class="n">history</span><span class="p">,</span> <span class="n">test_acc</span> <span class="o">=</span> <span class="n">train_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">train_dataset</span><span class="p">,</span> <span class="n">val_dataset</span><span class="p">,</span> <span class="n">test_dataset</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Test Accuracy (best model): </span><span class="si">{</span><span class="n">test_acc</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 1: Train Loss=0.5244, Train Acc=0.7348, Val Acc=0.7892
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 2: Train Loss=0.3502, Train Acc=0.8522, Val Acc=0.8460
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 3: Train Loss=0.2653, Train Acc=0.8953, Val Acc=0.8556
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 4: Train Loss=0.1962, Train Acc=0.9304, Val Acc=0.8420
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 5: Train Loss=0.1416, Train Acc=0.9546, Val Acc=0.8652
+Loading best model from epoch 5 with Val Acc=0.8652
+Test Accuracy (best model): 0.8574
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Visualize training progress</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">history</span><span class="p">[</span><span class="s1">&#39;train_loss&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Training Loss&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Epoch&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Loss&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">history</span><span class="p">[</span><span class="s1">&#39;train_acc&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Train&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">history</span><span class="p">[</span><span class="s1">&#39;val_acc&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Validation&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Accuracy&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Epoch&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Accuracy&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/c2d00d9758c9a1752f8ede5beda026c48d1ba82ae88b99ad2c81aa319d290242.png" src="../_images/c2d00d9758c9a1752f8ede5beda026c48d1ba82ae88b99ad2c81aa319d290242.png" />
+</div>
+</div>
+<p><strong>Observations</strong>:
+When inspecting the accuracy per epoch we notice a few important things. The first one is that the accuracy for both the train and the test split is pretty good, so since it is increasing and higher than 50% (which would be random guessing), we notice that the model has learned something.  Moreover, the accuracy for both datasets seems to be increasing still after 5 epochs, so normally this tells us we should train the model longer so that we have the optimal performance, however, for now we leave it at this and explore some more parameters of the model.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="parameter-exploration">
+<h2>5. Parameter Exploration<a class="headerlink" href="#parameter-exploration" title="Link to this heading">#</a></h2>
+<p>We now systematically vary key hyperparameters to understand their effect on performance.</p>
+<section id="effect-of-kernel-size">
+<h3>5.1 Effect of Kernel Size<a class="headerlink" href="#effect-of-kernel-size" title="Link to this heading">#</a></h3>
+ <p align="center" >
+    <img src="https://lena-voita.github.io/resources/lectures/models/cnn/kernel_size-min.png" alt="cnn_kernelsize_fig" style="max-width:80%; background-color: white;">
+</p><div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">evaluate_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">test_dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">64</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Evaluate model and return accuracy.&quot;&quot;&quot;</span>
+    <span class="n">test_loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">test_dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+    <span class="n">correct</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
+    
+    <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">sequences</span><span class="p">,</span> <span class="n">labels</span> <span class="ow">in</span> <span class="n">test_loader</span><span class="p">:</span>
+            <span class="n">sequences</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">sequences</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">),</span> <span class="n">labels</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+            <span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">sequences</span><span class="p">)</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">predicted</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">total</span> <span class="o">+=</span> <span class="n">labels</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">correct</span> <span class="o">+=</span> <span class="p">(</span><span class="n">predicted</span> <span class="o">==</span> <span class="n">labels</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+    
+    <span class="k">return</span> <span class="n">correct</span> <span class="o">/</span> <span class="n">total</span>
+
+<span class="c1"># Test different kernel sizes</span>
+<span class="n">kernel_sizes</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+<span class="n">kernel_results</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="c1"># print(&quot;Testing different kernel sizes...&quot;)</span>
+<span class="k">for</span> <span class="n">k_size</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">kernel_sizes</span><span class="p">):</span>    
+    <span class="n">model</span> <span class="o">=</span> <span class="n">TextCNN</span><span class="p">(</span>
+        <span class="n">vocab_size</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">vocab</span><span class="p">),</span>
+        <span class="n">embedding_dim</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+        <span class="n">num_filters</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+        <span class="n">kernel_size</span><span class="o">=</span><span class="n">k_size</span><span class="p">,</span>
+        <span class="n">num_classes</span><span class="o">=</span><span class="mi">2</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+    
+    <span class="n">history</span><span class="p">,</span> <span class="n">final_acc</span> <span class="o">=</span> <span class="n">train_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">train_dataset</span><span class="p">,</span> <span class="n">val_dataset</span><span class="p">,</span> <span class="n">test_dataset</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">kernel_results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">final_acc</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">plot_tuning_results</span><span class="p">(</span><span class="n">x_values</span><span class="p">,</span> <span class="n">y_values</span><span class="p">,</span> <span class="n">x_axis_label</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Hyperparameter Tuning&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">y_plot_delta</span><span class="o">=</span><span class="mf">0.0005</span><span class="p">,</span> <span class="n">return_fig</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_values</span><span class="p">,</span> <span class="n">y_values</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="n">marker</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="n">x_axis_label</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Test Accuracy&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">x_values</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s1">&#39;top&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s1">&#39;right&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">acc</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">y_values</span><span class="p">):</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x_values</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">acc</span> <span class="o">+</span> <span class="n">y_plot_delta</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">acc</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">return_fig</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">plt</span><span class="o">.</span><span class="n">gcf</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="n">plot_tuning_results</span><span class="p">(</span><span class="n">kernel_sizes</span><span class="p">,</span> <span class="n">kernel_results</span><span class="p">,</span> <span class="n">x_axis_label</span><span class="o">=</span><span class="s1">&#39;Kernel Size&#39;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Effect of Kernel Size on Test Accuracy&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/d34d181e470f7b7c913e166e27edd2d45791989674e8e98f78fb35ee574fe782.png" src="../_images/d34d181e470f7b7c913e166e27edd2d45791989674e8e98f78fb35ee574fe782.png" />
+</div>
+</div>
+<p><strong>Observation:</strong> We see that the accuracy for kernel size 2 achieves the best test accuracy. One likely reason is that increasing the kernel size increases the complexity of the task as well (there are many more tri-grams, than bi-grams to learn).</p>
+</section>
+<section id="effect-of-number-of-filters">
+<h3>5.2 Effect of Number of Filters<a class="headerlink" href="#effect-of-number-of-filters" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>The number of filters determines the numbmer of features we obtain at the end. In simple terms it increases the computational power of our model.</p></li>
+</ul>
+<p>However, like before with more computational power we obtain the classical trade-off:</p>
+<ul>
+<li><p>The computational complexity increase: we need better hardware and longer training time to train our models</p></li>
+<li><p>We have higher risk of overfitting: the model might memorize the training data, causing very high accuracy on the training split, but obtaining bad accurcy on the test and validation splits.</p>
+<p align="center" >
+  <img src="https://lena-voita.github.io/resources/lectures/models/cnn/several_filters-min.png" alt="cnn_stride_fig" style="max-width:20%; background-color: white;">
+</li>
+</ul>
+</p><div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Test different numbers of filters and store parameter counts</span>
+<span class="n">num_filters_list</span> <span class="o">=</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">]</span>
+<span class="n">filter_results</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">param_counts</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Testing different numbers of filters...&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">num_f</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">num_filters_list</span><span class="p">):</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">TextCNN</span><span class="p">(</span>
+        <span class="n">vocab_size</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">vocab</span><span class="p">),</span>
+        <span class="n">embedding_dim</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+        <span class="n">num_filters</span><span class="o">=</span><span class="n">num_f</span><span class="p">,</span>
+        <span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+        <span class="n">num_classes</span><span class="o">=</span><span class="mi">2</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+    
+    <span class="c1"># Store total number of parameters</span>
+    <span class="n">param_counts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">()))</span>
+    
+    <span class="n">history</span><span class="p">,</span> <span class="n">final_acc</span> <span class="o">=</span> <span class="n">train_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">train_dataset</span><span class="p">,</span> <span class="n">val_dataset</span><span class="p">,</span> <span class="n">test_dataset</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">filter_results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">final_acc</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Parameter counts for each num_filters:&quot;</span><span class="p">,</span> <span class="n">param_counts</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Testing different numbers of filters...
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Parameter counts for each num_filters: [1001517, 1007577, 1015152, 1030302, 1060602]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_tuning_results</span><span class="p">(</span><span class="n">num_filters_list</span><span class="p">,</span> <span class="n">filter_results</span><span class="p">,</span> <span class="n">x_axis_label</span><span class="o">=</span><span class="s1">&#39;Number of Filters&#39;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Effect of Number of Filters on Test Accuracy&#39;</span><span class="p">,</span> <span class="n">y_plot_delta</span><span class="o">=</span><span class="mf">0.0002</span><span class="p">)</span>
+
+<span class="c1"># plot number of parameters</span>
+<span class="c1"># plot_tuning_results(num_filters_list, param_counts, x_axis_label=&#39;Number of Parameters&#39;, title=&#39;Effect of Number of Parameters on Test Accuracy&#39;, y_plot_delta=0.0002)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/2b29eb3143e258c68284599ac8db879e285748cee29a419ea4605fc3f8f69902.png" src="../_images/2b29eb3143e258c68284599ac8db879e285748cee29a419ea4605fc3f8f69902.png" />
+</div>
+</div>
+<p><strong>Observation</strong>:</p>
+<ul class="simple">
+<li><p>We see that the number of filters helps us a lot and increases the accuracy reliably up to 200 filters. However, the improvement in accuracy does result in diminishing returns, as doubling the number of filters from 100 to 200 only increases the test accuracy by 7%.</p></li>
+</ul>
+<!-- but after after 100 filters this patter stops. As usual the model has likely learned to _overfit_ on the training data. --></section>
+<section id="todo-stride">
+<h3>5.3 [TODO] Stride<a class="headerlink" href="#todo-stride" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Improves efficiency (run with timing)</p></li>
+<li><p>But also if we use a stride higher than 1, we miss some tri-gram information.</p></li>
+</ul>
+ <p align="center" >
+    <img src="https://lena-voita.github.io/resources/lectures/models/cnn/stride-min.png" alt="cnn_stride_fig" style="max-width:80%; background-color: white;">
+</p></section>
+<section id="multiple-kernel-sizes-parallel-convolutions">
+<h3>5.4 Multiple Kernel Sizes (Parallel Convolutions)<a class="headerlink" href="#multiple-kernel-sizes-parallel-convolutions" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>We can also use a combination of different kernelsizes to obtain further improve our model.</p></li>
+</ul>
+<!-- - Following Kim (2014), we can use multiple convolutions with different kernel sizes in parallel and concatenate their outputs. --><div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">MultiKernelCNN</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;CNN with multiple kernel sizes in parallel.&quot;&quot;&quot;</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vocab_size</span><span class="p">,</span> <span class="n">embedding_dim</span><span class="p">,</span> <span class="n">num_filters</span><span class="p">,</span> <span class="n">kernel_sizes</span><span class="p">,</span> <span class="n">num_classes</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">MultiKernelCNN</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">embedding</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Embedding</span><span class="p">(</span><span class="n">vocab_size</span><span class="p">,</span> <span class="n">embedding_dim</span><span class="p">,</span> <span class="n">padding_idx</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        
+        <span class="c1"># Multiple convolutional layers with different kernel sizes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">convs</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">ModuleList</span><span class="p">([</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Conv1d</span><span class="p">(</span><span class="n">embedding_dim</span><span class="p">,</span> <span class="n">num_filters</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">kernel_sizes</span>
+        <span class="p">])</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">relu</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">()</span>
+        
+        <span class="c1"># Output size is num_filters * number of kernels</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fc</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">num_filters</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">kernel_sizes</span><span class="p">),</span> <span class="n">num_classes</span><span class="p">)</span>
+        
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="c1"># Embedding</span>
+        <span class="n">embedded</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">embedding</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">embedded</span> <span class="o">=</span> <span class="n">embedded</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        
+        <span class="c1"># Apply each convolution and pool</span>
+        <span class="n">conv_outputs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">conv</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">convs</span><span class="p">:</span>
+            <span class="n">conv_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="n">conv</span><span class="p">(</span><span class="n">embedded</span><span class="p">))</span>
+            <span class="n">pooled</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">conv_out</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">2</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">conv_outputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pooled</span><span class="p">)</span>
+        
+        <span class="c1"># Concatenate all pooled outputs</span>
+        <span class="n">concatenated</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">conv_outputs</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        
+        <span class="c1"># Classification</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc</span><span class="p">(</span><span class="n">concatenated</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="n">output</span>
+
+<span class="c1"># Train multi-kernel model</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Training multi-kernel CNN...&quot;</span><span class="p">)</span>
+<span class="n">multi_model</span> <span class="o">=</span> <span class="n">MultiKernelCNN</span><span class="p">(</span>
+    <span class="n">vocab_size</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">vocab</span><span class="p">),</span>
+    <span class="n">embedding_dim</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+    <span class="n">num_filters</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+    <span class="n">kernel_sizes</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
+    <span class="n">num_classes</span><span class="o">=</span><span class="mi">2</span>
+<span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+
+<span class="n">multi_history</span><span class="p">,</span> <span class="n">final_acc</span> <span class="o">=</span> <span class="n">train_model</span><span class="p">(</span><span class="n">multi_model</span><span class="p">,</span> <span class="n">train_dataset</span><span class="p">,</span> <span class="n">val_dataset</span><span class="p">,</span> <span class="n">test_dataset</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Multi-kernel final accuracy: </span><span class="si">{</span><span class="n">final_acc</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Training multi-kernel CNN...
+Multi-kernel final accuracy: 0.8611
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Observation</strong>: We see that increasing the number of filters can help us more with classification. But do note that for each kernel, we get num_filters of filters, so effectively we just have set the number of filters to 300.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="toy-dataset-understanding-limitations">
+<h2>6. Toy Dataset: Understanding Limitations<a class="headerlink" href="#toy-dataset-understanding-limitations" title="Link to this heading">#</a></h2>
+<p>We create a synthetic dataset to demonstrate that a CNN with kernel size k cannot capture patterns longer than k tokens.</p>
+<section id="n-gram-statistics">
+<h3>6.1✨ N-Gram Statistics ✨<a class="headerlink" href="#n-gram-statistics" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>To understand how CNNs are related to kernel size, we inspect sample patterns below.</p></li>
+<li><p>CNN filters with kernel size N can examine at most N consecutive tokens at a time.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Our Patterns</span>
+<span class="n">positive_pattern</span> <span class="o">=</span> <span class="s2">&quot;A B A C A&quot;</span>
+<span class="n">negative_pattern</span> <span class="o">=</span> <span class="s2">&quot;A C A B A&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">HTML</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">compute_ngram_stats</span><span class="p">(</span><span class="n">positive_pattern</span><span class="p">,</span> <span class="n">negative_pattern</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute n-gram statistics for two patterns.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        positive_pattern: String of space-separated tokens (e.g., &quot;A B A C A&quot;)</span>
+<span class="sd">        negative_pattern: String of space-separated tokens (e.g., &quot;A C A B A&quot;)</span>
+<span class="sd">        n: n-gram size (e.g., 1 for unigrams, 2 for bigrams)</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        DataFrame with Positive and Negative count columns</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">extract_ngrams</span><span class="p">(</span><span class="n">pattern_str</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="n">tokens</span> <span class="o">=</span> <span class="n">pattern_str</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="k">return</span> <span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="n">n</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span><span class="o">-</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span>
+    
+    <span class="c1"># Extract n-grams</span>
+    <span class="n">grams_pos</span> <span class="o">=</span> <span class="n">extract_ngrams</span><span class="p">(</span><span class="n">positive_pattern</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+    <span class="n">grams_neg</span> <span class="o">=</span> <span class="n">extract_ngrams</span><span class="p">(</span><span class="n">negative_pattern</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+    
+    <span class="c1"># Count occurrences</span>
+    <span class="n">counts_pos</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">grams_pos</span><span class="p">)</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">sort_index</span><span class="p">()</span>
+    <span class="n">counts_neg</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">grams_neg</span><span class="p">)</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">sort_index</span><span class="p">()</span>
+    
+    <span class="c1"># Combine into single DataFrame</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+        <span class="s1">&#39;Positive&#39;</span><span class="p">:</span> <span class="n">counts_pos</span><span class="p">,</span>
+        <span class="s1">&#39;Negative&#39;</span><span class="p">:</span> <span class="n">counts_neg</span>
+    <span class="p">})</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">df</span>
+
+<span class="c1"># Display unigram statistics</span>
+<span class="n">unigram_df</span> <span class="o">=</span> <span class="n">compute_ngram_stats</span><span class="p">(</span><span class="n">positive_pattern</span><span class="p">,</span> <span class="n">negative_pattern</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;1-gram (unigram) statistics:&quot;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">unigram_df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1-gram (unigram) statistics:
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Positive</th>
+      <th>Negative</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>(A,)</th>
+      <td>3</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>(B,)</th>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>(C,)</th>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="calculate-n-gram-statistics-for-n-1-2-3-4">
+<h3>Calculate: N-gram statistics for N=1,2,3,4<a class="headerlink" href="#calculate-n-gram-statistics-for-n-1-2-3-4" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Display all n-grams (1 through 4) side by side</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">display_ngrams_horizontal</span><span class="p">(</span><span class="n">positive_pattern</span><span class="p">,</span> <span class="n">negative_pattern</span><span class="p">,</span> <span class="n">n_range</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Display multiple n-gram statistics side by side.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        positive_pattern: List of tokens for positive pattern</span>
+<span class="sd">        negative_pattern: List of tokens for negative pattern</span>
+<span class="sd">        n_range: Iterable of n values (e.g., range(1, 5) for 1-4 grams)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Compute all n-gram dataframes</span>
+    <span class="n">dfs</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">titles</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">n_range</span><span class="p">:</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">compute_ngram_stats</span><span class="p">(</span><span class="n">positive_pattern</span><span class="p">,</span> <span class="n">negative_pattern</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+        <span class="n">dfs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+        <span class="n">titles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s1">-gram&#39;</span><span class="p">)</span>
+    
+    <span class="c1"># Fancy trick; Build HTML for side-by-side display (we could also skip them and do diplay(df) one by one, but this takes up more vertical space)</span>
+    <span class="n">html</span> <span class="o">=</span> <span class="s1">&#39;&lt;div style=&quot;display:flex&quot;&gt;&#39;</span>
+    <span class="k">for</span> <span class="n">df</span><span class="p">,</span> <span class="n">title</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">dfs</span><span class="p">,</span> <span class="n">titles</span><span class="p">):</span>
+        <span class="n">html</span> <span class="o">+=</span> <span class="s1">&#39;&lt;div style=&quot;margin-right: 32px&quot;&gt;&#39;</span>
+        <span class="n">html</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;&lt;h4 style=&quot;text-align: center;&quot;&gt;</span><span class="si">{</span><span class="n">title</span><span class="si">}</span><span class="s1">&lt;/h4&gt;&#39;</span>
+        <span class="n">html</span> <span class="o">+=</span> <span class="n">df</span><span class="o">.</span><span class="n">to_html</span><span class="p">()</span>
+        <span class="n">html</span> <span class="o">+=</span> <span class="s1">&#39;&lt;/div&gt;&#39;</span>
+    <span class="n">html</span> <span class="o">+=</span> <span class="s1">&#39;&lt;/div&gt;&#39;</span>
+    
+    <span class="n">display</span><span class="p">(</span><span class="n">HTML</span><span class="p">(</span><span class="n">html</span><span class="p">))</span>
+
+<span class="c1"># Display 1-grams through 4-grams side by side</span>
+<span class="n">display_ngrams_horizontal</span><span class="p">(</span><span class="n">positive_pattern</span><span class="p">,</span> <span class="n">negative_pattern</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div style="display:flex"><div style="margin-right: 32px"><h4 style="text-align: center;">1-gram</h4><table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Positive</th>
+      <th>Negative</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>(A,)</th>
+      <td>3</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>(B,)</th>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>(C,)</th>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table></div><div style="margin-right: 32px"><h4 style="text-align: center;">2-gram</h4><table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Positive</th>
+      <th>Negative</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>(A, B)</th>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>(A, C)</th>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>(B, A)</th>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>(C, A)</th>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table></div><div style="margin-right: 32px"><h4 style="text-align: center;">3-gram</h4><table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Positive</th>
+      <th>Negative</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>(A, B, A)</th>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>(A, C, A)</th>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>(B, A, C)</th>
+      <td>1</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>(C, A, B)</th>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table></div><div style="margin-right: 32px"><h4 style="text-align: center;">4-gram</h4><table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Positive</th>
+      <th>Negative</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>(A, B, A, C)</th>
+      <td>1</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>(A, C, A, B)</th>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>(B, A, C, A)</th>
+      <td>1</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>(C, A, B, A)</th>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table></div></div></div></div>
+</div>
+<p><strong>Observations</strong>:</p>
+<ul class="simple">
+<li><p>We see that for our sample patterns, the unigram and bigram statistics are exactly the same. From the tri-gram statistics the patterns are distinguishable. The subpattern “B A C” is in the positive pattern, and the subpattern “C A B” is only in the negative pattern. Do keep in mind that for our dataset we insert this pattern into a random string of letters, so it could always be the case that one of these patterns appears by chance in a sample. This is very similar to real machine learning situations, where many patterns give us probabilities of a class, but can may also appear in the counter correlated class too.</p></li>
+</ul>
+</section>
+<section id="generate-toy-dataset">
+<h3>Generate Toy Dataset<a class="headerlink" href="#generate-toy-dataset" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">termcolor</span><span class="w"> </span><span class="kn">import</span> <span class="n">colored</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">pretty_print</span><span class="p">(</span><span class="n">full_string</span><span class="p">,</span> <span class="n">sub_string</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Print full_string with sub_string highlighted in the specified color.</span>
+<span class="sd">    Supports basic colors: red, blue, green, yellow, magenta, cyan, white, grey.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">full_tokens</span> <span class="o">=</span> <span class="n">full_string</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+    <span class="n">sub_tokens</span> <span class="o">=</span> <span class="n">sub_string</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">sub_tokens</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">full_tokens</span><span class="p">)</span> <span class="o">-</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">full_tokens</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="n">n</span><span class="p">]</span> <span class="o">==</span> <span class="n">sub_tokens</span><span class="p">:</span>
+            <span class="n">before</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">full_tokens</span><span class="p">[:</span><span class="n">i</span><span class="p">])</span>
+            <span class="n">highlight</span> <span class="o">=</span> <span class="n">colored</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">full_tokens</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="n">n</span><span class="p">]),</span> <span class="n">color</span><span class="p">)</span>
+            <span class="n">after</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">full_tokens</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="n">n</span><span class="p">:])</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">before</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">highlight</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">after</span><span class="si">}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+            <span class="k">return</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">full_string</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">generate_ngram_data_letters</span><span class="p">(</span><span class="n">pos_pattern</span><span class="p">,</span> <span class="n">neg_pattern</span><span class="p">,</span> <span class="n">n_samples</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">vocab_size</span><span class="o">=</span><span class="mi">26</span><span class="p">,</span> <span class="n">seq_length</span><span class="o">=</span><span class="mi">20</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generate synthetic text data as strings of letters.</span>
+<span class="sd">    Labels alternate deterministically: 1, 0, 1, 0, ...</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">string</span>
+    <span class="n">vocab</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">string</span><span class="o">.</span><span class="n">ascii_uppercase</span><span class="p">[:</span><span class="n">vocab_size</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_samples</span><span class="p">):</span>
+        <span class="n">seq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">vocab</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">seq_length</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="n">label</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">seq_length</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">pos_pattern</span><span class="o">.</span><span class="n">split</span><span class="p">())</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">seq</span><span class="p">[</span><span class="n">pos</span><span class="p">:</span><span class="n">pos</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">pos_pattern</span><span class="o">.</span><span class="n">split</span><span class="p">())]</span> <span class="o">=</span> <span class="n">pos_pattern</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">seq_length</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">neg_pattern</span><span class="o">.</span><span class="n">split</span><span class="p">())</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">seq</span><span class="p">[</span><span class="n">pos</span><span class="p">:</span><span class="n">pos</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">neg_pattern</span><span class="o">.</span><span class="n">split</span><span class="p">())]</span> <span class="o">=</span> <span class="n">neg_pattern</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="n">X</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">seq</span><span class="p">))</span>
+        <span class="n">y</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">X</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+
+
+<span class="c1"># Generate synthetic text data with letter patterns as strings</span>
+<span class="n">X_train_toy_letters</span><span class="p">,</span> <span class="n">y_train_toy</span> <span class="o">=</span> <span class="n">generate_ngram_data_letters</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span> <span class="n">pos_pattern</span><span class="o">=</span><span class="n">positive_pattern</span><span class="p">,</span> <span class="n">neg_pattern</span><span class="o">=</span><span class="n">negative_pattern</span><span class="p">)</span>
+<span class="n">X_test_toy_letters</span><span class="p">,</span> <span class="n">y_test_toy</span> <span class="o">=</span> <span class="n">generate_ngram_data_letters</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">pos_pattern</span><span class="o">=</span><span class="n">positive_pattern</span><span class="p">,</span> <span class="n">neg_pattern</span><span class="o">=</span><span class="n">negative_pattern</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Example sequence (with positive pattern highlighted) - Label </span><span class="si">{</span><span class="n">y_train_toy</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> (1 is positive):&quot;</span><span class="p">)</span>
+<span class="n">pretty_print</span><span class="p">(</span><span class="n">X_train_toy_letters</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">positive_pattern</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">)</span>
+
+<span class="c1"># now print second example which is negative</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Example sequence (with negative pattern highlighted) - Label </span><span class="si">{</span><span class="n">y_train_toy</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> (0 is negative):&quot;</span><span class="p">)</span>
+<span class="n">pretty_print</span><span class="p">(</span><span class="n">X_train_toy_letters</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">negative_pattern</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Example sequence (with positive pattern highlighted) - Label 1 (1 is positive):
+W K T <span class=" -Color -Color-Green">A B A C A</span> Y V E U R P H D D X D Q
+
+Example sequence (with negative pattern highlighted) - Label 0 (0 is negative):
+J A <span class=" -Color -Color-Red">A C A B A</span> P D X R U K H A V B U Q T
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Observation:</strong> Make sure you understand what the data looks like at this point. In the above example we have colored the subpattern in a different way to help you find it.</p>
+<section id="convert-data-strings-to-list-of-numbers">
+<h4>Convert Data: strings to list of numbers<a class="headerlink" href="#convert-data-strings-to-list-of-numbers" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p>Similar to the tokenizer from before, we convert the input text to numbers. In this case the “tokenizer” just gives us which letter of the alphabet a letter is.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">convert_data_to_numb</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">vocab</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert list of letter strings to list of indices.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">string</span>
+    <span class="k">if</span> <span class="n">vocab</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">vocab</span> <span class="o">=</span> <span class="p">{</span><span class="n">char</span><span class="p">:</span> <span class="n">idx</span> <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">char</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">string</span><span class="o">.</span><span class="n">ascii_uppercase</span><span class="p">)}</span>
+    <span class="n">X_numb</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">seq</span> <span class="ow">in</span> <span class="n">X</span><span class="p">:</span>
+        <span class="n">tokens</span> <span class="o">=</span> <span class="n">seq</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="n">indices</span> <span class="o">=</span> <span class="p">[</span><span class="n">vocab</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">]</span>
+        <span class="n">X_numb</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">X_numb</span><span class="p">)</span>
+
+
+<span class="c1"># # Convert the data to indices</span>
+<span class="n">toy_vocab</span> <span class="o">=</span> <span class="p">{</span><span class="n">char</span><span class="p">:</span> <span class="n">idx</span> <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">char</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="s1">&#39;ABCDEFGHIJKLMNOPQRSTUVWXYZ&#39;</span><span class="p">)}</span>
+<span class="n">X_train_toy</span> <span class="o">=</span> <span class="n">convert_data_to_numb</span><span class="p">(</span><span class="n">X_train_toy_letters</span><span class="p">,</span> <span class="n">vocab</span><span class="o">=</span><span class="n">toy_vocab</span><span class="p">)</span>
+<span class="n">X_test_toy</span> <span class="o">=</span> <span class="n">convert_data_to_numb</span><span class="p">(</span><span class="n">X_test_toy_letters</span><span class="p">,</span> <span class="n">vocab</span><span class="o">=</span><span class="n">toy_vocab</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Original sequence: </span><span class="si">{</span><span class="n">X_train_toy_letters</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Converted to indices: </span><span class="si">{</span><span class="n">X_train_toy</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+
+<span class="c1"># # Create datasets</span>
+<span class="n">toy_train_dataset</span> <span class="o">=</span> <span class="n">TextDataset</span><span class="p">(</span><span class="n">X_train_toy</span><span class="p">,</span> <span class="n">y_train_toy</span><span class="p">)</span>
+<span class="n">toy_test_dataset</span> <span class="o">=</span> <span class="n">TextDataset</span><span class="p">(</span><span class="n">X_test_toy</span><span class="p">,</span> <span class="n">y_test_toy</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Original sequence: W K T A B A C A Y V E U R P H D D X D Q
+Converted to indices: [22 10 19  0  1  0  2  0 24 21  4 20 17 15  7  3  3 23  3 16]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="experiment-with-kernel-sizes">
+<h3>6.2 Experiment with Kernel Sizes<a class="headerlink" href="#experiment-with-kernel-sizes" title="Link to this heading">#</a></h3>
+<p>We test whether models with different kernel sizes can learn the trigram pattern.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Test kernel sizes on toy data</span>
+<span class="n">toy_kernel_sizes</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+<span class="n">toy_results</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Testing kernel sizes on letter pattern data...&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">k_size</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">toy_kernel_sizes</span><span class="p">):</span>
+    <span class="c1"># print(f&quot;\nKernel size: {k_size}&quot;)</span>
+    
+    <span class="n">toy_model</span> <span class="o">=</span> <span class="n">TextCNN</span><span class="p">(</span>
+        <span class="n">vocab_size</span><span class="o">=</span><span class="mi">26</span><span class="p">,</span>  <span class="c1"># A-Z alphabet</span>
+        <span class="n">embedding_dim</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span>
+        <span class="n">num_filters</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span>
+        <span class="n">kernel_size</span><span class="o">=</span><span class="n">k_size</span><span class="p">,</span>
+        <span class="n">num_classes</span><span class="o">=</span><span class="mi">2</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+    
+    <span class="c1"># Train for more epochs on toy data (it&#39;s smaller)</span>
+    <span class="c1"># Use test as validation for now. Since we don&#39;t really check val acc here.</span>
+    <span class="n">toy_history</span><span class="p">,</span> <span class="n">final_acc</span> <span class="o">=</span> <span class="n">train_model</span><span class="p">(</span><span class="n">toy_model</span><span class="p">,</span> <span class="n">toy_train_dataset</span><span class="p">,</span> <span class="n">toy_test_dataset</span><span class="p">,</span> <span class="n">toy_test_dataset</span><span class="p">,</span> 
+                               <span class="n">epochs</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">toy_results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">final_acc</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Testing kernel sizes on letter pattern data...
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_tuning_results</span><span class="p">(</span>
+    <span class="n">toy_kernel_sizes</span><span class="p">,</span>
+    <span class="n">toy_results</span><span class="p">,</span>
+    <span class="n">x_axis_label</span><span class="o">=</span><span class="s1">&#39;Kernel Size&#39;</span><span class="p">,</span>
+    <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Kernel Size Effect on Letter Pattern Detection&#39;</span><span class="p">,</span>
+    <span class="n">y_plot_delta</span><span class="o">=</span><span class="mf">0.01</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/0f926b8c0086f7bff1c446c4e3b27553762ebdf1e93047674cbd53e4c40d726b.png" src="../_images/0f926b8c0086f7bff1c446c4e3b27553762ebdf1e93047674cbd53e4c40d726b.png" />
+</div>
+</div>
+<p><strong>Observation</strong>: The model with smaller kernel sizes cannot learn the 5-gram pattern (<code class="docutils literal notranslate"><span class="pre">A</span> <span class="pre">B</span> <span class="pre">A</span> <span class="pre">C</span> <span class="pre">A</span></code> vs <code class="docutils literal notranslate"><span class="pre">A</span> <span class="pre">C</span> <span class="pre">A</span> <span class="pre">B</span> <span class="pre">A</span></code>), achieving near-random accuracy. Only models with kernel size ≥ 5 can successfully learn to distinguish these patterns, demonstrating that CNNs require sufficient kernel size to capture the complete n-gram patterns. This mirrors real NLP scenarios where certain phrases or word sequences are only meaningful when captured in full.</p>
+ <!-- ## 7. Summary
+ ### Key Takeaways
+ 1. **CNNs detect position-invariant patterns**: Through convolution and global pooling, CNNs identify whether specific n-gram patterns occur anywhere in the text, making them suitable for tasks where pattern presence matters more than position.
+ 2. **Kernel size determines receptive field**: The kernel size must be at least as large as the patterns you want to detect. A kernel size of k can only capture up to k-grams.
+ 3. **Multiple kernel sizes improve robustness**: Using parallel convolutions with different kernel sizes (2, 3, 4) allows the model to capture various n-gram lengths simultaneously.
+ 4. **Efficiency and simplicity**: CNNs are computationally efficient compared to recurrent models, as all convolutions can be computed in parallel. -->
+</section>
+</section>
+<section id="self-check-questions">
+<h2>7. Self-Check Questions<a class="headerlink" href="#self-check-questions" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>What does the kernel size in a CNN determine when applied to text?</p></li>
+<li><p>Why might global max pooling cause loss of positional information?</p></li>
+<li><p>How can using multiple kernel sizes in parallel benefit text classification?</p></li>
+<li><p>In what scenarios are CNNs preferable Neural Networks?</p></li>
+<li><p>What are some limitations of CNNs for modeling long-range dependencies in text?</p></li>
+</ul>
+<!-- 
+ ### Limitations
+ - **Fixed receptive field**: Even with stacked layers, CNNs have limited ability to model long-range dependencies
+ - **No sequential modeling**: Unlike RNNs, CNNs don't explicitly model word order beyond the kernel window
+ - **Position information loss**: Global pooling discards positional information, which may be important for some tasks
+
+ ### When to Use CNNs for Text
+ CNNs work well when:
+ - Local n-gram patterns are strong indicators (sentiment analysis, topic classification)
+ - Speed and efficiency are important
+ - Input lengths are moderate --></section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./my_notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="m2_3_neural_networks.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">M2.3 Neural Networks</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="m3_2_recurrent_neural_network.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">M3.2 Recurrent Neural Networks and LSTMs</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-objectives">Learning Objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction-why-cnns-for-text">1. Introduction: Why CNNs for Text?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#building-blocks">2. Building Blocks</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#convolution-for-text">2.1 Convolution for Text</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pooling">2.2 Pooling</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#load-standard-packages"><em>Load Standard Packages</em></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-preparation-building-the-tokenizer">3 Data Preparation: Building the Tokenizer</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#preprocess-the-data-and-tokenize">Preprocess the data and tokenize</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cnn-model-for-sentiment-classification">4. CNN Model for Sentiment Classification</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-architecture">4.1 Model Architecture</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#training-and-evaluation">4.2 Training and Evaluation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parameter-exploration">5. Parameter Exploration</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#effect-of-kernel-size">5.1 Effect of Kernel Size</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#effect-of-number-of-filters">5.2 Effect of Number of Filters</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#todo-stride">5.3 [TODO] Stride</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multiple-kernel-sizes-parallel-convolutions">5.4 Multiple Kernel Sizes (Parallel Convolutions)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#toy-dataset-understanding-limitations">6. Toy Dataset: Understanding Limitations</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#n-gram-statistics">6.1✨ N-Gram Statistics ✨</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#calculate-n-gram-statistics-for-n-1-2-3-4">Calculate: N-gram statistics for N=1,2,3,4</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-toy-dataset">Generate Toy Dataset</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#convert-data-strings-to-list-of-numbers">Convert Data: strings to list of numbers</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#experiment-with-kernel-sizes">6.2 Experiment with Kernel Sizes</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#self-check-questions">7. Self-Check Questions</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By The Jupyter Book Community
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
