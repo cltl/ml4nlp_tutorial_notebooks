@@ -191,11 +191,6 @@
 <li class="toctree-l1"><a class="reference internal" href="m3_1_convolutional_neural_network.html">M3.1 Convolutional Neural Network</a></li>
 <li class="toctree-l1"><a class="reference internal" href="m3_2_recurrent_neural_network.html">M3.2 Recurrent Neural Networks and LSTMs</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">M3.3 Transformers</a></li>
-
-
-
-
-
 </ul>
 
     </div>
@@ -344,34 +339,32 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">M3.3 Transformers</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#the-transformer-architecture">1. The Transformer Architecture</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-attention-mechanism">1.1 The Attention Mechanism</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-head-attention-mha">1.2 Multi-Head Attention (MHA)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#encoder-decoder-architecture">1.3 Encoder-Decoder Architecture</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-transformer-architecture">1. The Transformer Architecture</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-attention-mechanism">1.1 The Attention Mechanism</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-head-attention-mha">1.2 Multi-Head Attention (MHA)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#encoder-decoder-architecture">1.3 Encoder-Decoder Architecture</a></li>
 </ul>
 </li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#toy-experiment-next-token-prediction">2. Toy Experiment: Next Token Prediction</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-toy-dataset">2.1 Generate Toy Dataset</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#n-gram-baseline">2.2 N-gram Baseline</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simple-transformer-model">2.3 Simple Transformer Model</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#training-function">2.4 Training Function</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#compare-models-with-different-depths">2.5 Compare Models with Different Depths</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#results-comparison">2.6 Results Comparison</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#text-generation-example">2.7 Text Generation Example</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#toy-experiment-next-token-prediction">2. Toy Experiment: Next Token Prediction</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-toy-dataset">2.1 Generate Toy Dataset</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#n-gram-baseline">2.2 N-gram Baseline</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#simple-transformer-model">2.3 Simple Transformer Model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#training-function">2.4 Training Function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#compare-models-with-different-depths">2.5 Compare Models with Different Depths</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#results-comparison">2.6 Results Comparison</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#text-generation-example">2.7 Text Generation Example</a></li>
 </ul>
 </li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#pre-trained-models-bert-and-gpt">3. Pre-trained Models: BERT and GPT</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bert-masked-language-modeling">3.1 BERT: Masked Language Modeling</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bert-for-text-classification">3.2 BERT for Text Classification</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gpt-text-generation">3.2 GPT: Text Generation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-differences-bert-vs-gpt">3.3 Key Differences: BERT vs GPT</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pre-trained-models-bert-and-gpt">3. Pre-trained Models: BERT and GPT</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bert-masked-language-modeling">3.1 BERT: Masked Language Modeling</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bert-for-text-classification">3.2 BERT for Text Classification</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gpt-text-generation">3.2 GPT: Text Generation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#key-differences-bert-vs-gpt">3.3 Key Differences: BERT vs GPT</a></li>
 </ul>
 </li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">4. Summary</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">4. Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
 </ul>
-
             </nav>
         </div>
     </div>
@@ -385,12 +378,11 @@ document.write(`
   <section class="tex2jax_ignore mathjax_ignore" id="m3-3-transformers">
 <h1>M3.3 Transformers<a class="headerlink" href="#m3-3-transformers" title="Link to this heading">#</a></h1>
 <p>In this notebook, we will explore the Transformer architecture, which has become the foundation for modern NLP models. We will cover the core mechanisms, implement simple experiments, and work with pre-trained models.</p>
-</section>
-<section class="tex2jax_ignore mathjax_ignore" id="the-transformer-architecture">
-<h1>1. The Transformer Architecture<a class="headerlink" href="#the-transformer-architecture" title="Link to this heading">#</a></h1>
+<section id="the-transformer-architecture">
+<h2>1. The Transformer Architecture<a class="headerlink" href="#the-transformer-architecture" title="Link to this heading">#</a></h2>
 <p>The Transformer architecture, introduced in “Attention is All You Need” (Vaswani et al., 2017), replaced recurrent architectures with a mechanism based entirely on attention. This allows for better parallelization and the ability to model long-range dependencies in text.</p>
 <section id="the-attention-mechanism">
-<h2>1.1 The Attention Mechanism<a class="headerlink" href="#the-attention-mechanism" title="Link to this heading">#</a></h2>
+<h3>1.1 The Attention Mechanism<a class="headerlink" href="#the-attention-mechanism" title="Link to this heading">#</a></h3>
 <p>At the core of transformers is the attention mechanism. Unlike previous architectures that processed sequences sequentially, attention allows the model to focus on different parts of the input simultaneously.</p>
 <p>The key idea is that for each position in a sequence, we compute how much attention to pay to every other position. This is done through three learned representations:</p>
 <ul class="simple">
@@ -409,7 +401,7 @@ document.write(`
 <p>where <span class="math notranslate nohighlight">\(d_k\)</span> is the dimension of the keys. The division by <span class="math notranslate nohighlight">\(\sqrt{d_k}\)</span> prevents the dot products from growing too large, which would push the softmax into regions with very small gradients.</p>
 </section>
 <section id="multi-head-attention-mha">
-<h2>1.2 Multi-Head Attention (MHA)<a class="headerlink" href="#multi-head-attention-mha" title="Link to this heading">#</a></h2>
+<h3>1.2 Multi-Head Attention (MHA)<a class="headerlink" href="#multi-head-attention-mha" title="Link to this heading">#</a></h3>
 <p>Rather than computing attention once, Multi-Head Attention runs multiple attention operations in parallel, each with different learned linear projections. This allows the model to attend to information from different representation subspaces.</p>
  <!-- ![Multi-Head Attention](fig_showing_mha) -->
 <p align="center">
@@ -424,7 +416,7 @@ document.write(`
 \[\text{head}_i = \text{Attention}(QW^Q_i, KW^K_i, VW^V_i)\]</div>
 </section>
 <section id="encoder-decoder-architecture">
-<h2>1.3 Encoder-Decoder Architecture<a class="headerlink" href="#encoder-decoder-architecture" title="Link to this heading">#</a></h2>
+<h3>1.3 Encoder-Decoder Architecture<a class="headerlink" href="#encoder-decoder-architecture" title="Link to this heading">#</a></h3>
 <p>The original Transformer uses an encoder-decoder structure:</p>
  <!-- ![Encoder-Decoder Architecture](fig_showing_enc_dec) -->
  <p align="center">
@@ -437,11 +429,11 @@ document.write(`
 <p>Modern models often use only the encoder (BERT) or only the decoder (GPT), depending on the task.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ignore warning messages for cleaner output of the website</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## ignore warning messages for cleaner output of the website</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
 
-<span class="c1"># Import required libraries</span>
+<span class="c1">## Import required libraries</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -457,15 +449,15 @@ document.write(`
 </div>
 </section>
 </section>
-<section class="tex2jax_ignore mathjax_ignore" id="toy-experiment-next-token-prediction">
-<h1>2. Toy Experiment: Next Token Prediction<a class="headerlink" href="#toy-experiment-next-token-prediction" title="Link to this heading">#</a></h1>
+<section id="toy-experiment-next-token-prediction">
+<h2>2. Toy Experiment: Next Token Prediction<a class="headerlink" href="#toy-experiment-next-token-prediction" title="Link to this heading">#</a></h2>
 <p>We’ll implement a simple experiment to understand how transformers learn sequence patterns. We’ll create a toy dataset and compare transformer models of different depths with n-gram baseline statistics.</p>
 <section id="generate-toy-dataset">
-<h2>2.1 Generate Toy Dataset<a class="headerlink" href="#generate-toy-dataset" title="Link to this heading">#</a></h2>
+<h3>2.1 Generate Toy Dataset<a class="headerlink" href="#generate-toy-dataset" title="Link to this heading">#</a></h3>
 <p>We’ll create a simple artificial language with predictable patterns.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dataset</span> <span class="o">=</span> <span class="n">load_dataset</span><span class="p">(</span><span class="s2">&quot;imdb&quot;</span><span class="p">,</span> <span class="n">split</span><span class="o">=</span><span class="s2">&quot;train&quot;</span><span class="p">)</span>  <span class="c1"># Subset for faster training</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dataset</span> <span class="o">=</span> <span class="n">load_dataset</span><span class="p">(</span><span class="s2">&quot;imdb&quot;</span><span class="p">,</span> <span class="n">split</span><span class="o">=</span><span class="s2">&quot;train&quot;</span><span class="p">)</span>  <span class="c1">## Subset for faster training</span>
 <span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
 
 <span class="n">len_data</span> <span class="o">=</span> <span class="mi">1000</span>
@@ -492,17 +484,17 @@ document.write(`
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">processed_nums</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">texts</span><span class="p">:</span>
-        <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="c1"># Convert to lowercase        </span>
-        <span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;[^a-z ]&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>  <span class="c1"># Keep only a-z and space </span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="c1">## Convert to lowercase        </span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;[^a-z ]&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>  <span class="c1">## Keep only a-z and space </span>
         
 
-        <span class="c1"># if size is less than N, skip</span>
+        <span class="c1">## if size is less than N, skip</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">N</span><span class="p">:</span>
             <span class="k">continue</span>
 
-        <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="p">[:</span><span class="n">N</span><span class="p">]</span> <span class="c1"># Keep only the first N characters</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="p">[:</span><span class="n">N</span><span class="p">]</span> <span class="c1">## Keep only the first N characters</span>
 
-        <span class="c1"># Convert each char to number using mapping function</span>
+        <span class="c1">## Convert each char to number using mapping function</span>
         <span class="n">nums</span> <span class="o">=</span> <span class="p">[</span><span class="n">char_to_num_fn</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">text</span><span class="p">]</span>
         <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">n</span> <span class="o">&gt;</span> <span class="mi">26</span> <span class="ow">or</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">nums</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Character mapping returned invalid number: </span><span class="si">{</span><span class="n">nums</span><span class="si">}</span><span class="s2"> - text: </span><span class="si">{</span><span class="n">text</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -524,7 +516,7 @@ document.write(`
 </div>
 </section>
 <section id="n-gram-baseline">
-<h2>2.2 N-gram Baseline<a class="headerlink" href="#n-gram-baseline" title="Link to this heading">#</a></h2>
+<h3>2.2 N-gram Baseline<a class="headerlink" href="#n-gram-baseline" title="Link to this heading">#</a></h3>
 <p>Before using transformers, let’s establish a baseline using n-gram statistics.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -547,7 +539,7 @@ document.write(`
     <span class="n">context</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">context</span> <span class="ow">in</span> <span class="n">ngram_model</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">ngram_model</span><span class="p">[</span><span class="n">context</span><span class="p">]</span><span class="o">.</span><span class="n">most_common</span><span class="p">(</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>  <span class="c1"># Random if context not seen</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>  <span class="c1">## Random if context not seen</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">evaluate_ngram</span><span class="p">(</span><span class="n">ngram_model</span><span class="p">,</span> <span class="n">test_data</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">start_eval</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Evaluate n-gram model accuracy&quot;&quot;&quot;</span>
@@ -569,7 +561,7 @@ document.write(`
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Build and evaluate n-gram models</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## Build and evaluate n-gram models</span>
 <span class="n">trigram_model</span> <span class="o">=</span> <span class="n">build_ngram_model</span><span class="p">(</span><span class="n">train_data</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 <span class="n">trigram_acc</span> <span class="o">=</span> <span class="n">evaluate_ngram</span><span class="p">(</span><span class="n">trigram_model</span><span class="p">,</span> <span class="n">test_data</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">start_eval</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 
@@ -590,7 +582,7 @@ Trigram accuracy: 50.7 %
 </div>
 </section>
 <section id="simple-transformer-model">
-<h2>2.3 Simple Transformer Model<a class="headerlink" href="#simple-transformer-model" title="Link to this heading">#</a></h2>
+<h3>2.3 Simple Transformer Model<a class="headerlink" href="#simple-transformer-model" title="Link to this heading">#</a></h3>
 <p>Now let’s create transformer models with different numbers of layers using PyTorch.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -607,13 +599,13 @@ Trigram accuracy: 50.7 %
         <span class="n">div_term</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">d_model</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">()</span> <span class="o">*</span> <span class="p">(</span><span class="o">-</span><span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mf">10000.0</span><span class="p">)</span> <span class="o">/</span> <span class="n">d_model</span><span class="p">))</span>
         <span class="n">pe</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">::</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">position</span> <span class="o">*</span> <span class="n">div_term</span><span class="p">)</span>
         <span class="n">pe</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">position</span> <span class="o">*</span> <span class="n">div_term</span><span class="p">)</span>
-        <span class="n">pe</span> <span class="o">=</span> <span class="n">pe</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># Shape: (1, max_len, d_model) for batch_first</span>
+        <span class="n">pe</span> <span class="o">=</span> <span class="n">pe</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1">## Shape: (1, max_len, d_model) for batch_first</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">register_buffer</span><span class="p">(</span><span class="s1">&#39;pe&#39;</span><span class="p">,</span> <span class="n">pe</span><span class="p">)</span>
     
     <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; This function adds positional encoding to the input tensor x and retursns it.&quot;&quot;&quot;</span>
-        <span class="c1"># x shape: (batch_size, seq_len, d_model)</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">pe</span><span class="p">[:,</span> <span class="p">:</span><span class="n">x</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="p">:]</span>  <span class="c1"># Use seq_len (dimension 1)!</span>
+        <span class="c1">## x shape: (batch_size, seq_len, d_model)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">pe</span><span class="p">[:,</span> <span class="p">:</span><span class="n">x</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="p">:]</span>  <span class="c1">## Use seq_len (dimension 1)!</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">dropout</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -640,12 +632,12 @@ Trigram accuracy: 50.7 %
     <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
         <span class="n">seq_len</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
         
-        <span class="c1"># Create causal mask</span>
+        <span class="c1">## Create causal mask</span>
         <span class="n">causal_mask</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Transformer</span><span class="o">.</span><span class="n">generate_square_subsequent_mask</span><span class="p">(</span><span class="n">seq_len</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
         
         <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">embedding</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
         <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pos_encoder</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">transformer</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="n">causal_mask</span><span class="p">,</span> <span class="n">is_causal</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># Add causal mask!</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">transformer</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="n">causal_mask</span><span class="p">,</span> <span class="n">is_causal</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1">## Add causal mask!</span>
         <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc_out</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">x</span>
 </pre></div>
@@ -654,7 +646,7 @@ Trigram accuracy: 50.7 %
 </div>
 </section>
 <section id="training-function">
-<h2>2.4 Training Function<a class="headerlink" href="#training-function" title="Link to this heading">#</a></h2>
+<h3>2.4 Training Function<a class="headerlink" href="#training-function" title="Link to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">train_transformer</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">train_data</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.001</span><span class="p">):</span>
@@ -670,26 +662,26 @@ Trigram accuracy: 50.7 %
         <span class="n">batch_count</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">acc_list</span> <span class="o">=</span> <span class="p">[]</span>
         
-        <span class="c1"># Create batches</span>
+        <span class="c1">## Create batches</span>
         <span class="n">indices</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randperm</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">train_tensor</span><span class="p">))</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">train_tensor</span><span class="p">),</span> <span class="n">batch_size</span><span class="p">):</span>
             <span class="n">batch_indices</span> <span class="o">=</span> <span class="n">indices</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="n">batch_size</span><span class="p">]</span>
             <span class="n">batch</span> <span class="o">=</span> <span class="n">train_tensor</span><span class="p">[</span><span class="n">batch_indices</span><span class="p">]</span>
             
-            <span class="c1"># Input is all tokens except last, target is all tokens except first</span>
+            <span class="c1">## Input is all tokens except last, target is all tokens except first</span>
             <span class="n">input_seq</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[:,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
             <span class="n">target_seq</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:]</span>
             
             <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
-            <span class="n">output</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">input_seq</span><span class="p">)</span>  <span class="c1"># shape: (B, L, V)</span>
+            <span class="n">output</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">input_seq</span><span class="p">)</span>  <span class="c1">## shape: (B, L, V)</span>
 
-            <span class="c1"># Calculate accuracy for this batch (optional, for monitoring)</span>
+            <span class="c1">## Calculate accuracy for this batch (optional, for monitoring)</span>
             <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
                 <span class="n">preds</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
                 <span class="n">batch_acc</span> <span class="o">=</span> <span class="p">(</span><span class="n">preds</span> <span class="o">==</span> <span class="n">target_seq</span><span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">()</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
                 <span class="n">acc_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">batch_acc</span><span class="p">)</span>
             
-            <span class="c1"># Use actual vocabulary size from model output (avoid hard-coded value)</span>
+            <span class="c1">## Use actual vocabulary size from model output (avoid hard-coded value)</span>
             <span class="n">vocab_dim</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
             <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">output</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">vocab_dim</span><span class="p">),</span> <span class="n">target_seq</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
             <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
@@ -720,12 +712,12 @@ Trigram accuracy: 50.7 %
             <span class="n">batch</span> <span class="o">=</span> <span class="n">test_tensor</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">start</span><span class="o">+</span><span class="n">batch_size</span><span class="p">]</span>
             <span class="k">if</span> <span class="n">batch</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="k">continue</span>
-            <span class="c1"># Predict all tokens except last, compare to all except first</span>
+            <span class="c1">## Predict all tokens except last, compare to all except first</span>
             <span class="n">input_seq</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[:,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
             <span class="n">target_seq</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:]</span>
             <span class="n">output</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">input_seq</span><span class="p">)</span>
             <span class="n">preds</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
-            <span class="c1"># If start_eval is set, only evaluate from that position onwards</span>
+            <span class="c1">## If start_eval is set, only evaluate from that position onwards</span>
             <span class="k">if</span> <span class="n">start_eval</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">preds</span> <span class="o">=</span> <span class="n">preds</span><span class="p">[:,</span> <span class="n">start_eval</span><span class="p">:]</span>
                 <span class="n">target_seq</span> <span class="o">=</span> <span class="n">target_seq</span><span class="p">[:,</span> <span class="n">start_eval</span><span class="p">:]</span>
@@ -738,13 +730,13 @@ Trigram accuracy: 50.7 %
 </div>
 </section>
 <section id="compare-models-with-different-depths">
-<h2>2.5 Compare Models with Different Depths<a class="headerlink" href="#compare-models-with-different-depths" title="Link to this heading">#</a></h2>
+<h3>2.5 Compare Models with Different Depths<a class="headerlink" href="#compare-models-with-different-depths" title="Link to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Train models with 1, 2, and 3 layers (use dynamic vocab size derived from train_data)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## Train models with 1, 2, and 3 layers (use dynamic vocab size derived from train_data)</span>
 <span class="n">results</span> <span class="o">=</span> <span class="p">{}</span>
 
-<span class="c1"># Model hyperparameters</span>
+<span class="c1">## Model hyperparameters</span>
 <span class="n">d_model</span> <span class="o">=</span> <span class="mi">128</span>
 <span class="n">nhead</span> <span class="o">=</span> <span class="mi">16</span>
 
@@ -753,7 +745,7 @@ Trigram accuracy: 50.7 %
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Training </span><span class="si">{</span><span class="n">num_layers</span><span class="si">}</span><span class="s2">-layer transformer&quot;</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;=&#39;</span><span class="o">*</span><span class="mi">50</span><span class="p">)</span>
 
-    <span class="c1"># derive vocab size from training data to keep consistency</span>
+    <span class="c1">## derive vocab size from training data to keep consistency</span>
     <span class="n">vocab_size</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span> <span class="k">for</span> <span class="n">seq</span> <span class="ow">in</span> <span class="n">train_data</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Vocab size: </span><span class="si">{</span><span class="n">vocab_size</span><span class="si">}</span><span class="s2"> - should be 27&quot;</span><span class="p">)</span>
     <span class="n">model</span> <span class="o">=</span> <span class="n">SimpleTransformer</span><span class="p">(</span><span class="n">vocab_size</span><span class="o">=</span><span class="n">vocab_size</span><span class="p">,</span> <span class="n">num_layers</span><span class="o">=</span><span class="n">num_layers</span><span class="p">,</span> <span class="n">d_model</span><span class="o">=</span><span class="n">d_model</span><span class="p">,</span> <span class="n">nhead</span><span class="o">=</span><span class="n">nhead</span><span class="p">)</span>
@@ -807,10 +799,10 @@ Epoch 50, Loss: 1.4363 , TrainAcc: 54.91 %
 </div>
 </section>
 <section id="results-comparison">
-<h2>2.6 Results Comparison<a class="headerlink" href="#results-comparison" title="Link to this heading">#</a></h2>
+<h3>2.6 Results Comparison<a class="headerlink" href="#results-comparison" title="Link to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compare all models</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## Compare all models</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;=&quot;</span><span class="o">*</span><span class="mi">50</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ACCURACY COMPARISON&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="o">*</span><span class="mi">50</span><span class="p">)</span>
@@ -819,7 +811,7 @@ Epoch 50, Loss: 1.4363 , TrainAcc: 54.91 %
 <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">acc</span> <span class="ow">in</span> <span class="n">results</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> transformer: </span><span class="si">{</span><span class="n">acc</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-<span class="c1"># Visualization</span>
+<span class="c1">## Visualization</span>
 <span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Bigram&#39;</span><span class="p">,</span> <span class="s1">&#39;Trigram&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
 <span class="n">accuracies</span> <span class="o">=</span> <span class="p">[</span><span class="n">bigram_acc</span><span class="p">,</span> <span class="n">trigram_acc</span><span class="p">]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
 
@@ -852,7 +844,7 @@ Trigram baseline:    0.5066
 </div>
 </section>
 <section id="text-generation-example">
-<h2>2.7 Text Generation Example<a class="headerlink" href="#text-generation-example" title="Link to this heading">#</a></h2>
+<h3>2.7 Text Generation Example<a class="headerlink" href="#text-generation-example" title="Link to this heading">#</a></h3>
 <p>Let’s generate some sequences to see what the model has learned.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -870,12 +862,12 @@ Trigram baseline:    0.5066
     
     <span class="k">return</span> <span class="n">generated</span>
 
-<span class="c1"># Generate from the 3-layer model (use dynamic vocab size)</span>
+<span class="c1">## Generate from the 3-layer model (use dynamic vocab size)</span>
 <span class="n">vocab_size</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span> <span class="k">for</span> <span class="n">seq</span> <span class="ow">in</span> <span class="n">train_data</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
 <span class="n">model_3layer</span> <span class="o">=</span> <span class="n">SimpleTransformer</span><span class="p">(</span><span class="n">vocab_size</span><span class="o">=</span><span class="n">vocab_size</span><span class="p">,</span> <span class="n">num_layers</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">d_model</span><span class="o">=</span><span class="n">d_model</span><span class="p">,</span> <span class="n">nhead</span><span class="o">=</span><span class="n">nhead</span><span class="p">)</span>
 <span class="n">train_transformer</span><span class="p">(</span><span class="n">model_3layer</span><span class="p">,</span> <span class="n">train_data</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
 
-<span class="c1"># Let&#39;s see what we have learned! </span>
+<span class="c1">## Let&#39;s see what we have learned! </span>
 <span class="n">start_strings</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;i am &quot;</span><span class="p">,</span> <span class="s2">&quot;my name is &quot;</span><span class="p">,</span> <span class="s2">&quot;i would never &quot;</span><span class="p">,</span> <span class="s1">&#39;this ted talk is about &#39;</span><span class="p">]</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Generated sequences (3-layer transformer):&quot;</span><span class="p">)</span>
@@ -913,8 +905,8 @@ Full:  &#39;this ted talk is about the movie i was a can and a&#39;
 </div>
 </section>
 </section>
-<section class="tex2jax_ignore mathjax_ignore" id="pre-trained-models-bert-and-gpt">
-<h1>3. Pre-trained Models: BERT and GPT<a class="headerlink" href="#pre-trained-models-bert-and-gpt" title="Link to this heading">#</a></h1>
+<section id="pre-trained-models-bert-and-gpt">
+<h2>3. Pre-trained Models: BERT and GPT<a class="headerlink" href="#pre-trained-models-bert-and-gpt" title="Link to this heading">#</a></h2>
 <p>Now let’s work with real pre-trained transformer models using the HuggingFace Transformers library.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -926,24 +918,24 @@ Full:  &#39;this ted talk is about the movie i was a can and a&#39;
 </div>
 </div>
 <section id="bert-masked-language-modeling">
-<h2>3.1 BERT: Masked Language Modeling<a class="headerlink" href="#bert-masked-language-modeling" title="Link to this heading">#</a></h2>
+<h3>3.1 BERT: Masked Language Modeling<a class="headerlink" href="#bert-masked-language-modeling" title="Link to this heading">#</a></h3>
 <p>BERT (Bidirectional Encoder Representations from Transformers) is an encoder-only model trained on masked language modeling. It can see the entire context (both left and right) when predicting masked tokens.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">predict_masked_token</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">tokenizer</span><span class="p">,</span> <span class="n">top_k</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Predict masked tokens in text&quot;&quot;&quot;</span>
-    <span class="c1"># Tokenize</span>
+    <span class="c1">## Tokenize</span>
     <span class="n">inputs</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">return_tensors</span><span class="o">=</span><span class="s1">&#39;pt&#39;</span><span class="p">)</span>
     
-    <span class="c1"># Find mask position</span>
+    <span class="c1">## Find mask position</span>
     <span class="n">mask_token_index</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;input_ids&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">mask_token_id</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
     
-    <span class="c1"># Get predictions</span>
+    <span class="c1">## Get predictions</span>
     <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
         <span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="o">**</span><span class="n">inputs</span><span class="p">)</span>
         <span class="n">predictions</span> <span class="o">=</span> <span class="n">outputs</span><span class="o">.</span><span class="n">logits</span>
     
-    <span class="c1"># Get top-k predictions for masked position</span>
+    <span class="c1">## Get top-k predictions for masked position</span>
     <span class="n">mask_predictions</span> <span class="o">=</span> <span class="n">predictions</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">mask_token_index</span><span class="p">,</span> <span class="p">:]</span>
     <span class="n">top_tokens</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">topk</span><span class="p">(</span><span class="n">mask_predictions</span><span class="p">,</span> <span class="n">top_k</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
     
@@ -960,12 +952,12 @@ Full:  &#39;this ted talk is about the movie i was a can and a&#39;
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load BERT model and tokenizer</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## Load BERT model and tokenizer</span>
 <span class="n">bert_tokenizer</span> <span class="o">=</span> <span class="n">BertTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s1">&#39;bert-base-uncased&#39;</span><span class="p">)</span>
 <span class="n">bert_model</span> <span class="o">=</span> <span class="n">BertForMaskedLM</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s1">&#39;bert-base-uncased&#39;</span><span class="p">)</span>
 <span class="n">bert_model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
 
-<span class="c1"># Test BERT on various examples</span>
+<span class="c1">## Test BERT on various examples</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="o">*</span><span class="mi">60</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;BERT: Masked Language Modeling&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="o">*</span><span class="mi">60</span><span class="p">)</span>
@@ -1012,7 +1004,7 @@ Top 5 predictions:
 </div>
 </section>
 <section id="bert-for-text-classification">
-<h2>3.2 BERT for Text Classification<a class="headerlink" href="#bert-for-text-classification" title="Link to this heading">#</a></h2>
+<h3>3.2 BERT for Text Classification<a class="headerlink" href="#bert-for-text-classification" title="Link to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">tqdm</span><span class="w"> </span><span class="kn">import</span> <span class="n">tqdm</span>
@@ -1028,13 +1020,13 @@ Top 5 predictions:
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dataset</span> <span class="o">=</span> <span class="n">load_dataset</span><span class="p">(</span><span class="s2">&quot;imdb&quot;</span><span class="p">,</span> <span class="n">split</span><span class="o">=</span><span class="s2">&quot;train&quot;</span><span class="p">)</span>  <span class="c1"># Subset for faster training</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dataset</span> <span class="o">=</span> <span class="n">load_dataset</span><span class="p">(</span><span class="s2">&quot;imdb&quot;</span><span class="p">,</span> <span class="n">split</span><span class="o">=</span><span class="s2">&quot;train&quot;</span><span class="p">)</span>  <span class="c1">## Subset for faster training</span>
 <span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
 
 <span class="n">len_data</span> <span class="o">=</span> <span class="mi">10000</span>
 <span class="n">data_subset</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">len_data</span><span class="p">))</span>
 
-<span class="c1"># split data into train and test using hugginface datasets functionalities</span>
+<span class="c1">## split data into train and test using hugginface datasets functionalities</span>
 <span class="n">split</span> <span class="o">=</span> <span class="n">data_subset</span><span class="o">.</span><span class="n">train_test_split</span><span class="p">(</span><span class="n">test_size</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
 <span class="n">train_txt</span> <span class="o">=</span> <span class="n">split</span><span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">][</span><span class="s1">&#39;text&#39;</span><span class="p">]</span>
 <span class="n">test_txt</span> <span class="o">=</span> <span class="n">split</span><span class="p">[</span><span class="s1">&#39;test&#39;</span><span class="p">][</span><span class="s1">&#39;text&#39;</span><span class="p">]</span>
@@ -1053,7 +1045,7 @@ Top 5 predictions:
         <span class="bp">self</span><span class="o">.</span><span class="n">save_hyperparameters</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">BertForSequenceClassification</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s1">&#39;bert-base-uncased&#39;</span><span class="p">,</span> <span class="n">num_labels</span><span class="o">=</span><span class="n">num_labels</span><span class="p">)</span>
         
-        <span class="c1"># Freeze BERT encoder</span>
+        <span class="c1">## Freeze BERT encoder</span>
         <span class="k">if</span> <span class="n">freeze_bert</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">bert</span><span class="o">.</span><span class="n">parameters</span><span class="p">():</span>
                 <span class="n">param</span><span class="o">.</span><span class="n">requires_grad</span> <span class="o">=</span> <span class="kc">False</span>
@@ -1125,45 +1117,45 @@ Top 5 predictions:
 <span class="sd">    &quot;&quot;&quot;</span>
 
     
-    <span class="c1"># Initialize model</span>
+    <span class="c1">## Initialize model</span>
     <span class="n">model</span> <span class="o">=</span> <span class="n">BERTClassifier</span><span class="p">(</span><span class="n">num_labels</span><span class="o">=</span><span class="n">num_labels</span><span class="p">,</span> <span class="n">freeze_bert</span><span class="o">=</span><span class="n">freeze_bert</span><span class="p">)</span>
     
-    <span class="c1"># Trainer with optimizations</span>
+    <span class="c1">## Trainer with optimizations</span>
     <span class="n">trainer</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">Trainer</span><span class="p">(</span>
         <span class="n">max_epochs</span><span class="o">=</span><span class="n">epochs</span><span class="p">,</span>
         <span class="n">accelerator</span><span class="o">=</span><span class="s1">&#39;gpu&#39;</span> <span class="k">if</span> <span class="n">use_gpu</span> <span class="ow">and</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s1">&#39;cpu&#39;</span><span class="p">,</span>
-        <span class="n">precision</span><span class="o">=</span><span class="s1">&#39;16-mixed&#39;</span> <span class="k">if</span> <span class="n">use_gpu</span> <span class="ow">and</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="mi">32</span><span class="p">,</span>  <span class="c1"># Mixed precision for speed</span>
+        <span class="n">precision</span><span class="o">=</span><span class="s1">&#39;16-mixed&#39;</span> <span class="k">if</span> <span class="n">use_gpu</span> <span class="ow">and</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="mi">32</span><span class="p">,</span>  <span class="c1">## Mixed precision for speed</span>
         <span class="n">gradient_clip_val</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
         <span class="n">log_every_n_steps</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
         <span class="n">enable_checkpointing</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-        <span class="n">logger</span><span class="o">=</span><span class="kc">False</span>  <span class="c1"># Disable default logger for simplicity</span>
+        <span class="n">logger</span><span class="o">=</span><span class="kc">False</span>  <span class="c1">## Disable default logger for simplicity</span>
     <span class="p">)</span>
     
-    <span class="c1"># Train</span>
+    <span class="c1">## Train</span>
     <span class="n">trainer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">train_loader</span><span class="p">,</span> <span class="n">test_loader</span><span class="p">)</span>
     
-    <span class="c1"># Test</span>
+    <span class="c1">## Test</span>
     <span class="n">test_results</span> <span class="o">=</span> <span class="n">trainer</span><span class="o">.</span><span class="n">test</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">test_loader</span><span class="p">)</span>
-    <span class="c1"># print(f&quot;\nFinal Test Accuracy: {test_results[0][&#39;val_acc&#39;]:.3f}&quot;)</span>
+    <span class="c1">## print(f&quot;\nFinal Test Accuracy: {test_results[0][&#39;val_acc&#39;]:.3f}&quot;)</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Final Test Accuracy: </span><span class="si">{</span><span class="n">test_results</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;test_acc&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">model</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">prepare_data</span><span class="p">(</span><span class="n">train_txt</span><span class="p">,</span> <span class="n">train_labels</span><span class="p">,</span> <span class="n">test_txt</span><span class="p">,</span> <span class="n">test_labels</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">16</span><span class="p">):</span>
 
-        <span class="c1"># Tokenize</span>
+        <span class="c1">## Tokenize</span>
     <span class="n">tokenizer</span> <span class="o">=</span> <span class="n">BertTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s1">&#39;bert-base-uncased&#39;</span><span class="p">)</span>
     <span class="n">train_enc</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">(</span><span class="n">train_txt</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="s1">&#39;max_length&#39;</span><span class="p">,</span> 
                          <span class="n">max_length</span><span class="o">=</span><span class="n">max_length</span><span class="p">,</span> <span class="n">return_tensors</span><span class="o">=</span><span class="s1">&#39;pt&#39;</span><span class="p">)</span>
     <span class="n">test_enc</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">(</span><span class="n">test_txt</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="s1">&#39;max_length&#39;</span><span class="p">,</span>
                         <span class="n">max_length</span><span class="o">=</span><span class="n">max_length</span><span class="p">,</span> <span class="n">return_tensors</span><span class="o">=</span><span class="s1">&#39;pt&#39;</span><span class="p">)</span>
     
-    <span class="c1"># Create datasets</span>
+    <span class="c1">## Create datasets</span>
     <span class="n">train_dataset</span> <span class="o">=</span> <span class="n">TensorDataset</span><span class="p">(</span><span class="n">train_enc</span><span class="p">[</span><span class="s1">&#39;input_ids&#39;</span><span class="p">],</span> <span class="n">train_enc</span><span class="p">[</span><span class="s1">&#39;attention_mask&#39;</span><span class="p">],</span> 
                                   <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">train_labels</span><span class="p">))</span>
     <span class="n">test_dataset</span> <span class="o">=</span> <span class="n">TensorDataset</span><span class="p">(</span><span class="n">test_enc</span><span class="p">[</span><span class="s1">&#39;input_ids&#39;</span><span class="p">],</span> <span class="n">test_enc</span><span class="p">[</span><span class="s1">&#39;attention_mask&#39;</span><span class="p">],</span>
                                 <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">test_labels</span><span class="p">))</span>
     
-    <span class="c1"># DataLoaders</span>
+    <span class="c1">## DataLoaders</span>
     <span class="n">train_loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">train_dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> 
                              <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">pin_memory</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">test_loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">test_dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
@@ -1210,7 +1202,7 @@ Top 5 predictions:
 </div>
 </section>
 <section id="gpt-text-generation">
-<h2>3.2 GPT: Text Generation<a class="headerlink" href="#gpt-text-generation" title="Link to this heading">#</a></h2>
+<h3>3.2 GPT: Text Generation<a class="headerlink" href="#gpt-text-generation" title="Link to this heading">#</a></h3>
 <p>GPT (Generative Pre-trained Transformer) is a decoder-only model trained on causal language modeling. It can only see the left context when predicting the next token, making it suitable for text generation.
 One of the most popular AI models today, ChatGPT, is a type of Transformer Decoder.
 As you might have noticed when we generate text via a Decoder this is relatively slow. The reason for this is that for every “forward pass”, the model only predicts the next token, which we then feed back to the input and make it predict the following token. In the example image below we start with an input we provide “Hello, my name”, which are all fed to the input to predict the next token, where the model says “ is”. Now for the next word we need to feed the string “Hello, my name is” to the model, so it predicts “ James”. As you can see this takes a lot of iterations through the model. Through clever computing we can store some of the matrix multiplications that are happening inside the model so when we run <code class="docutils literal notranslate"><span class="pre">model.generate()</span></code> we don’t have to redo the computations we could already store when we predicted previous tokens.</p>
@@ -1240,16 +1232,16 @@ As you might have noticed when we generate text via a Decoder this is relatively
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load GPT-2 model and tokenizer</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## Load GPT-2 model and tokenizer</span>
 <span class="n">gpt_tokenizer</span> <span class="o">=</span> <span class="n">GPT2Tokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s1">&#39;gpt2&#39;</span><span class="p">)</span>
 <span class="n">gpt_model</span> <span class="o">=</span> <span class="n">GPT2LMHeadModel</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s1">&#39;gpt2&#39;</span><span class="p">)</span>
 <span class="n">gpt_model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
 
-<span class="c1"># Set pad token (GPT2 doesn&#39;t have one by default)</span>
+<span class="c1">## Set pad token (GPT2 doesn&#39;t have one by default)</span>
 <span class="n">gpt_tokenizer</span><span class="o">.</span><span class="n">pad_token</span> <span class="o">=</span> <span class="n">gpt_tokenizer</span><span class="o">.</span><span class="n">eos_token</span>
 
 
-<span class="c1"># Test GPT on various prompts</span>
+<span class="c1">## Test GPT on various prompts</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="o">*</span><span class="mi">60</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;GPT-2: Text Generation&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="o">*</span><span class="mi">60</span><span class="p">)</span>
@@ -1291,7 +1283,7 @@ Generated: In the field of linguistics, we often get the impression that languag
 </div>
 </section>
 <section id="key-differences-bert-vs-gpt">
-<h2>3.3 Key Differences: BERT vs GPT<a class="headerlink" href="#key-differences-bert-vs-gpt" title="Link to this heading">#</a></h2>
+<h3>3.3 Key Differences: BERT vs GPT<a class="headerlink" href="#key-differences-bert-vs-gpt" title="Link to this heading">#</a></h3>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p>Aspect</p></th>
@@ -1325,8 +1317,8 @@ Generated: In the field of linguistics, we often get the impression that languag
 </div>
 </section>
 </section>
-<section class="tex2jax_ignore mathjax_ignore" id="summary">
-<h1>4. Summary<a class="headerlink" href="#summary" title="Link to this heading">#</a></h1>
+<section id="summary">
+<h2>4. Summary<a class="headerlink" href="#summary" title="Link to this heading">#</a></h2>
 <p>In this notebook, we explored:</p>
 <ol class="arabic simple">
 <li><p><strong>Attention Mechanism</strong>: The core innovation that allows transformers to weigh the importance of different parts of the input</p></li>
@@ -1339,15 +1331,15 @@ Generated: In the field of linguistics, we often get the impression that languag
 </ul>
 </li>
 </ol>
-<p>The transformer architecture’s ability to model long-range dependencies and parallelize computation has made it the dominant approach in modern NLP. Understanding these fundamentals provides the foundation for working with state-of-the-art language models.</p>
 </section>
-<section class="tex2jax_ignore mathjax_ignore" id="references">
-<h1>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h1>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
 <ul class="simple">
 <li><p>Vaswani et al. (2017). “Attention is All You Need”. NeurIPS.</p></li>
 <li><p>Devlin et al. (2018). “BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding”. NAACL.</p></li>
 <li><p>Radford et al. (2019). “Language Models are Unsupervised Multitask Learners” (GPT-2).</p></li>
 </ul>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -1405,34 +1397,32 @@ Generated: In the field of linguistics, we often get the impression that languag
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">M3.3 Transformers</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#the-transformer-architecture">1. The Transformer Architecture</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-attention-mechanism">1.1 The Attention Mechanism</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-head-attention-mha">1.2 Multi-Head Attention (MHA)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#encoder-decoder-architecture">1.3 Encoder-Decoder Architecture</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-transformer-architecture">1. The Transformer Architecture</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-attention-mechanism">1.1 The Attention Mechanism</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-head-attention-mha">1.2 Multi-Head Attention (MHA)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#encoder-decoder-architecture">1.3 Encoder-Decoder Architecture</a></li>
 </ul>
 </li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#toy-experiment-next-token-prediction">2. Toy Experiment: Next Token Prediction</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-toy-dataset">2.1 Generate Toy Dataset</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#n-gram-baseline">2.2 N-gram Baseline</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simple-transformer-model">2.3 Simple Transformer Model</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#training-function">2.4 Training Function</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#compare-models-with-different-depths">2.5 Compare Models with Different Depths</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#results-comparison">2.6 Results Comparison</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#text-generation-example">2.7 Text Generation Example</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#toy-experiment-next-token-prediction">2. Toy Experiment: Next Token Prediction</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-toy-dataset">2.1 Generate Toy Dataset</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#n-gram-baseline">2.2 N-gram Baseline</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#simple-transformer-model">2.3 Simple Transformer Model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#training-function">2.4 Training Function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#compare-models-with-different-depths">2.5 Compare Models with Different Depths</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#results-comparison">2.6 Results Comparison</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#text-generation-example">2.7 Text Generation Example</a></li>
 </ul>
 </li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#pre-trained-models-bert-and-gpt">3. Pre-trained Models: BERT and GPT</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bert-masked-language-modeling">3.1 BERT: Masked Language Modeling</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bert-for-text-classification">3.2 BERT for Text Classification</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gpt-text-generation">3.2 GPT: Text Generation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-differences-bert-vs-gpt">3.3 Key Differences: BERT vs GPT</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pre-trained-models-bert-and-gpt">3. Pre-trained Models: BERT and GPT</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bert-masked-language-modeling">3.1 BERT: Masked Language Modeling</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bert-for-text-classification">3.2 BERT for Text Classification</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gpt-text-generation">3.2 GPT: Text Generation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#key-differences-bert-vs-gpt">3.3 Key Differences: BERT vs GPT</a></li>
 </ul>
 </li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">4. Summary</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">4. Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
 </ul>
-
   </nav></div>
 
 </div></div>
