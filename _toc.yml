@@ -1,0 +1,35 @@
+# Table of contents
+# Learn more at https://jupyterbook.org/customize/toc.html
+
+format: jb-book
+root: intro
+# chapters:
+# # - file: markdown
+# # - file: notebooks
+# # - file: markdown-notebooks
+# - file: mynewnotebook.ipynb
+# defaults:  # The defaults key will be applied to all chapters and sub-sections
+#   titlesonly: True
+# options:  # The options key will be applied to all chapters, but not sub-sections
+#   numbered: True  
+parts:
+- caption: Module 1 - Basic ML models
+  # numbered: true
+  # titlesonly: True
+  maxdepth: 1  # The displayed Table of Contents will only have two levels
+  chapters:
+  - file: my_notebooks/m1_1_feature_engineering.ipynb
+  - file: my_notebooks/m1_2_linear_and_logistic_regression.ipynb
+  - file: my_notebooks/m1_3_naive_bayes.ipynb
+- caption: Module 2 - Advanced ML models
+  maxdepth: 1  # The displayed Table of Contents will only have two levels
+  chapters:
+  - file: my_notebooks/m2_1_support_vector_machines.ipynb
+  - file: my_notebooks/m2_2_embeddings.ipynb
+  - file: my_notebooks/m2_3_neural_networks.ipynb
+- caption: Module 3 - Deep Learning models
+  maxdepth: 1  # The displayed Table of Contents will only have two levels
+  chapters:
+  - file: my_notebooks/m3_1_convolutional_neural_network.ipynb
+  - file: my_notebooks/m3_2_recurrent_neural_network.ipynb
+  - file: my_notebooks/m3_3_transformer.ipynb
