@@ -1,0 +1,1022 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>M1.1 Feature Engineering &#8212; My sample book</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=e01d92e3" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'my_notebooks/m1_1_feature_engineering';</script>
+    <script src="../_static/toggle_sidebar.js?v=490e729f"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="M1.2 Linear and Logistic Regression" href="m1_2_linear_and_logistic_regression.html" />
+    <link rel="prev" title="Tutorial notebooks - Machine Learning for NLP course" href="../intro.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo_vu.png" class="logo__image only-light" alt="My sample book - Home"/>
+    <script>document.write(`<img src="../_static/logo_vu.png" class="logo__image only-dark" alt="My sample book - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Module 1 - Basic ML models</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">M1.1 Feature Engineering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="m1_2_linear_and_logistic_regression.html">M1.2 Linear and Logistic Regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="m1_3_naive_bayes.html">M1.3 Naive Bayes Classifier</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Module 2 - Advanced ML models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="m2_1_support_vector_machines.html">M2.1 Support Vector Machines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="m2_2_embeddings.html">M2.1 Word Embeddings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="m2_3_neural_networks.html">M2.3 Neural Networks</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Module 3 - Deep Learning models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="m3_1_convolutional_neural_network.html">M3.1 Convolutional Neural Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="m3_2_recurrent_neural_network.html">M3.2 Recurrent Neural Networks and LSTMs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="m3_3_transformer.html">M3.3 Transformers</a></li>
+
+
+
+
+
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/my_notebooks/m1_1_feature_engineering.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>M1.1 Feature Engineering</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-objectives">Learning Objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction-to-feature-engineering">Introduction to Feature Engineering</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#understanding-features">Understanding Features</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-a-feature">What is a Feature?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#types-of-features">Types of Features</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-1-numerical-features">Example 1: Numerical Features</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectorizing-the-data-dictvectorizer">Vectorizing the data: <code class="docutils literal notranslate"><span class="pre">DictVectorizer</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-2-categorical-values">Example 2. Categorical Values</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectorizing-categorical-data-one-hot-encoding">Vectorizing Categorical Data -&gt; <em>One-Hot Encoding</em></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-3-when-categorical-values-go-wrong">Example 3: When Categorical Values Go Wrong</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-4-mixed-features">Example 4: Mixed Features</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sparse-vs-dense-representation">Sparse vs Dense Representation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#handling-unknown-values">Handling Unknown Values</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#error-new-feature-values-in-test-are-dropped">Error - new feature values in test are dropped</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#solution-ensure-that-the-dictvectorizer-is-fit-on-all-the-data-if-possible">Solution: Ensure that the DictVectorizer is fit on all the data (if possible)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#self-check-questions">Self-check questions:</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="m1-1-feature-engineering">
+<h1>M1.1 Feature Engineering<a class="headerlink" href="#m1-1-feature-engineering" title="Link to this heading">#</a></h1>
+<p><a class="reference external" href="https://github.com/cltl/ml4nlp_tutorial_notebooks/blob/main/my_notebooks/m1_1_feature_engineering.ipynb"><img alt="View notebooks on Github" src="https://img.shields.io/static/v1.svg?logo=github&amp;label=Repo&amp;message=View%20On%20Github&amp;color=lightgrey" /></a>
+<a class="reference external" href="https://colab.research.google.com/github/cltl/ml4nlp_tutorial_notebooks/blob/main/my_notebooks/m1_1_feature_engineering.ipynb"><img alt="Open In Collab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p>
+<section id="learning-objectives">
+<h2>Learning Objectives<a class="headerlink" href="#learning-objectives" title="Link to this heading">#</a></h2>
+<p>By working through this notebook, you will learn:</p>
+<ol class="arabic simple">
+<li><p>What features are and the different types that exist</p></li>
+<li><p>How to use DictVectorize to process and transform features</p></li>
+</ol>
+</section>
+<section id="introduction-to-feature-engineering">
+<h2>Introduction to Feature Engineering<a class="headerlink" href="#introduction-to-feature-engineering" title="Link to this heading">#</a></h2>
+<p>Feature engineering is the process of transforming raw data into features that better represent the underlying problem to the predictive models, resulting in improved model accuracy.</p>
+<p><strong>Why is it important?</strong></p>
+<ul class="simple">
+<li><p>Raw data is often not in a format suitable for machine learning algorithms</p></li>
+<li><p>Good features can make simple models perform extremely well</p></li>
+<li><p>By extracting features we can understand our data a lot better.</p></li>
+</ul>
+</section>
+<section id="understanding-features">
+<h2>Understanding Features<a class="headerlink" href="#understanding-features" title="Link to this heading">#</a></h2>
+<section id="what-is-a-feature">
+<h3>What is a Feature?<a class="headerlink" href="#what-is-a-feature" title="Link to this heading">#</a></h3>
+<p>A feature is an individual measurable property or characteristic of a phenomenon being observed. In machine learning, features are the input variables used to make predictions. For problems in NLP what a feature to use is heavily dependend on the task we are trying to complete. For example for named entity recognition, where we aim to check if a word or substring refers to a named entity, it might be relevant if this string starts with a capital letter. Of course since many other non-entity words also start with a capital (such as the first word in a sentence), based on the feature <code class="docutils literal notranslate"><span class="pre">is_capitalized</span></code> we might now know for sure if the word refers to a named entity, thus it is useful to have many different features. In general we distiguish between a few different types of features based on the values it can take, below is a list of the different categories of features.</p>
+</section>
+<section id="types-of-features">
+<h3>Types of Features<a class="headerlink" href="#types-of-features" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p><strong>Numerical Features</strong>: Continuous or discrete numbers</p></li>
+<li><p><strong>Categorical Features</strong>: Discrete categories or labels</p></li>
+<li><p><strong>Binary Features</strong>: True/False, Yes/No, 1/0</p></li>
+<li><p><strong>Text Features</strong>: Words, characters, n-grams</p></li>
+</ol>
+<p><strong>Question</strong>: Can you identify the type of features for the instance below?</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">house_instance</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;city&#39;</span><span class="p">:</span> <span class="s1">&#39;Amsterdam&#39;</span><span class="p">,</span> 
+    <span class="s1">&#39;rooms&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+    <span class="s1">&#39;area_m2&#39;</span><span class="p">:</span> <span class="mf">75.0</span><span class="p">,</span> 
+    <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;apartment&#39;</span>
+    <span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="example-1-numerical-features">
+<h2>Example 1: Numerical Features<a class="headerlink" href="#example-1-numerical-features" title="Link to this heading">#</a></h2>
+<p>Let’s start with example of numerical data, taking the NLP side a bit more loosly and focusing on a more general machine learning problem to keep it simpler. Let’s say we have some measurements from different weather stations in the Netherlands, for each weather station we have some information stored: temperature and humidity measurements. See the python cell below.</p>
+<details>
+  <summary>Refresher: instance, keys, values
+  </summary>
+<p>So each <strong>instance</strong> in your dataset is a dictionary. A dictionary contains keys and values. For this toy example an instance is a weather station, the <strong>keys</strong> are the features (e.g. temperature, humidity, city), and the <strong>values</strong> (as the name indicates) are what value that feature has for a specific instance, for a specific weather station the value for the key “temperature” might be 18.5 (probably in degrees).</p>
+</details>
+<p><strong>Note:</strong> For NLP feature engineering and in these exercises we will <em>first</em> store the features in a python dictionary (as it’s easier to control).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Temperature and humidity measurements</span>
+<span class="n">measurements</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s1">&#39;temperature&#39;</span><span class="p">:</span> <span class="mf">18.5</span><span class="p">,</span> <span class="s1">&#39;humidity&#39;</span><span class="p">:</span> <span class="mi">75</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;temperature&#39;</span><span class="p">:</span> <span class="mf">22.0</span><span class="p">,</span> <span class="s1">&#39;humidity&#39;</span><span class="p">:</span> <span class="mi">60</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;temperature&#39;</span><span class="p">:</span> <span class="mf">15.2</span><span class="p">,</span> <span class="s1">&#39;humidity&#39;</span><span class="p">:</span> <span class="mi">80</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;temperature&#39;</span><span class="p">:</span> <span class="mf">20.1</span><span class="p">,</span> <span class="s1">&#39;humidity&#39;</span><span class="p">:</span> <span class="mi">65</span><span class="p">},</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="vectorizing-the-data-dictvectorizer">
+<h3>Vectorizing the data: <code class="docutils literal notranslate"><span class="pre">DictVectorizer</span></code><a class="headerlink" href="#vectorizing-the-data-dictvectorizer" title="Link to this heading">#</a></h3>
+<p>Computers however love numbers, so we want to simplify this it and convert each dictionary to a vector, which is again just a list of numbers. Therefore for each weather station we obtain a vector.
+For our experiments a nice existing package we can use is from <code class="docutils literal notranslate"><span class="pre">sklearn</span></code>, a python class <code class="docutils literal notranslate"><span class="pre">DictVectorizer</span></code>, which makes it really easy to convert our dictionaries to vectors.z</p>
+<p>Let’s go and vectorize our <code class="docutils literal notranslate"><span class="pre">measurements</span></code>!</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ignore warning messages for cleaner output of the website</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.feature_extraction</span><span class="w"> </span><span class="kn">import</span> <span class="n">DictVectorizer</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Remember to set sparse=False, otherwise you get a weird type of variable that is annoying to work with (we discuss this later)</span>
+<span class="n">vec_num</span> <span class="o">=</span> <span class="n">DictVectorizer</span><span class="p">(</span><span class="n">sparse</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>  
+<span class="n">X_num</span> <span class="o">=</span> <span class="n">vec_num</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">measurements</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Feature matrix is of type:&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">X_num</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Feature matrix: </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">X_num</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Feature names:&quot;</span><span class="p">,</span> <span class="n">vec_num</span><span class="o">.</span><span class="n">get_feature_names_out</span><span class="p">())</span>   
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Feature matrix is of type: &lt;class &#39;numpy.ndarray&#39;&gt;
+Feature matrix: 
+ [[75.  18.5]
+ [60.  22. ]
+ [80.  15.2]
+ [65.  20.1]]
+
+Feature names: [&#39;humidity&#39; &#39;temperature&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>What happened?</strong> When values are numerical (int or float), DictVectorizer treats them as <strong>numerical features</strong> and keeps them as-is. Each feature becomes one column in the matrix. Simple!</p>
+<details>
+  <summary><b>Question</b> : What are the columns? </summary>
+<p>The columns represent the dictionary features, but remember that dictionaries don’t really have an order (which also makes them efficient via cool math tricks), thus to understand what each column represents we use the function <code class="docutils literal notranslate"><span class="pre">vec.get_feature_names_out()</span></code>, which shows us what each feature each row is.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">humidity</span></code> → 1 column</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">temperature</span></code> → 1 column</p></li>
+<li><p><strong>Total: 2 columns</strong></p></li>
+</ul>
+<p>Tbh not as relevant here, but more relevant for categorical values</p>
+</details>
+<p>Also the option <code class="docutils literal notranslate"><span class="pre">sparse=True</span></code> ensures that the returned object is a numpy array, which are very easy to work with. If you don’t set this option you get the <code class="docutils literal notranslate"><span class="pre">scipy.sparse._csr.csr_matrix</span></code> object, which is more “memory efficient” but much harder to work with/modify.</p>
+<details>
+  <summary><b>Extra</b> : How does DictVectorizer remember the features? </summary>
+<p>In python usually if we have a variable like <code class="docutils literal notranslate"><span class="pre">vec_num</span></code> this value does not change unless it is overwritten.
+But it seems that in the code above <code class="docutils literal notranslate"><span class="pre">vec_num</span></code> is created in line 2, then it is used in line 3 via <code class="docutils literal notranslate"><span class="pre">fit_transform()</span></code>, but then in line 7  using <code class="docutils literal notranslate"><span class="pre">get_feature_names_out()</span></code> it seems to have remember the features.</p>
+<p>The important part is that <code class="docutils literal notranslate"><span class="pre">DictVectorizer</span></code> is a class object, and <code class="docutils literal notranslate"><span class="pre">vec_num</span></code> is an instantiation of that class, which can store variables as well. So while it seems that the line <code class="docutils literal notranslate"><span class="pre">fit_transform()</span></code> only returns <code class="docutils literal notranslate"><span class="pre">X_num</span></code> it also  <em>stores</em> the feature names.</p>
+</details>
+</section>
+</section>
+<section id="example-2-categorical-values">
+<h2>Example 2. Categorical Values<a class="headerlink" href="#example-2-categorical-values" title="Link to this heading">#</a></h2>
+<p>Now let’s look at categorical (string) data:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Weather data with categorical features</span>
+<span class="n">weather_data</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s1">&#39;city&#39;</span><span class="p">:</span> <span class="s1">&#39;Amsterdam&#39;</span><span class="p">,</span> <span class="s1">&#39;weather&#39;</span><span class="p">:</span> <span class="s1">&#39;sunny&#39;</span><span class="p">,</span> <span class="s1">&#39;wind&#39;</span><span class="p">:</span> <span class="s1">&#39;strong&#39;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;city&#39;</span><span class="p">:</span> <span class="s1">&#39;Rotterdam&#39;</span><span class="p">,</span> <span class="s1">&#39;weather&#39;</span><span class="p">:</span> <span class="s1">&#39;cloudy&#39;</span><span class="p">,</span> <span class="s1">&#39;wind&#39;</span><span class="p">:</span> <span class="s1">&#39;weak&#39;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;city&#39;</span><span class="p">:</span> <span class="s1">&#39;Utrecht&#39;</span><span class="p">,</span> <span class="s1">&#39;weather&#39;</span><span class="p">:</span> <span class="s1">&#39;rainy&#39;</span><span class="p">,</span> <span class="s1">&#39;wind&#39;</span><span class="p">:</span> <span class="s1">&#39;weak&#39;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;city&#39;</span><span class="p">:</span> <span class="s1">&#39;Amsterdam&#39;</span><span class="p">,</span> <span class="s1">&#39;weather&#39;</span><span class="p">:</span> <span class="s1">&#39;snowy&#39;</span><span class="p">,</span> <span class="s1">&#39;wind&#39;</span><span class="p">:</span> <span class="s1">&#39;weak&#39;</span><span class="p">},</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="vectorizing-categorical-data-one-hot-encoding">
+<h3>Vectorizing Categorical Data -&gt; <em>One-Hot Encoding</em><a class="headerlink" href="#vectorizing-categorical-data-one-hot-encoding" title="Link to this heading">#</a></h3>
+<p>For many types of features we don’t have the exact numbers, but instead we have different types of values it can take. For example the feature “city” can be “Amsterdam”, “Rotterdam” and “Utrecht”, so it can take 3 different categories. Again for our Machine Learning experiments we want to convert this to numbers.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create and fit the vectorizer</span>
+<span class="n">vec_cat</span> <span class="o">=</span> <span class="n">DictVectorizer</span><span class="p">(</span><span class="n">sparse</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>  <span class="c1"># sparse=False to get dense array for visualization</span>
+<span class="n">X_cat</span> <span class="o">=</span> <span class="n">vec_cat</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">weather_data</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Feature matrix is of shape:&quot;</span><span class="p">,</span> <span class="n">X_cat</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>   <span class="c1"># Shape returns (number of rows, number of columns). </span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Feature matrix: </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">X_cat</span><span class="p">)</span>
+<span class="c1"># print(&quot;\nFeature names:&quot;, vec_cat.get_feature_names_out()) </span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Feature matrix is of shape: (4, 9)
+Feature matrix: 
+ [[1. 0. 0. 0. 0. 0. 1. 1. 0.]
+ [0. 1. 0. 1. 0. 0. 0. 0. 1.]
+ [0. 0. 1. 0. 1. 0. 0. 0. 1.]
+ [1. 0. 0. 0. 0. 1. 0. 0. 1.]]
+</pre></div>
+</div>
+</div>
+</div>
+<!-- ### Understanding the Output: One-Hot Encoding -->
+<p><strong>What happened?</strong> DictVectorizer detected that all values are strings and treated them as <strong>categorical features</strong>.
+For categorical features it creates a separate collumn for each value. This representation with is called <strong>one-hot encoding</strong> as it creates a binary (0 or 1) feature for each unique value, but the model is 1 at the place of that value and 0 of the other places.</p>
+<!-- #### How Many Columns Are Created? -->
+<p>So for categorical features, the number of columns equals the number of unique values:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">city</span></code> has 3 unique values (Amsterdam, Rotterdam, Utrecht) → <strong>3 columns</strong></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">weather</span></code> has 3 unique values (sunny, cloudy, rainy, snowy) → <strong>4 columns</strong></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">wind</span></code> has 3 unique values (strong, weak) → <strong>2 columns</strong></p></li>
+<li><p><strong>Total: 9 columns</strong></p></li>
+</ul>
+<!-- #### Reading the Feature Matrix -->
+<p>Let’s look at the first row (Amsterdam, sunny, strong):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;First instance features:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">weather_data</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">First row of feature matrix:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">X_cat</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Feature names:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">vec_cat</span><span class="o">.</span><span class="n">get_feature_names_out</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>First instance features:
+{&#39;city&#39;: &#39;Amsterdam&#39;, &#39;weather&#39;: &#39;sunny&#39;, &#39;wind&#39;: &#39;strong&#39;}
+
+First row of feature matrix:
+[1. 0. 0. 0. 0. 0. 1. 1. 0.]
+
+Feature names:
+[&#39;city=Amsterdam&#39; &#39;city=Rotterdam&#39; &#39;city=Utrecht&#39; &#39;weather=cloudy&#39;
+ &#39;weather=rainy&#39; &#39;weather=snowy&#39; &#39;weather=sunny&#39; &#39;wind=strong&#39; &#39;wind=weak&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p>The vector <code class="docutils literal notranslate"><span class="pre">[1,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">1,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">1,</span> <span class="pre">0]</span></code> means:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">city=Amsterdam</span></code>: 1 (others are 0)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">weather=rainy</span></code>: 1 (others are 0)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">wind=strong</span></code>: 1 (others are 0)</p></li>
+</ul>
+<p>Each instance has exactly one ‘1’ per original feature, indicating which category it belongs to.</p>
+<p>Second check. For the 1st column we see that besided the first row, also the last row has the value 1. We can see that this is true because the last item in our <code class="docutils literal notranslate"><span class="pre">weather_data</span></code> list also has ‘Amsterdam’ as the city.</p>
+<p>As you may have realized by now, reading one-hot vectors is a tad anoying, it is good practice that you understand what is going on, but you may now understand why we prefer to read and create our feature data in dictionaries first. :)</p>
+</section>
+</section>
+<section id="example-3-when-categorical-values-go-wrong">
+<h2>Example 3: When Categorical Values Go Wrong<a class="headerlink" href="#example-3-when-categorical-values-go-wrong" title="Link to this heading">#</a></h2>
+<p>What happens if we accidentally have categorical data stored as numbers? Let’s see:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Oops! City codes stored as numbers</span>
+<span class="n">bad_data</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s1">&#39;city_code&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;weather&#39;</span><span class="p">:</span> <span class="s1">&#39;rainy&#39;</span><span class="p">},</span>   <span class="c1"># 1 = Amsterdam</span>
+    <span class="p">{</span><span class="s1">&#39;city_code&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;weather&#39;</span><span class="p">:</span> <span class="s1">&#39;sunny&#39;</span><span class="p">},</span>   <span class="c1"># 2 = Rotterdam</span>
+    <span class="p">{</span><span class="s1">&#39;city_code&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;weather&#39;</span><span class="p">:</span> <span class="s1">&#39;cloudy&#39;</span><span class="p">},</span>  <span class="c1"># 1 = Amsterdam</span>
+    <span class="p">{</span><span class="s1">&#39;city_code&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;weather&#39;</span><span class="p">:</span> <span class="s1">&#39;rainy&#39;</span><span class="p">},</span>   <span class="c1"># 3 = Utrecht</span>
+<span class="p">]</span>
+
+<span class="n">vec_bad</span> <span class="o">=</span> <span class="n">DictVectorizer</span><span class="p">(</span><span class="n">sparse</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">X_bad</span> <span class="o">=</span> <span class="n">vec_bad</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">bad_data</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Feature matrix (WRONG!):&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">X_bad</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Feature names:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">vec_bad</span><span class="o">.</span><span class="n">get_feature_names_out</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Feature matrix (WRONG!):
+[[1. 0. 1. 0.]
+ [2. 0. 0. 1.]
+ [1. 1. 0. 0.]
+ [3. 0. 1. 0.]]
+
+Feature names:
+[&#39;city_code&#39; &#39;weather=cloudy&#39; &#39;weather=rainy&#39; &#39;weather=sunny&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Problem!</strong></p>
+<ul class="simple">
+<li><p>DictVectorizer treats <code class="docutils literal notranslate"><span class="pre">city_code</span></code> as a numerical feature because the values are numbers. But city codes are categorical, so while we can still distinghuish the cities in this way, it creates a ordering right now that is likely very random to us, but for the machine means a lot.</p></li>
+<li><p>Due to this arbirary ordering it seems both that city 2 (Rotterdam) is is “twice as much” as city 1 (Amsterdam), something that will not sit right with people form Amsterdam. Moreover, the classification algorithms we will train later on can not really separate the classes right now, as the effect of the other city codes mess with eachother. So let’s fix this again.</p></li>
+</ul>
+<p><strong>The fix:</strong> Convert categorical data to strings before vectorizing:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Fix: Convert to strings</span>
+<span class="n">good_data</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s1">&#39;city_code&#39;</span><span class="p">:</span> <span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="s1">&#39;weather&#39;</span><span class="p">:</span> <span class="s1">&#39;rainy&#39;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;city_code&#39;</span><span class="p">:</span> <span class="s1">&#39;2&#39;</span><span class="p">,</span> <span class="s1">&#39;weather&#39;</span><span class="p">:</span> <span class="s1">&#39;sunny&#39;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;city_code&#39;</span><span class="p">:</span> <span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="s1">&#39;weather&#39;</span><span class="p">:</span> <span class="s1">&#39;cloudy&#39;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;city_code&#39;</span><span class="p">:</span> <span class="s1">&#39;3&#39;</span><span class="p">,</span> <span class="s1">&#39;weather&#39;</span><span class="p">:</span> <span class="s1">&#39;rainy&#39;</span><span class="p">},</span>
+<span class="p">]</span>
+
+<span class="n">vec_good</span> <span class="o">=</span> <span class="n">DictVectorizer</span><span class="p">(</span><span class="n">sparse</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">X_good</span> <span class="o">=</span> <span class="n">vec_good</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">good_data</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Feature matrix (CORRECT!):&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">X_good</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Feature names:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">vec_good</span><span class="o">.</span><span class="n">get_feature_names_out</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Feature matrix (CORRECT!):
+[[1. 0. 0. 0. 1. 0.]
+ [0. 1. 0. 0. 0. 1.]
+ [1. 0. 0. 1. 0. 0.]
+ [0. 0. 1. 0. 1. 0.]]
+
+Feature names:
+[&#39;city_code=1&#39; &#39;city_code=2&#39; &#39;city_code=3&#39; &#39;weather=cloudy&#39;
+ &#39;weather=rainy&#39; &#39;weather=sunny&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now <code class="docutils literal notranslate"><span class="pre">city_code</span></code> is properly one-hot encoded with 3 columns!</p>
+<p><strong>Key lesson:</strong> Always ensure your categorical variables are stored as strings, not numbers, before using DictVectorizer. But also don’t forget that for some features you really do want the numerical values, for example for an NLP task where we want to store a feature <code class="docutils literal notranslate"><span class="pre">word_length</span></code> to count then number of characters in a word, we really do want to use an integer number as scale means something here.</p>
+</section>
+<section id="example-4-mixed-features">
+<h2>Example 4: Mixed Features<a class="headerlink" href="#example-4-mixed-features" title="Link to this heading">#</a></h2>
+<p>Real-world data often has both categorical and numerical features:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Housing data (simplified)</span>
+<span class="n">housing_data</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s1">&#39;city&#39;</span><span class="p">:</span> <span class="s1">&#39;Amsterdam&#39;</span><span class="p">,</span> <span class="s1">&#39;rooms&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;area_m2&#39;</span><span class="p">:</span> <span class="mf">75.0</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;apartment&#39;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;city&#39;</span><span class="p">:</span> <span class="s1">&#39;Rotterdam&#39;</span><span class="p">,</span> <span class="s1">&#39;rooms&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;area_m2&#39;</span><span class="p">:</span> <span class="mf">120.0</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;house&#39;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;city&#39;</span><span class="p">:</span> <span class="s1">&#39;Utrecht&#39;</span><span class="p">,</span> <span class="s1">&#39;rooms&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;area_m2&#39;</span><span class="p">:</span> <span class="mf">55.0</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;apartment&#39;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;city&#39;</span><span class="p">:</span> <span class="s1">&#39;Amsterdam&#39;</span><span class="p">,</span> <span class="s1">&#39;rooms&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;area_m2&#39;</span><span class="p">:</span> <span class="mf">150.0</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;house&#39;</span><span class="p">},</span>
+<span class="p">]</span>
+
+<span class="n">vec_mixed</span> <span class="o">=</span> <span class="n">DictVectorizer</span><span class="p">(</span><span class="n">sparse</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">X_mixed</span> <span class="o">=</span> <span class="n">vec_mixed</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">housing_data</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Feature matrix:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">X_mixed</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Feature names:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">vec_mixed</span><span class="o">.</span><span class="n">get_feature_names_out</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Feature matrix:
+[[ 75.   1.   0.   0.   3.   1.   0.]
+ [120.   0.   1.   0.   4.   0.   1.]
+ [ 55.   0.   0.   1.   2.   1.   0.]
+ [150.   1.   0.   0.   5.   0.   1.]]
+
+Feature names:
+[&#39;area_m2&#39; &#39;city=Amsterdam&#39; &#39;city=Rotterdam&#39; &#39;city=Utrecht&#39; &#39;rooms&#39;
+ &#39;type=apartment&#39; &#39;type=house&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Column count breakdown:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">area_m2</span></code> (numerical) → 1 column</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">city</span></code> (3 unique values) → 3 columns</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rooms</span></code> (numerical) → 1 column</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">type</span></code> (2 unique values) → 2 columns</p></li>
+<li><p><strong>Total: 7 columns</strong></p></li>
+</ul>
+<p>Notice how <code class="docutils literal notranslate"><span class="pre">city</span></code> and <code class="docutils literal notranslate"><span class="pre">type</span></code> (strings) are one-hot encoded, while <code class="docutils literal notranslate"><span class="pre">rooms</span></code> and <code class="docutils literal notranslate"><span class="pre">area_m2</span></code> (numbers) remain as single numerical features.</p>
+</section>
+<section id="sparse-vs-dense-representation">
+<h2>Sparse vs Dense Representation<a class="headerlink" href="#sparse-vs-dense-representation" title="Link to this heading">#</a></h2>
+<p>When you have many categorical features with many possible values, most entries in the feature matrix are zeros. This creates <strong>sparse</strong> matrices (think of it that most of the values are 0). Let’s see the difference:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a larger dataset with more categories</span>
+<span class="n">large_data</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s1">&#39;city&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;City_</span><span class="si">{</span><span class="n">i</span><span class="o">%</span><span class="mi">10</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;district&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;District_</span><span class="si">{</span><span class="n">i</span><span class="o">%</span><span class="mi">20</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;price&#39;</span><span class="p">:</span> <span class="n">i</span><span class="o">*</span><span class="mi">1000</span><span class="p">}</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span>
+<span class="p">]</span>
+
+<span class="c1"># Dense representation</span>
+<span class="n">vec_dense</span> <span class="o">=</span> <span class="n">DictVectorizer</span><span class="p">(</span><span class="n">sparse</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">X_dense</span> <span class="o">=</span> <span class="n">vec_dense</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">large_data</span><span class="p">)</span>
+
+<span class="c1"># Sparse representation (default)</span>
+<span class="n">vec_sparse</span> <span class="o">=</span> <span class="n">DictVectorizer</span><span class="p">(</span><span class="n">sparse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">X_sparse</span> <span class="o">=</span> <span class="n">vec_sparse</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">large_data</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Dense matrix shape: </span><span class="si">{</span><span class="n">X_dense</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2"> - Type of the variable: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">X_dense</span><span class="p">)</span><span class="si">}</span><span class="s2">  (classic Numpy array, which we like)&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Dense matrix size in memory: </span><span class="si">{</span><span class="n">X_dense</span><span class="o">.</span><span class="n">nbytes</span><span class="si">}</span><span class="s2"> bytes&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Sparse matrix shape: </span><span class="si">{</span><span class="n">X_sparse</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2"> - Type of the variable: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">X_sparse</span><span class="p">)</span><span class="si">}</span><span class="s2">  (weird Scipy sparse matrix type)&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Sparse matrix size in memory: </span><span class="si">{</span><span class="n">X_sparse</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">nbytes</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">X_sparse</span><span class="o">.</span><span class="n">indptr</span><span class="o">.</span><span class="n">nbytes</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">X_sparse</span><span class="o">.</span><span class="n">indices</span><span class="o">.</span><span class="n">nbytes</span><span class="si">}</span><span class="s2"> bytes&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Memory savings: </span><span class="si">{</span><span class="p">(</span><span class="mi">1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="p">(</span><span class="n">X_sparse</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">nbytes</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">X_sparse</span><span class="o">.</span><span class="n">indptr</span><span class="o">.</span><span class="n">nbytes</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">X_sparse</span><span class="o">.</span><span class="n">indices</span><span class="o">.</span><span class="n">nbytes</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">X_dense</span><span class="o">.</span><span class="n">nbytes</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">100</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">%&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dense matrix shape: (50, 31) - Type of the variable: &lt;class &#39;numpy.ndarray&#39;&gt;  (classic Numpy array, which we like)
+Dense matrix size in memory: 12400 bytes
+
+Sparse matrix shape: (50, 31) - Type of the variable: &lt;class &#39;scipy.sparse._csr.csr_matrix&#39;&gt;  (weird Scipy sparse matrix type)
+Sparse matrix size in memory: 2004 bytes
+
+Memory savings: 83.8%
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Sparse matrices</strong> only store non-zero values, making them much more memory-efficient. This is especially important when working with large datasets or many categorical features. However, when we create Machine Learning algorithms we often do want the original sparse vector.</p>
+</section>
+<section id="handling-unknown-values">
+<h2>Handling Unknown Values<a class="headerlink" href="#handling-unknown-values" title="Link to this heading">#</a></h2>
+<p>Untill now our DictVectorizer used the function <code class="docutils literal notranslate"><span class="pre">vec.fit_transform()</span></code>, which is nice in the sense that it is only 1 line of code (and we coders are lazy by nature), but for our experiments this is a problem.
+When we have different dataset splits, lets say our training data, test data, or validation data. Then perhaps we don’t want to do fit() and transform() on each split separately, but use it on each of them combined.
+An issue that could appear if we do <code class="docutils literal notranslate"><span class="pre">vec.fit_transform()</span></code> on each split separately is 1) What if some values are not in one split but do appear in the others? 2) What if the ordering of our features is different for each?
+Let’s see some of these issues in practice to understand them better.</p>
+<!-- But it is crucial here that the columns of them match, and that it is complete, that is we have enough column to account for all our features (numerical or catagorical). -->
+<p>What happens when new data has categories not seen during training?</p>
+<section id="error-new-feature-values-in-test-are-dropped">
+<h3>Error - new feature values in test are dropped<a class="headerlink" href="#error-new-feature-values-in-test-are-dropped" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Original training data</span>
+<span class="n">train_data</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s1">&#39;city&#39;</span><span class="p">:</span> <span class="s1">&#39;Amsterdam&#39;</span><span class="p">,</span> <span class="s1">&#39;weather&#39;</span><span class="p">:</span> <span class="s1">&#39;rainy&#39;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;city&#39;</span><span class="p">:</span> <span class="s1">&#39;Rotterdam&#39;</span><span class="p">,</span> <span class="s1">&#39;weather&#39;</span><span class="p">:</span> <span class="s1">&#39;sunny&#39;</span><span class="p">},</span>
+<span class="p">]</span>
+
+<span class="c1"># New test data with unseen category</span>
+<span class="n">test_data</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s1">&#39;city&#39;</span><span class="p">:</span> <span class="s1">&#39;Amsterdam&#39;</span><span class="p">,</span> <span class="s1">&#39;weather&#39;</span><span class="p">:</span> <span class="s1">&#39;sunny&#39;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;city&#39;</span><span class="p">:</span> <span class="s1">&#39;Den Haag&#39;</span><span class="p">,</span> <span class="s1">&#39;weather&#39;</span><span class="p">:</span> <span class="s1">&#39;rainy&#39;</span><span class="p">},</span>  <span class="c1"># New city!</span>
+<span class="p">]</span>
+
+<span class="n">vec</span> <span class="o">=</span> <span class="n">DictVectorizer</span><span class="p">(</span><span class="n">sparse</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">vec</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_data</span><span class="p">)</span>
+
+<span class="c1"># we could also do fit and transform in one go with:</span>
+<span class="c1"># X_train = vec.fit_transform(train_data)</span>
+
+<span class="c1"># Transform test data - unseen values are ignored by default</span>
+<span class="n">X_test</span> <span class="o">=</span> <span class="n">vec</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">test_data</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Test features (Shape is: </span><span class="si">{</span><span class="n">X_test</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">):&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Feature names:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">vec</span><span class="o">.</span><span class="n">get_feature_names_out</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Test features (Shape is: (2, 4)):
+[[1. 0. 0. 1.]
+ [0. 0. 1. 0.]]
+
+Feature names:
+[&#39;city=Amsterdam&#39; &#39;city=Rotterdam&#39; &#39;weather=rainy&#39; &#39;weather=sunny&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Notice that ‘Den Haag’ is silently ignored. All its columns for the city feature are zeros, because ‘Den Haag’ wasn’t in the training data, so when we fitted our DictVectorizer it was not aware of Den Haag.</p>
+</section>
+<section id="solution-ensure-that-the-dictvectorizer-is-fit-on-all-the-data-if-possible">
+<h3>Solution: Ensure that the DictVectorizer is fit on all the data (if possible)<a class="headerlink" href="#solution-ensure-that-the-dictvectorizer-is-fit-on-all-the-data-if-possible" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Original training data</span>
+<span class="n">train_data</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s1">&#39;city&#39;</span><span class="p">:</span> <span class="s1">&#39;Amsterdam&#39;</span><span class="p">,</span> <span class="s1">&#39;weather&#39;</span><span class="p">:</span> <span class="s1">&#39;rainy&#39;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;city&#39;</span><span class="p">:</span> <span class="s1">&#39;Rotterdam&#39;</span><span class="p">,</span> <span class="s1">&#39;weather&#39;</span><span class="p">:</span> <span class="s1">&#39;sunny&#39;</span><span class="p">},</span>
+<span class="p">]</span>
+
+<span class="c1"># New test data with unseen category</span>
+<span class="n">test_data</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s1">&#39;city&#39;</span><span class="p">:</span> <span class="s1">&#39;Amsterdam&#39;</span><span class="p">,</span> <span class="s1">&#39;weather&#39;</span><span class="p">:</span> <span class="s1">&#39;sunny&#39;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;city&#39;</span><span class="p">:</span> <span class="s1">&#39;Den Haag&#39;</span><span class="p">,</span> <span class="s1">&#39;weather&#39;</span><span class="p">:</span> <span class="s1">&#39;rainy&#39;</span><span class="p">},</span>  <span class="c1"># New city!</span>
+<span class="p">]</span>
+
+<span class="c1"># We combine the lists of dictionaries</span>
+<span class="n">full_data</span> <span class="o">=</span> <span class="n">train_data</span> <span class="o">+</span> <span class="n">test_data</span>
+
+<span class="c1"># We just do fit, not transforming yet, as fitting can be bit faster than fit_transform</span>
+<span class="n">vec</span> <span class="o">=</span> <span class="n">DictVectorizer</span><span class="p">(</span><span class="n">sparse</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">vec</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">full_data</span><span class="p">)</span>
+
+<span class="c1"># Transform test data - this time &#39;Den Haag&#39; is known to the vectorizer </span>
+<span class="n">X_test</span> <span class="o">=</span> <span class="n">vec</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">test_data</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Test features (Shape is: </span><span class="si">{</span><span class="n">X_test</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">):&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Feature names:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">vec</span><span class="o">.</span><span class="n">get_feature_names_out</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Test features (Shape is: (2, 5)):
+[[1. 0. 0. 0. 1.]
+ [0. 1. 0. 1. 0.]]
+
+Feature names:
+[&#39;city=Amsterdam&#39; &#39;city=Den Haag&#39; &#39;city=Rotterdam&#39; &#39;weather=rainy&#39;
+ &#39;weather=sunny&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p>So now our <code class="docutils literal notranslate"><span class="pre">vec.transform()</span></code> returns vectors trained on the full dataset, so that each vector has 5 rows, also one for “Den Haag”</p>
+</section>
+</section>
+<section id="self-check-questions">
+<h2>Self-check questions:<a class="headerlink" href="#self-check-questions" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>What are the different types of features in machine learning?</p></li>
+<li><p>How are the different features transformed when we vectorize them?</p></li>
+<li><p>How does <code class="docutils literal notranslate"><span class="pre">DictVectorize</span></code> work, what does <code class="docutils literal notranslate"><span class="pre">vec.fit()</span></code>, <code class="docutils literal notranslate"><span class="pre">vec.transform()</span></code>,  and <code class="docutils literal notranslate"><span class="pre">vec.fit_transform()</span></code> do?</p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./my_notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../intro.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Tutorial notebooks - Machine Learning for NLP course</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="m1_2_linear_and_logistic_regression.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">M1.2 Linear and Logistic Regression</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-objectives">Learning Objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction-to-feature-engineering">Introduction to Feature Engineering</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#understanding-features">Understanding Features</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-a-feature">What is a Feature?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#types-of-features">Types of Features</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-1-numerical-features">Example 1: Numerical Features</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectorizing-the-data-dictvectorizer">Vectorizing the data: <code class="docutils literal notranslate"><span class="pre">DictVectorizer</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-2-categorical-values">Example 2. Categorical Values</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectorizing-categorical-data-one-hot-encoding">Vectorizing Categorical Data -&gt; <em>One-Hot Encoding</em></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-3-when-categorical-values-go-wrong">Example 3: When Categorical Values Go Wrong</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-4-mixed-features">Example 4: Mixed Features</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sparse-vs-dense-representation">Sparse vs Dense Representation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#handling-unknown-values">Handling Unknown Values</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#error-new-feature-values-in-test-are-dropped">Error - new feature values in test are dropped</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#solution-ensure-that-the-dictvectorizer-is-fit-on-all-the-data-if-possible">Solution: Ensure that the DictVectorizer is fit on all the data (if possible)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#self-check-questions">Self-check questions:</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By The Jupyter Book Community
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

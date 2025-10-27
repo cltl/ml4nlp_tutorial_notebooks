@@ -1,0 +1,114 @@
+/* Reduce right sidebar (page TOC) width */
+html {
+    --pst-sidebar-secondary: 14rem !important;
+}
+
+/* Reduce left sidebar width if desired */
+.bd-sidebar-primary {
+    width: 15rem !important;
+}
+
+/* CRITICAL: Expand the outer containers */
+.bd-container {
+    max-width: 99% !important;
+}
+
+.bd-container .bd-container__inner {
+    max-width: 99% !important;
+}
+
+/* Expand the article container (main content) */
+.bd-main .bd-content .bd-article-container {
+    max-width: 100em !important;
+    transition: max-width 0.3s ease, margin-right 0.3s ease;
+}
+
+/* CRITICAL: Keep sidebar sticky while scrolling */
+.bd-sidebar-secondary {
+    position: sticky !important;
+    top: var(--pst-header-height) !important;
+    height: calc(100vh - var(--pst-header-height)) !important;
+    overflow-y: auto !important;
+    transition: width 0.3s ease !important;
+}
+
+/* TOC Header Toggle - Clickable header in the sidebar */
+.toc-header-toggle {
+    padding: 0.75rem 1rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--pst-color-text-base);
+    background-color: var(--pst-color-surface);
+    border-bottom: 1px solid var(--pst-color-border);
+    cursor: pointer;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: background-color 0.2s ease;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.toc-header-toggle:hover {
+    background-color: var(--pst-color-on-background);
+}
+
+.toc-toggle-icon {
+    font-size: 1rem;
+    display: inline-block;
+    transition: transform 0.3s ease;
+}
+
+/* When collapsed, hide the text but keep the icon */
+.bd-sidebar-secondary.collapsed .toc-title-text,
+.bd-sidebar-secondary.collapsed .sidebar-primary-items-body,
+.bd-sidebar-secondary.collapsed .bd-toc,
+.bd-sidebar-secondary.collapsed .sidebar-secondary-items,
+.bd-sidebar-secondary.collapsed .bd-sidebar-secondary>*:not(.toc-header-toggle) {
+    display: none !important;
+}
+
+/* Collapsed sidebar - narrow vertical bar */
+.bd-sidebar-secondary.collapsed {
+    width: 40px !important;
+    min-width: 40px !important;
+    overflow: hidden !important;
+}
+
+.bd-sidebar-secondary.collapsed .toc-header-toggle {
+    padding: 0.75rem 0.3rem;
+    justify-content: center;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+}
+
+.bd-sidebar-secondary.collapsed .toc-toggle-icon {
+    writing-mode: horizontal-tb;
+    transform: rotate(0deg);
+}
+
+/* Expand article container when sidebar is collapsed */
+body:has(.bd-sidebar-secondary.collapsed) .bd-article-container {
+    max-width: calc(100em + var(--pst-sidebar-secondary) - 40px) !important;
+}
+
+body:has(.bd-sidebar-secondary.collapsed) .bd-article,
+body:has(.bd-sidebar-secondary.collapsed) .bd-content {
+    margin-right: 0 !important;
+}
+
+/* Make sure existing page-toc title doesn't interfere */
+.bd-sidebar-secondary .sidebar-header-items__title {
+    display: none !important;
+}
+
+/* Adjust scrollbar for collapsed state */
+.bd-sidebar-secondary.collapsed::-webkit-scrollbar {
+    width: 0px;
+}
+
+.bd-sidebar-secondary.collapsed {
+    scrollbar-width: none;
+}

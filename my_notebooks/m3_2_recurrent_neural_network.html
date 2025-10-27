@@ -1,0 +1,2117 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>M3.2 Recurrent Neural Networks and LSTMs &#8212; My sample book</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=e01d92e3" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'my_notebooks/m3_2_recurrent_neural_network';</script>
+    <script src="../_static/toggle_sidebar.js?v=490e729f"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="M3.3 Transformers" href="m3_3_transformer.html" />
+    <link rel="prev" title="M3.1 Convolutional Neural Network" href="m3_1_convolutional_neural_network.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo_vu.png" class="logo__image only-light" alt="My sample book - Home"/>
+    <script>document.write(`<img src="../_static/logo_vu.png" class="logo__image only-dark" alt="My sample book - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Module 1 - Basic ML models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="m1_1_feature_engineering.html">M1.1 Feature Engineering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="m1_2_linear_and_logistic_regression.html">M1.2 Linear and Logistic Regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="m1_3_naive_bayes.html">M1.3 Naive Bayes Classifier</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Module 2 - Advanced ML models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="m2_1_support_vector_machines.html">M2.1 Support Vector Machines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="m2_2_embeddings.html">M2.1 Word Embeddings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="m2_3_neural_networks.html">M2.3 Neural Networks</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Module 3 - Deep Learning models</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="m3_1_convolutional_neural_network.html">M3.1 Convolutional Neural Network</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">M3.2 Recurrent Neural Networks and LSTMs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="m3_3_transformer.html">M3.3 Transformers</a></li>
+
+
+
+
+
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/my_notebooks/m3_2_recurrent_neural_network.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>M3.2 Recurrent Neural Networks and LSTMs</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-objectives">Learning Objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup-and-imports">Setup and Imports</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recurrent-neural-networks">1. Recurrent Neural Networks</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-an-rnn">1.1 What is an RNN?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mathematical-formulation">Mathematical Formulation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#training-rnns-backpropagation-through-time">1.2 Training RNNs: Backpropagation Through Time</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rnn-application-types">2. RNN Application Types</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#acceptor-sequence-classification">2.1 Acceptor: Sequence Classification</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#text-preprocessing">Text Preprocessing</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#build-rnn-acceptor-model">Build RNN Acceptor Model</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#train-the-acceptor">Train the Acceptor</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#test-prediction">Test Prediction</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#transducer-sequence-labeling">2.2 Transducer: Sequence Labeling</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#prepare-pos-tagging-data">Prepare POS Tagging Data</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#build-rnn-transducer-model-for-pos-tagging">Build RNN Transducer Model for POS Tagging</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#train-the-transducer">Train the Transducer</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#encoder-decoder-sequence-to-sequence">2.3 Encoder-Decoder: Sequence-to-Sequence</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#prepare-sequence-to-sequence-data">Prepare Sequence-to-Sequence Data</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#build-encoder-decoder-model">Build Encoder-Decoder Model</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#train-encoder-decoder">Train Encoder-Decoder</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bidirectional-rnn">2.4 Bidirectional RNN</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#train-bidirectional-rnn">Train Bidirectional RNN</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#long-short-term-memory-lstm">3. Long Short-Term Memory (LSTM)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-lstm">3.1 Why LSTM?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lstm-architecture">3.2 LSTM Architecture</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Mathematical Formulation</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#application-1-text-generation-with-lstm">3.3 Application 1: Text Generation with LSTM</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#prepare-character-level-data">Prepare Character-Level Data</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#create-training-sequences">Create Training Sequences</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#build-character-level-lstm">Build Character-Level LSTM</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#train-character-lstm">Train Character LSTM</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-shakespeare-style-text">Generate Shakespeare-Style Text</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#application-2-text-classification-with-lstm">3.4 Application 2: Text Classification with LSTM</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#train-lstm-classifier">Train LSTM Classifier</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#compare-rnn-vs-lstm-performance">Compare RNN vs LSTM Performance</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#visualize-training-history">Visualize Training History</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#self-check-questions">4. Self-Check Questions</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="m3-2-recurrent-neural-networks-and-lstms">
+<h1>M3.2 Recurrent Neural Networks and LSTMs<a class="headerlink" href="#m3-2-recurrent-neural-networks-and-lstms" title="Link to this heading">#</a></h1>
+<p><a class="reference external" href="https://github.com/cltl/ml4nlp_tutorial_notebooks/blob/main/my_notebooks/m3_2_recurrent_neural_network.ipynb"><img alt="View notebooks on Github" src="https://img.shields.io/static/v1.svg?logo=github&amp;label=Repo&amp;message=View%20On%20Github&amp;color=lightgrey" /></a>
+<a class="reference external" href="https://colab.research.google.com/github/cltl/ml4nlp_tutorial_notebooks/blob/main/my_notebooks/m3_2_recurrent_neural_network.ipynb"><img alt="Open In Collab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p>
+<section id="learning-objectives">
+<h2>Learning Objectives<a class="headerlink" href="#learning-objectives" title="Link to this heading">#</a></h2>
+<p>By working through this notebook, you will learn:</p>
+<ul class="simple">
+<li><p>What an RNN is and important aspects of it’s architecture</p></li>
+<li><p>What different type of RNN setups there are</p></li>
+<li><p>How to train each of the RNN variants for a representative task.</p>
+<ul>
+<li><p>Including: Sentiment Classification, POS tagging, Sequence inversion</p></li>
+</ul>
+</li>
+<li><p>What an LSTM is, what components it has</p></li>
+<li><p>How to train an LSTM for classification and text generation: New Shakespear Bot :)</p></li>
+</ul>
+</section>
+<section id="setup-and-imports">
+<h2>Setup and Imports<a class="headerlink" href="#setup-and-imports" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ignore warning messages for cleaner output of the website</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;TF_CPP_MIN_LOG_LEVEL&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;3&#39;</span>  <span class="c1">#  Prevent Tensorflow from printing messages </span>
+
+<span class="c1"># Import necessary libraries</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tensorflow</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">tf</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tensorflow</span><span class="w"> </span><span class="kn">import</span> <span class="n">keras</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tensorflow.keras</span><span class="w"> </span><span class="kn">import</span> <span class="n">layers</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tensorflow.keras.preprocessing.text</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tokenizer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tensorflow.keras.preprocessing.sequence</span><span class="w"> </span><span class="kn">import</span> <span class="n">pad_sequences</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_dataset</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">train_test_split</span>
+
+<span class="c1"># Set random seeds</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">tf</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">set_seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;TensorFlow version: </span><span class="si">{</span><span class="n">tf</span><span class="o">.</span><span class="n">__version__</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TensorFlow version: 2.14.0
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="recurrent-neural-networks">
+<h2>1. Recurrent Neural Networks<a class="headerlink" href="#recurrent-neural-networks" title="Link to this heading">#</a></h2>
+<section id="what-is-an-rnn">
+<h3>1.1 What is an RNN?<a class="headerlink" href="#what-is-an-rnn" title="Link to this heading">#</a></h3>
+<p>A Recurrent Neural Network (RNN) is a type of neural network designed to process sequential data. Unlike feedforward networks, RNNs have connections that form cycles, allowing information to persist.</p>
+</section>
+<section id="mathematical-formulation">
+<h3>Mathematical Formulation<a class="headerlink" href="#mathematical-formulation" title="Link to this heading">#</a></h3>
+<p>At each time step <span class="math notranslate nohighlight">\(t\)</span>, an RNN computes:
+$<span class="math notranslate nohighlight">\(h_t = \tanh(W_{hh} h_{t-1} + W_{xh} x_t + b_h)\)</span><span class="math notranslate nohighlight">\(
+ \)</span><span class="math notranslate nohighlight">\(y_t = W_{hy} h_t + b_y\)</span>$
+Where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(x_t\)</span> is the input at time <span class="math notranslate nohighlight">\(t\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(h_t\)</span> is the hidden state at time <span class="math notranslate nohighlight">\(t\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(y_t\)</span> is the output at time <span class="math notranslate nohighlight">\(t\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(W_{hh}, W_{xh}, W_{hy}\)</span> are weight matrices</p></li>
+<li><p><span class="math notranslate nohighlight">\(b_h, b_y\)</span> are bias vectors</p></li>
+</ul>
+<p>The key property is that <span class="math notranslate nohighlight">\(h_t\)</span> depends on <span class="math notranslate nohighlight">\(h_{t-1}\)</span>, allowing the network to maintain a “memory” of previous inputs.</p>
+</section>
+<section id="training-rnns-backpropagation-through-time">
+<h3>1.2 Training RNNs: Backpropagation Through Time<a class="headerlink" href="#training-rnns-backpropagation-through-time" title="Link to this heading">#</a></h3>
+<p>RNNs are trained using <strong>Backpropagation Through Time (BPTT)</strong>, which unfolds the network across time steps and applies standard backpropagation. The gradient is computed by summing contributions from all time steps.</p>
+<p><strong>Challenge:</strong> Gradients can vanish or explode when backpropagated through many time steps, making it difficult to learn long-range dependencies. This motivates architectures like LSTM and GRU.</p>
+</section>
+</section>
+<section id="rnn-application-types">
+<h2>2. RNN Application Types<a class="headerlink" href="#rnn-application-types" title="Link to this heading">#</a></h2>
+<p>RNNs can be configured in different architectures depending on the task:</p>
+<ol class="arabic simple">
+<li><p><strong>Acceptor</strong>: Many-to-one (sequence → single output)</p></li>
+<li><p><strong>Transducer</strong>: Many-to-many, same length (sequence → sequence)</p></li>
+<li><p><strong>Encoder-Decoder</strong>: Many-to-many, different length (sequence → sequence)</p></li>
+<li><p><strong>Bidirectional RNN</strong>: Process sequence in both directions</p></li>
+</ol>
+<section id="acceptor-sequence-classification">
+<h3>2.1 Acceptor: Sequence Classification<a class="headerlink" href="#acceptor-sequence-classification" title="Link to this heading">#</a></h3>
+<!-- ![acceptor_fig](./figures/rnn_figs/acceptor.png) -->
+<p align="center">
+    <img src="https://raw.githubusercontent.com/cltl/ml4nlp_tutorial_notebooks/refs/heads/main/figures/rnn_figs/acceptor.png" alt="acceptor_fig" style="max-width:40%;">
+</p>
+<ul class="simple">
+<li><p><strong>Use case:</strong> Sentiment analysis, topic classification</p></li>
+<li><p><strong>Architecture:</strong> Process entire sequence and output a single prediction</p></li>
+<li><p><strong>Example:</strong> Binary sentiment classification on movie reviews</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load IMDb dataset for sentiment classification</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Loading IMDb dataset...&quot;</span><span class="p">)</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">load_dataset</span><span class="p">(</span><span class="s2">&quot;imdb&quot;</span><span class="p">,</span> <span class="n">split</span><span class="o">=</span><span class="s2">&quot;train&quot;</span><span class="p">)</span>  <span class="c1"># Subset for faster training</span>
+<span class="c1"># shuffle and select a smaller subset for quick demonstration</span>
+<span class="c1"># dataset = dataset.shuffle(seed=42).select(range(5000))</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+
+<span class="n">texts</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">]</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">]</span>
+
+<span class="c1"># Split data</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_val</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_val</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
+    <span class="n">texts</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Training samples: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Validation samples: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">X_val</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loading IMDb dataset...
+Training samples: 20000
+Validation samples: 5000
+</pre></div>
+</div>
+</div>
+</div>
+<section id="text-preprocessing">
+<h4>Text Preprocessing<a class="headerlink" href="#text-preprocessing" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Tokenization</span>
+<span class="n">max_words</span> <span class="o">=</span> <span class="mi">3000</span>
+<span class="n">max_len</span> <span class="o">=</span> <span class="mi">100</span>
+
+<span class="n">tokenizer</span> <span class="o">=</span> <span class="n">Tokenizer</span><span class="p">(</span><span class="n">num_words</span><span class="o">=</span><span class="n">max_words</span><span class="p">,</span> <span class="n">oov_token</span><span class="o">=</span><span class="s2">&quot;&lt;OOV&gt;&quot;</span><span class="p">)</span>
+<span class="n">tokenizer</span><span class="o">.</span><span class="n">fit_on_texts</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+
+<span class="c1"># Convert texts to sequences</span>
+<span class="n">X_train_seq</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">texts_to_sequences</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+<span class="n">X_val_seq</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">texts_to_sequences</span><span class="p">(</span><span class="n">X_val</span><span class="p">)</span>
+
+<span class="c1"># Pad sequences to same length</span>
+<span class="n">X_train_pad</span> <span class="o">=</span> <span class="n">pad_sequences</span><span class="p">(</span><span class="n">X_train_seq</span><span class="p">,</span> <span class="n">maxlen</span><span class="o">=</span><span class="n">max_len</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="s2">&quot;post&quot;</span><span class="p">,</span> <span class="n">truncating</span><span class="o">=</span><span class="s2">&quot;post&quot;</span><span class="p">)</span>
+<span class="n">X_val_pad</span> <span class="o">=</span> <span class="n">pad_sequences</span><span class="p">(</span><span class="n">X_val_seq</span><span class="p">,</span> <span class="n">maxlen</span><span class="o">=</span><span class="n">max_len</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="s2">&quot;post&quot;</span><span class="p">,</span> <span class="n">truncating</span><span class="o">=</span><span class="s2">&quot;post&quot;</span><span class="p">)</span>
+
+<span class="n">y_train</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">y_train</span><span class="p">)</span>
+<span class="n">y_val</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">y_val</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Vocabulary size: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">word_index</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Padded sequence shape: </span><span class="si">{</span><span class="n">X_train_pad</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Vocabulary size: 79991
+Padded sequence shape: (20000, 100)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="build-rnn-acceptor-model">
+<h4>Build RNN Acceptor Model<a class="headerlink" href="#build-rnn-acceptor-model" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p>The key RNN part of the model pipeline is <code class="docutils literal notranslate"><span class="pre">layers.SimpleRNN()</span></code>. Note that for the acceptor model we only care about the final output so we set <code class="docutils literal notranslate"><span class="pre">return_sequences=False</span></code>.</p></li>
+<li><p>Similar to the previous notebooks, we first take an embedding layer, which creates word embeddings for each word in our dataset. As usual the last layer is a dense linear layer to create a prediction over the number of output classes.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># RNN model for binary classification</span>
+<span class="n">model_acceptor</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">Sequential</span><span class="p">([</span>
+    <span class="n">layers</span><span class="o">.</span><span class="n">Embedding</span><span class="p">(</span><span class="n">input_dim</span><span class="o">=</span><span class="n">max_words</span><span class="p">,</span> <span class="n">output_dim</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span> <span class="n">input_length</span><span class="o">=</span><span class="n">max_len</span><span class="p">),</span>
+    <span class="n">layers</span><span class="o">.</span><span class="n">SimpleRNN</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="n">return_sequences</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>  <span class="c1"># Return only final hidden state</span>
+    <span class="n">layers</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="mf">0.3</span><span class="p">),</span>
+    <span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s2">&quot;sigmoid&quot;</span><span class="p">)</span>
+<span class="p">])</span>
+
+<span class="n">model_acceptor</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+    <span class="n">optimizer</span><span class="o">=</span><span class="s2">&quot;adam&quot;</span><span class="p">,</span>
+    <span class="n">loss</span><span class="o">=</span><span class="s2">&quot;binary_crossentropy&quot;</span><span class="p">,</span>
+    <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;accuracy&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="n">model_acceptor</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Model: &quot;sequential_2&quot;
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ embedding_2 (Embedding)     (None, 100, 64)           192000    
+                                                                 
+ simple_rnn_2 (SimpleRNN)    (None, 64)                8256      
+                                                                 
+ dropout_2 (Dropout)         (None, 64)                0         
+                                                                 
+ dense_2 (Dense)             (None, 1)                 65        
+                                                                 
+=================================================================
+Total params: 200321 (782.50 KB)
+Trainable params: 200321 (782.50 KB)
+Non-trainable params: 0 (0.00 Byte)
+_________________________________________________________________
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="train-the-acceptor">
+<h4>Train the Acceptor<a class="headerlink" href="#train-the-acceptor" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">history_acceptor</span> <span class="o">=</span> <span class="n">model_acceptor</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
+    <span class="n">X_train_pad</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span>
+    <span class="n">epochs</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+    <span class="n">batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span>
+    <span class="n">validation_data</span><span class="o">=</span><span class="p">(</span><span class="n">X_val_pad</span><span class="p">,</span> <span class="n">y_val</span><span class="p">),</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 1/5
+625/625 [==============================] - 13s 20ms/step - loss: 0.7089 - accuracy: 0.5089 - val_loss: 0.6948 - val_accuracy: 0.5040
+Epoch 2/5
+625/625 [==============================] - 12s 19ms/step - loss: 0.7057 - accuracy: 0.5064 - val_loss: 0.6908 - val_accuracy: 0.5268
+Epoch 3/5
+625/625 [==============================] - 12s 19ms/step - loss: 0.6896 - accuracy: 0.5393 - val_loss: 0.6750 - val_accuracy: 0.5880
+Epoch 4/5
+625/625 [==============================] - 12s 19ms/step - loss: 0.6698 - accuracy: 0.5867 - val_loss: 0.6751 - val_accuracy: 0.5760
+Epoch 5/5
+625/625 [==============================] - 12s 19ms/step - loss: 0.6160 - accuracy: 0.6757 - val_loss: 0.5843 - val_accuracy: 0.7150
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Analysis:</strong></p>
+<ul class="simple">
+<li><p>We see that the model performs the task with around 70% accuracy in this toy setup, which shows us that the model does learn to perform better on the task but it’s still much less thatn the range of ~80% we have seen using the other simpler model such as Naive Bayes Classification. The main reason is that the hyperparameters we have set are likely not optimal for this setup.
+For better performance we should apply hyper parameter optimization of:</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">max_words</span></code>  : how many words should our vocabulary have? To few words and we lose information, too many words and it becomes very difficult to learn all of them (remember zipfs law!), and we also risk overfitting</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">max_len</span></code> : How many words long should we allow the input reviews to be? Currently we say max 100 words which is not that long.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">hidden_dim</span></code> of the RNN: What should the hidden dimension of the RNN be? If it is too small, we can’t learn much, if it is too large, it becomes much harder to learn.</p></li>
+</ul>
+</section>
+<section id="test-prediction">
+<h4>Test Prediction<a class="headerlink" href="#test-prediction" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">predict_sentiment</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">tokenizer</span><span class="p">,</span> <span class="n">max_len</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Predict sentiment of a text.&quot;&quot;&quot;</span>
+    <span class="n">seq</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">texts_to_sequences</span><span class="p">([</span><span class="n">text</span><span class="p">])</span>
+    <span class="n">padded</span> <span class="o">=</span> <span class="n">pad_sequences</span><span class="p">(</span><span class="n">seq</span><span class="p">,</span> <span class="n">maxlen</span><span class="o">=</span><span class="n">max_len</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="s2">&quot;post&quot;</span><span class="p">,</span> <span class="n">truncating</span><span class="o">=</span><span class="s2">&quot;post&quot;</span><span class="p">)</span>
+    <span class="n">pred</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">padded</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">sentiment</span> <span class="o">=</span> <span class="s2">&quot;Positive&quot;</span> <span class="k">if</span> <span class="n">pred</span> <span class="o">&gt;</span> <span class="mf">0.5</span> <span class="k">else</span> <span class="s2">&quot;Negative&quot;</span>
+    <span class="k">return</span> <span class="n">sentiment</span><span class="p">,</span> <span class="n">pred</span>
+
+<span class="c1"># Test examples</span>
+<span class="n">test_examples</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;This movie was absolutely wonderful! I loved it.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Terrible film. Complete waste of time.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;It was okay, nothing special.&quot;</span>
+<span class="p">]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Sentiment Predictions:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">test_examples</span><span class="p">:</span>
+    <span class="n">sentiment</span><span class="p">,</span> <span class="n">score</span> <span class="o">=</span> <span class="n">predict_sentiment</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">model_acceptor</span><span class="p">,</span> <span class="n">tokenizer</span><span class="p">,</span> <span class="n">max_len</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Text: </span><span class="si">{</span><span class="n">text</span><span class="p">[:</span><span class="mi">50</span><span class="p">]</span><span class="si">}</span><span class="s2">...&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Prediction: </span><span class="si">{</span><span class="n">sentiment</span><span class="si">}</span><span class="s2"> (score: </span><span class="si">{</span><span class="n">score</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">)</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Sentiment Predictions:
+------------------------------------------------------------
+Text: This movie was absolutely wonderful! I loved it....
+Prediction: Positive (score: 0.7540)
+
+Text: Terrible film. Complete waste of time....
+Prediction: Negative (score: 0.2836)
+
+Text: It was okay, nothing special....
+Prediction: Negative (score: 0.2935)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="transducer-sequence-labeling">
+<h3>2.2 Transducer: Sequence Labeling<a class="headerlink" href="#transducer-sequence-labeling" title="Link to this heading">#</a></h3>
+<p align="center">
+    <img src="https://raw.githubusercontent.com/cltl/ml4nlp_tutorial_notebooks/refs/heads/main/figures/rnn_figs/transducer_rrn.png" alt="transducor_fig" style="max-width:40%;">
+</p>
+<ul class="simple">
+<li><p><strong>Use case:</strong> Part-of-speech tagging, Named Entity Recognition</p></li>
+<li><p><strong>Architecture:</strong> Output a label for each input token (same length)</p></li>
+<li><p><strong>Example:</strong> Part-of-Speech (POS) Tagging</p></li>
+</ul>
+<p>Package for installation: <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">conllu</span></code></p>
+ <!-- ```bash
+ pip install conllu
+ ``` --><div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load Universal Dependencies POS tagging dataset</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Loading Universal Dependencies POS dataset...&quot;</span><span class="p">)</span>
+<span class="n">pos_dataset</span> <span class="o">=</span> <span class="n">load_dataset</span><span class="p">(</span><span class="s2">&quot;universal_dependencies&quot;</span><span class="p">,</span> <span class="s2">&quot;en_ewt&quot;</span><span class="p">,</span> <span class="n">split</span><span class="o">=</span><span class="s2">&quot;train&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; Total samples in POS dataset: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">pos_dataset</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># shuffle and get the first 5000 samples for quick demonstration</span>
+<span class="n">pos_dataset</span> <span class="o">=</span> <span class="n">pos_dataset</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="c1"># .select(range(5000))</span>
+
+
+<span class="c1"># Extract tokens and POS tags</span>
+<span class="n">tokens_list</span> <span class="o">=</span> <span class="n">pos_dataset</span><span class="p">[</span><span class="s2">&quot;tokens&quot;</span><span class="p">]</span>
+<span class="n">pos_tags_list</span> <span class="o">=</span> <span class="n">pos_dataset</span><span class="p">[</span><span class="s2">&quot;upos&quot;</span><span class="p">]</span>
+
+<span class="c1"># Universal POS tags</span>
+<span class="n">pos_labels</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;ADJ&quot;</span><span class="p">,</span> <span class="s2">&quot;ADP&quot;</span><span class="p">,</span> <span class="s2">&quot;ADV&quot;</span><span class="p">,</span> <span class="s2">&quot;AUX&quot;</span><span class="p">,</span> <span class="s2">&quot;CCONJ&quot;</span><span class="p">,</span> <span class="s2">&quot;DET&quot;</span><span class="p">,</span> <span class="s2">&quot;INTJ&quot;</span><span class="p">,</span> <span class="s2">&quot;NOUN&quot;</span><span class="p">,</span> 
+              <span class="s2">&quot;NUM&quot;</span><span class="p">,</span> <span class="s2">&quot;PART&quot;</span><span class="p">,</span> <span class="s2">&quot;PRON&quot;</span><span class="p">,</span> <span class="s2">&quot;PROPN&quot;</span><span class="p">,</span> <span class="s2">&quot;PUNCT&quot;</span><span class="p">,</span> <span class="s2">&quot;SCONJ&quot;</span><span class="p">,</span> <span class="s2">&quot;SYM&quot;</span><span class="p">,</span> <span class="s2">&quot;VERB&quot;</span><span class="p">,</span> <span class="s2">&quot;X&quot;</span><span class="p">]</span>
+<span class="c1"># Create tag to index mapping</span>
+<span class="n">tag2idx</span> <span class="o">=</span> <span class="p">{</span><span class="n">tag</span><span class="p">:</span> <span class="n">idx</span> <span class="o">+</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">tag</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">pos_labels</span><span class="p">)}</span>  <span class="c1"># Reserve 0 for padding</span>
+<span class="n">tag2idx</span><span class="p">[</span><span class="s2">&quot;&lt;PAD&gt;&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">idx2tag</span> <span class="o">=</span> <span class="p">{</span><span class="n">idx</span><span class="p">:</span> <span class="n">tag</span> <span class="k">for</span> <span class="n">tag</span><span class="p">,</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">tag2idx</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+
+<span class="n">num_tags</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">tag2idx</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of sequences: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">tokens_list</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;POS tags: </span><span class="si">{</span><span class="n">pos_labels</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total tags (including padding): </span><span class="si">{</span><span class="n">num_tags</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loading Universal Dependencies POS dataset...
+ Total samples in POS dataset: 12543
+Number of sequences: 12543
+POS tags: [&#39;ADJ&#39;, &#39;ADP&#39;, &#39;ADV&#39;, &#39;AUX&#39;, &#39;CCONJ&#39;, &#39;DET&#39;, &#39;INTJ&#39;, &#39;NOUN&#39;, &#39;NUM&#39;, &#39;PART&#39;, &#39;PRON&#39;, &#39;PROPN&#39;, &#39;PUNCT&#39;, &#39;SCONJ&#39;, &#39;SYM&#39;, &#39;VERB&#39;, &#39;X&#39;]
+Total tags (including padding): 18
+</pre></div>
+</div>
+</div>
+</div>
+<section id="prepare-pos-tagging-data">
+<h4>Prepare POS Tagging Data<a class="headerlink" href="#prepare-pos-tagging-data" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_dataset</span>
+
+<span class="c1"># Load dataset</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Loading Universal Dependencies POS dataset...&quot;</span><span class="p">)</span>
+<span class="n">pos_dataset</span> <span class="o">=</span> <span class="n">load_dataset</span><span class="p">(</span><span class="s2">&quot;universal_dependencies&quot;</span><span class="p">,</span> <span class="s2">&quot;en_ewt&quot;</span><span class="p">,</span> <span class="n">split</span><span class="o">=</span><span class="s2">&quot;train[:2000]&quot;</span><span class="p">)</span>
+
+<span class="c1"># Get the actual label names from the dataset&#39;s features</span>
+<span class="n">pos_labels</span> <span class="o">=</span> <span class="n">pos_dataset</span><span class="o">.</span><span class="n">features</span><span class="p">[</span><span class="s2">&quot;upos&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">names</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Actual POS labels from dataset: </span><span class="si">{</span><span class="n">pos_labels</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Create tag to index mapping (dataset already uses 0-indexed labels)</span>
+<span class="n">tag2idx</span> <span class="o">=</span> <span class="p">{</span><span class="n">tag</span><span class="p">:</span> <span class="n">idx</span> <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">tag</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">pos_labels</span><span class="p">)}</span>
+<span class="n">tag2idx</span><span class="p">[</span><span class="s2">&quot;&lt;PAD&gt;&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pos_labels</span><span class="p">)</span>  <span class="c1"># Add padding at the end</span>
+<span class="n">idx2tag</span> <span class="o">=</span> <span class="p">{</span><span class="n">idx</span><span class="p">:</span> <span class="n">tag</span> <span class="k">for</span> <span class="n">tag</span><span class="p">,</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">tag2idx</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+
+<span class="c1"># Extract tokens and POS tags</span>
+<span class="n">tokens_list</span> <span class="o">=</span> <span class="n">pos_dataset</span><span class="p">[</span><span class="s2">&quot;tokens&quot;</span><span class="p">]</span>
+<span class="n">pos_tags_list</span> <span class="o">=</span> <span class="n">pos_dataset</span><span class="p">[</span><span class="s2">&quot;upos&quot;</span><span class="p">]</span>
+
+<span class="c1"># If you want string labels instead of indices:</span>
+<span class="n">pos_tags_strings</span> <span class="o">=</span> <span class="p">[[</span><span class="n">pos_labels</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">seq</span><span class="p">]</span> <span class="k">for</span> <span class="n">seq</span> <span class="ow">in</span> <span class="n">pos_tags_list</span><span class="p">]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of sequences: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">tokens_list</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total tags (including padding): </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">tag2idx</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Example:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Tokens: </span><span class="si">{</span><span class="n">tokens_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;POS indices: </span><span class="si">{</span><span class="n">pos_tags_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;POS labels: </span><span class="si">{</span><span class="n">pos_tags_strings</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">num_tags</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pos_labels</span><span class="p">)</span> <span class="o">+</span> <span class="mi">2</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total tags (including padding): </span><span class="si">{</span><span class="n">num_tags</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loading Universal Dependencies POS dataset...
+Actual POS labels from dataset: [&#39;NOUN&#39;, &#39;PUNCT&#39;, &#39;ADP&#39;, &#39;NUM&#39;, &#39;SYM&#39;, &#39;SCONJ&#39;, &#39;ADJ&#39;, &#39;PART&#39;, &#39;DET&#39;, &#39;CCONJ&#39;, &#39;PROPN&#39;, &#39;PRON&#39;, &#39;X&#39;, &#39;_&#39;, &#39;ADV&#39;, &#39;INTJ&#39;, &#39;VERB&#39;, &#39;AUX&#39;]
+Number of sequences: 2000
+Total tags (including padding): 19
+
+Example:
+Tokens: [&#39;Al&#39;, &#39;-&#39;, &#39;Zaman&#39;, &#39;:&#39;, &#39;American&#39;, &#39;forces&#39;, &#39;killed&#39;, &#39;Shaikh&#39;, &#39;Abdullah&#39;, &#39;al&#39;, &#39;-&#39;, &#39;Ani&#39;, &#39;,&#39;, &#39;the&#39;, &#39;preacher&#39;, &#39;at&#39;, &#39;the&#39;, &#39;mosque&#39;, &#39;in&#39;, &#39;the&#39;, &#39;town&#39;, &#39;of&#39;, &#39;Qaim&#39;, &#39;,&#39;, &#39;near&#39;, &#39;the&#39;, &#39;Syrian&#39;, &#39;border&#39;, &#39;.&#39;]
+POS indices: [10, 1, 10, 1, 6, 0, 16, 10, 10, 10, 1, 10, 1, 8, 0, 2, 8, 0, 2, 8, 0, 2, 10, 1, 2, 8, 6, 0, 1]
+POS labels: [&#39;PROPN&#39;, &#39;PUNCT&#39;, &#39;PROPN&#39;, &#39;PUNCT&#39;, &#39;ADJ&#39;, &#39;NOUN&#39;, &#39;VERB&#39;, &#39;PROPN&#39;, &#39;PROPN&#39;, &#39;PROPN&#39;, &#39;PUNCT&#39;, &#39;PROPN&#39;, &#39;PUNCT&#39;, &#39;DET&#39;, &#39;NOUN&#39;, &#39;ADP&#39;, &#39;DET&#39;, &#39;NOUN&#39;, &#39;ADP&#39;, &#39;DET&#39;, &#39;NOUN&#39;, &#39;ADP&#39;, &#39;PROPN&#39;, &#39;PUNCT&#39;, &#39;ADP&#39;, &#39;DET&#39;, &#39;ADJ&#39;, &#39;NOUN&#39;, &#39;PUNCT&#39;]
+Total tags (including padding): 20
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Build word vocabulary</span>
+<span class="n">all_words</span> <span class="o">=</span> <span class="p">[</span><span class="n">word</span> <span class="k">for</span> <span class="n">tokens</span> <span class="ow">in</span> <span class="n">tokens_list</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">]</span>
+<span class="n">word_vocab</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">all_words</span><span class="p">))</span>
+<span class="n">word2idx</span> <span class="o">=</span> <span class="p">{</span><span class="n">word</span><span class="p">:</span> <span class="n">idx</span> <span class="o">+</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">word</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">word_vocab</span><span class="p">)}</span>  <span class="c1"># Reserve 0 for padding, 1 for UNK</span>
+<span class="n">word2idx</span><span class="p">[</span><span class="s2">&quot;&lt;PAD&gt;&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">word2idx</span><span class="p">[</span><span class="s2">&quot;&lt;UNK&gt;&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="c1"># Convert tokens and tags to indices</span>
+<span class="n">max_seq_len</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="n">X_pos</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">y_pos</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">tokens</span><span class="p">,</span> <span class="n">tags</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">tokens_list</span><span class="p">,</span> <span class="n">pos_tags_list</span><span class="p">):</span>
+    <span class="c1"># Convert tokens to indices</span>
+    <span class="n">token_ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">word2idx</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">]</span>
+   
+    <span class="c1"># Tags are already numeric indices from the dataset - use them directly</span>
+    <span class="c1"># Add 1 to all tag indices to reserve 0 for padding</span>
+    <span class="n">tag_ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">tag</span> <span class="o">+</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">tags</span><span class="p">]</span>
+   
+    <span class="c1"># Pad or truncate</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">token_ids</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">max_seq_len</span><span class="p">:</span>
+        <span class="n">token_ids</span> <span class="o">+=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">max_seq_len</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">token_ids</span><span class="p">))</span>
+        <span class="n">tag_ids</span> <span class="o">+=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">max_seq_len</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">tag_ids</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">token_ids</span> <span class="o">=</span> <span class="n">token_ids</span><span class="p">[:</span><span class="n">max_seq_len</span><span class="p">]</span>
+        <span class="n">tag_ids</span> <span class="o">=</span> <span class="n">tag_ids</span><span class="p">[:</span><span class="n">max_seq_len</span><span class="p">]</span>
+   
+    <span class="n">X_pos</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">token_ids</span><span class="p">)</span>
+    <span class="n">y_pos</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tag_ids</span><span class="p">)</span>
+
+<span class="n">X_pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">X_pos</span><span class="p">)</span>
+<span class="n">y_pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">y_pos</span><span class="p">)</span>
+
+<span class="c1"># Split data</span>
+<span class="n">X_pos_train</span><span class="p">,</span> <span class="n">X_pos_val</span><span class="p">,</span> <span class="n">y_pos_train</span><span class="p">,</span> <span class="n">y_pos_val</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
+    <span class="n">X_pos</span><span class="p">,</span> <span class="n">y_pos</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Vocabulary size: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">word2idx</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Training sequences: </span><span class="si">{</span><span class="n">X_pos_train</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Example sentence: </span><span class="si">{</span><span class="n">tokens_list</span><span class="p">[</span><span class="mi">0</span><span class="p">][:</span><span class="mi">10</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Example POS tags (original indices): </span><span class="si">{</span><span class="n">pos_tags_list</span><span class="p">[</span><span class="mi">0</span><span class="p">][:</span><span class="mi">10</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Example POS tags (shifted +1 for padding): </span><span class="si">{</span><span class="p">[</span><span class="n">tag</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">tag</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">pos_tags_list</span><span class="p">[</span><span class="mi">0</span><span class="p">][:</span><span class="mi">10</span><span class="p">]]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Vocabulary size: 7088
+Training sequences: (1600, 50)
+Example sentence: [&#39;Al&#39;, &#39;-&#39;, &#39;Zaman&#39;, &#39;:&#39;, &#39;American&#39;, &#39;forces&#39;, &#39;killed&#39;, &#39;Shaikh&#39;, &#39;Abdullah&#39;, &#39;al&#39;]
+Example POS tags (original indices): [10, 1, 10, 1, 6, 0, 16, 10, 10, 10]
+Example POS tags (shifted +1 for padding): [11, 2, 11, 2, 7, 1, 17, 11, 11, 11]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="build-rnn-transducer-model-for-pos-tagging">
+<h4>Build RNN Transducer Model for POS Tagging<a class="headerlink" href="#build-rnn-transducer-model-for-pos-tagging" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p>The setup is very similar to that of the Acceptor but this time we do want the embedding outputs for each item in the sequence so we have to set <code class="docutils literal notranslate"><span class="pre">return_sequences=True</span></code> for the class <code class="docutils literal notranslate"><span class="pre">layers.SimpleRNN()</span></code></p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># RNN model for POS tagging</span>
+<span class="n">model_transducer</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">Sequential</span><span class="p">([</span>
+    <span class="n">layers</span><span class="o">.</span><span class="n">Embedding</span><span class="p">(</span><span class="n">input_dim</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">word2idx</span><span class="p">),</span> <span class="n">output_dim</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span> <span class="n">mask_zero</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+    <span class="n">layers</span><span class="o">.</span><span class="n">SimpleRNN</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="n">return_sequences</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+    <span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="n">num_tags</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s2">&quot;softmax&quot;</span><span class="p">)</span>  <span class="c1"># Now has correct number of outputs</span>
+<span class="p">])</span>
+<span class="n">model_transducer</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+    <span class="n">optimizer</span><span class="o">=</span><span class="s2">&quot;adam&quot;</span><span class="p">,</span>
+    <span class="n">loss</span><span class="o">=</span><span class="s2">&quot;sparse_categorical_crossentropy&quot;</span><span class="p">,</span>
+    <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;accuracy&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+<span class="n">model_transducer</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Model: &quot;sequential_9&quot;
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ embedding_9 (Embedding)     (None, None, 64)          453632    
+                                                                 
+ simple_rnn_9 (SimpleRNN)    (None, None, 64)          8256      
+                                                                 
+ dense_9 (Dense)             (None, None, 20)          1300      
+                                                                 
+=================================================================
+Total params: 463188 (1.77 MB)
+Trainable params: 463188 (1.77 MB)
+Non-trainable params: 0 (0.00 Byte)
+_________________________________________________________________
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="train-the-transducer">
+<h4>Train the Transducer<a class="headerlink" href="#train-the-transducer" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">history_transducer</span> <span class="o">=</span> <span class="n">model_transducer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
+    <span class="n">X_pos_train</span><span class="p">,</span> <span class="n">y_pos_train</span><span class="p">,</span>
+    <span class="n">epochs</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span>
+    <span class="n">validation_data</span><span class="o">=</span><span class="p">(</span><span class="n">X_pos_val</span><span class="p">,</span> <span class="n">y_pos_val</span><span class="p">),</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 1/10
+50/50 [==============================] - 2s 24ms/step - loss: 2.6031 - accuracy: 0.2048 - val_loss: 2.3872 - val_accuracy: 0.2780
+Epoch 2/10
+50/50 [==============================] - 1s 18ms/step - loss: 2.0481 - accuracy: 0.4512 - val_loss: 1.6971 - val_accuracy: 0.5858
+Epoch 3/10
+50/50 [==============================] - 1s 17ms/step - loss: 1.3029 - accuracy: 0.6893 - val_loss: 1.0836 - val_accuracy: 0.7202
+Epoch 4/10
+50/50 [==============================] - 1s 17ms/step - loss: 0.8069 - accuracy: 0.8103 - val_loss: 0.7522 - val_accuracy: 0.8124
+Epoch 5/10
+50/50 [==============================] - 1s 19ms/step - loss: 0.5141 - accuracy: 0.8897 - val_loss: 0.5728 - val_accuracy: 0.8478
+Epoch 6/10
+50/50 [==============================] - 1s 17ms/step - loss: 0.3407 - accuracy: 0.9274 - val_loss: 0.4775 - val_accuracy: 0.8653
+Epoch 7/10
+50/50 [==============================] - 1s 18ms/step - loss: 0.2444 - accuracy: 0.9454 - val_loss: 0.4297 - val_accuracy: 0.8785
+Epoch 8/10
+50/50 [==============================] - 1s 19ms/step - loss: 0.1864 - accuracy: 0.9572 - val_loss: 0.4042 - val_accuracy: 0.8823
+Epoch 9/10
+50/50 [==============================] - 1s 21ms/step - loss: 0.1489 - accuracy: 0.9645 - val_loss: 0.3911 - val_accuracy: 0.8817
+Epoch 10/10
+50/50 [==============================] - 1s 18ms/step - loss: 0.1213 - accuracy: 0.9708 - val_loss: 0.3856 - val_accuracy: 0.8816
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Update idx2tag to match the shifted indices used in training</span>
+<span class="c1"># 0 = padding, 1-17 = actual POS tags</span>
+<span class="n">idx2tag_shifted</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s2">&quot;&lt;PAD&gt;&quot;</span><span class="p">}</span>
+<span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">label</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">pos_labels</span><span class="p">):</span>
+    <span class="n">idx2tag_shifted</span><span class="p">[</span><span class="n">idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">label</span>  <span class="c1"># Shift by +1 to match training data</span>
+
+<span class="c1"># Example prediction</span>
+<span class="n">sample_idx</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">sample_tokens</span> <span class="o">=</span> <span class="n">tokens_list</span><span class="p">[</span><span class="n">sample_idx</span><span class="p">][:</span><span class="mi">10</span><span class="p">]</span>  <span class="c1"># First 10 tokens</span>
+<span class="n">sample_input</span> <span class="o">=</span> <span class="n">X_pos</span><span class="p">[</span><span class="n">sample_idx</span><span class="p">:</span><span class="n">sample_idx</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">predictions</span> <span class="o">=</span> <span class="n">model_transducer</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">sample_input</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">predicted_tags</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">predictions</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;POS Tagging Example:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">token</span><span class="p">,</span> <span class="n">pred_idx</span><span class="p">,</span> <span class="n">true_idx</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">sample_tokens</span><span class="p">,</span>
+                                      <span class="n">predicted_tags</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">sample_tokens</span><span class="p">)],</span>
+                                      <span class="n">pos_tags_list</span><span class="p">[</span><span class="n">sample_idx</span><span class="p">][:</span><span class="nb">len</span><span class="p">(</span><span class="n">sample_tokens</span><span class="p">)]):</span>
+    <span class="c1"># pred_idx is shifted (0-17), so use idx2tag_shifted</span>
+    <span class="n">pred_tag</span> <span class="o">=</span> <span class="n">idx2tag_shifted</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pred_idx</span><span class="p">,</span> <span class="s2">&quot;UNK&quot;</span><span class="p">)</span>
+    
+    <span class="c1"># true_idx is NOT shifted (0-16), so we need to get the label directly</span>
+    <span class="n">true_tag</span> <span class="o">=</span> <span class="n">pos_labels</span><span class="p">[</span><span class="n">true_idx</span><span class="p">]</span> <span class="k">if</span> <span class="n">true_idx</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">pos_labels</span><span class="p">)</span> <span class="k">else</span> <span class="s2">&quot;UNK&quot;</span>
+    
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">token</span><span class="si">:</span><span class="s2">15s</span><span class="si">}</span><span class="s2"> | Predicted: </span><span class="si">{</span><span class="n">pred_tag</span><span class="si">:</span><span class="s2">8s</span><span class="si">}</span><span class="s2"> | True: </span><span class="si">{</span><span class="n">true_tag</span><span class="si">:</span><span class="s2">8s</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>POS Tagging Example:
+------------------------------------------------------------
+Al              | Predicted: PROPN    | True: PROPN   
+-               | Predicted: PUNCT    | True: PUNCT   
+Zaman           | Predicted: PROPN    | True: PROPN   
+:               | Predicted: PUNCT    | True: PUNCT   
+American        | Predicted: ADJ      | True: ADJ     
+forces          | Predicted: NOUN     | True: NOUN    
+killed          | Predicted: VERB     | True: VERB    
+Shaikh          | Predicted: PROPN    | True: PROPN   
+Abdullah        | Predicted: PROPN    | True: PROPN   
+al              | Predicted: PROPN    | True: PROPN   
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="encoder-decoder-sequence-to-sequence">
+<h3>2.3 Encoder-Decoder: Sequence-to-Sequence<a class="headerlink" href="#encoder-decoder-sequence-to-sequence" title="Link to this heading">#</a></h3>
+<p align="center" >
+    <img src="https://raw.githubusercontent.com/cltl/ml4nlp_tutorial_notebooks/refs/heads/main/figures/rnn_figs/seq2seq_rnn.svg" alt="seq2seq_fig" style="max-width:40%; background-color: white;">
+</p>
+<ul class="simple">
+<li><p><strong>Use case:</strong> Machine translation, text summarization</p></li>
+<li><p><strong>Architecture:</strong> Encoder processes input sequence into a context vector, decoder generates output sequence</p></li>
+<li><p><strong>Example:</strong> Simple character-level sequence transformation</p></li>
+</ul>
+<section id="prepare-sequence-to-sequence-data">
+<h4>Prepare Sequence-to-Sequence Data<a class="headerlink" href="#prepare-sequence-to-sequence-data" title="Link to this heading">#</a></h4>
+<p>For demonstration, we’ll create a simple task: reverse sequences</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate toy dataset: input sequence → reversed sequence</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">generate_seq2seq_data</span><span class="p">(</span><span class="n">num_samples</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">seq_length</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">vocab_size</span><span class="o">=</span><span class="mi">20</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate random sequences and their reversals.&quot;&quot;&quot;</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">vocab_size</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">num_samples</span><span class="p">,</span> <span class="n">seq_length</span><span class="p">))</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span>
+
+<span class="n">vocab_size_s2s</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">seq_len_s2s</span> <span class="o">=</span> <span class="mi">10</span>
+
+<span class="n">X_s2s</span><span class="p">,</span> <span class="n">y_s2s</span> <span class="o">=</span> <span class="n">generate_seq2seq_data</span><span class="p">(</span><span class="n">num_samples</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span> <span class="n">seq_length</span><span class="o">=</span><span class="n">seq_len_s2s</span><span class="p">,</span> <span class="n">vocab_size</span><span class="o">=</span><span class="n">vocab_size_s2s</span><span class="p">)</span>
+
+<span class="c1"># Split data</span>
+<span class="n">X_s2s_train</span><span class="p">,</span> <span class="n">X_s2s_val</span><span class="p">,</span> <span class="n">y_s2s_train</span><span class="p">,</span> <span class="n">y_s2s_val</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
+    <span class="n">X_s2s</span><span class="p">,</span> <span class="n">y_s2s</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Training samples: </span><span class="si">{</span><span class="n">X_s2s_train</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Example input: </span><span class="si">{</span><span class="n">X_s2s_train</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Example output: </span><span class="si">{</span><span class="n">y_s2s_train</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Training samples: (1600, 10)
+Example input: [10 15  6 15  7  5  4 18  3 17]
+Example output: [17  3 18  4  5  7 15  6 15 10]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="build-encoder-decoder-model">
+<h4>Build Encoder-Decoder Model<a class="headerlink" href="#build-encoder-decoder-model" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p>For the encoder-decoder model we create two different RNN implementations first and combine them using the line <code class="docutils literal notranslate"><span class="pre">keras.Model([first_model,</span> <span class="pre">second_model])</span></code></p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Encoder</span>
+<span class="n">encoder_inputs</span> <span class="o">=</span> <span class="n">layers</span><span class="o">.</span><span class="n">Input</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">seq_len_s2s</span><span class="p">,))</span>
+<span class="n">encoder_embedding</span> <span class="o">=</span> <span class="n">layers</span><span class="o">.</span><span class="n">Embedding</span><span class="p">(</span><span class="n">vocab_size_s2s</span><span class="p">,</span> <span class="mi">32</span><span class="p">)(</span><span class="n">encoder_inputs</span><span class="p">)</span>
+<span class="n">encoder_rnn</span> <span class="o">=</span> <span class="n">layers</span><span class="o">.</span><span class="n">SimpleRNN</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="n">return_state</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">encoder_outputs</span><span class="p">,</span> <span class="n">encoder_state</span> <span class="o">=</span> <span class="n">encoder_rnn</span><span class="p">(</span><span class="n">encoder_embedding</span><span class="p">)</span>
+
+<span class="c1"># Decoder</span>
+<span class="n">decoder_inputs</span> <span class="o">=</span> <span class="n">layers</span><span class="o">.</span><span class="n">Input</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">seq_len_s2s</span><span class="p">,))</span>
+<span class="n">decoder_embedding</span> <span class="o">=</span> <span class="n">layers</span><span class="o">.</span><span class="n">Embedding</span><span class="p">(</span><span class="n">vocab_size_s2s</span><span class="p">,</span> <span class="mi">32</span><span class="p">)(</span><span class="n">decoder_inputs</span><span class="p">)</span>
+<span class="n">decoder_rnn</span> <span class="o">=</span> <span class="n">layers</span><span class="o">.</span><span class="n">SimpleRNN</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="n">return_sequences</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">return_state</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">decoder_outputs</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">decoder_rnn</span><span class="p">(</span><span class="n">decoder_embedding</span><span class="p">,</span> <span class="n">initial_state</span><span class="o">=</span><span class="n">encoder_state</span><span class="p">)</span>
+<span class="n">decoder_dense</span> <span class="o">=</span> <span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="n">vocab_size_s2s</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s2">&quot;softmax&quot;</span><span class="p">)</span>
+<span class="n">decoder_outputs</span> <span class="o">=</span> <span class="n">decoder_dense</span><span class="p">(</span><span class="n">decoder_outputs</span><span class="p">)</span>
+
+<span class="c1"># Model</span>
+<span class="n">model_seq2seq</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">Model</span><span class="p">([</span><span class="n">encoder_inputs</span><span class="p">,</span> <span class="n">decoder_inputs</span><span class="p">],</span> <span class="n">decoder_outputs</span><span class="p">)</span>
+
+<span class="n">model_seq2seq</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+    <span class="n">optimizer</span><span class="o">=</span><span class="s2">&quot;adam&quot;</span><span class="p">,</span>
+    <span class="n">loss</span><span class="o">=</span><span class="s2">&quot;sparse_categorical_crossentropy&quot;</span><span class="p">,</span>
+    <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;accuracy&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="n">model_seq2seq</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Model: &quot;model&quot;
+__________________________________________________________________________________________________
+ Layer (type)                Output Shape                 Param #   Connected to                  
+==================================================================================================
+ input_1 (InputLayer)        [(None, 10)]                 0         []                            
+                                                                                                  
+ input_2 (InputLayer)        [(None, 10)]                 0         []                            
+                                                                                                  
+ embedding_2 (Embedding)     (None, 10, 32)               640       [&#39;input_1[0][0]&#39;]             
+                                                                                                  
+ embedding_3 (Embedding)     (None, 10, 32)               640       [&#39;input_2[0][0]&#39;]             
+                                                                                                  
+ simple_rnn_2 (SimpleRNN)    [(None, 64),                 6208      [&#39;embedding_2[0][0]&#39;]         
+                              (None, 64)]                                                         
+                                                                                                  
+ simple_rnn_3 (SimpleRNN)    [(None, 10, 64),             6208      [&#39;embedding_3[0][0]&#39;,         
+                              (None, 64)]                            &#39;simple_rnn_2[0][1]&#39;]        
+                                                                                                  
+ dense_2 (Dense)             (None, 10, 20)               1300      [&#39;simple_rnn_3[0][0]&#39;]        
+                                                                                                  
+==================================================================================================
+Total params: 14996 (58.58 KB)
+Trainable params: 14996 (58.58 KB)
+Non-trainable params: 0 (0.00 Byte)
+__________________________________________________________________________________________________
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="train-encoder-decoder">
+<h4>Train Encoder-Decoder<a class="headerlink" href="#train-encoder-decoder" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Prepare decoder inputs (shifted target sequences)</span>
+<span class="n">decoder_input_train</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">y_s2s_train</span><span class="p">)</span>
+<span class="n">decoder_input_train</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:]</span> <span class="o">=</span> <span class="n">y_s2s_train</span><span class="p">[:,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="n">decoder_input_val</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">y_s2s_val</span><span class="p">)</span>
+<span class="n">decoder_input_val</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:]</span> <span class="o">=</span> <span class="n">y_s2s_val</span><span class="p">[:,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="c1"># Expand dimensions for sparse categorical crossentropy</span>
+<span class="n">y_s2s_train_exp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">y_s2s_train</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">y_s2s_val_exp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">y_s2s_val</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">history_seq2seq</span> <span class="o">=</span> <span class="n">model_seq2seq</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
+    <span class="p">[</span><span class="n">X_s2s_train</span><span class="p">,</span> <span class="n">decoder_input_train</span><span class="p">],</span> <span class="n">y_s2s_train_exp</span><span class="p">,</span>
+    <span class="n">epochs</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span>
+    <span class="n">validation_data</span><span class="o">=</span><span class="p">([</span><span class="n">X_s2s_val</span><span class="p">,</span> <span class="n">decoder_input_val</span><span class="p">],</span> <span class="n">y_s2s_val_exp</span><span class="p">),</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 1/10
+50/50 [==============================] - 1s 10ms/step - loss: 2.8781 - accuracy: 0.1124 - val_loss: 2.6656 - val_accuracy: 0.1822
+Epoch 2/10
+50/50 [==============================] - 0s 6ms/step - loss: 2.4441 - accuracy: 0.2573 - val_loss: 2.3014 - val_accuracy: 0.2767
+Epoch 3/10
+50/50 [==============================] - 0s 5ms/step - loss: 2.1069 - accuracy: 0.3547 - val_loss: 1.9919 - val_accuracy: 0.3767
+Epoch 4/10
+50/50 [==============================] - 0s 5ms/step - loss: 1.7836 - accuracy: 0.4588 - val_loss: 1.6611 - val_accuracy: 0.5005
+Epoch 5/10
+50/50 [==============================] - 0s 5ms/step - loss: 1.4380 - accuracy: 0.5926 - val_loss: 1.3267 - val_accuracy: 0.6118
+Epoch 6/10
+50/50 [==============================] - 0s 5ms/step - loss: 1.1474 - accuracy: 0.7036 - val_loss: 1.0778 - val_accuracy: 0.7070
+Epoch 7/10
+50/50 [==============================] - 0s 6ms/step - loss: 0.9416 - accuracy: 0.7751 - val_loss: 0.9002 - val_accuracy: 0.7745
+Epoch 8/10
+50/50 [==============================] - 0s 6ms/step - loss: 0.7862 - accuracy: 0.8311 - val_loss: 0.7620 - val_accuracy: 0.8275
+Epoch 9/10
+50/50 [==============================] - 0s 5ms/step - loss: 0.6802 - accuracy: 0.8607 - val_loss: 0.6739 - val_accuracy: 0.8468
+Epoch 10/10
+50/50 [==============================] - 0s 6ms/step - loss: 0.5909 - accuracy: 0.8844 - val_loss: 0.5970 - val_accuracy: 0.8673
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="bidirectional-rnn">
+<h3>2.4 Bidirectional RNN<a class="headerlink" href="#bidirectional-rnn" title="Link to this heading">#</a></h3>
+<p align="center" >
+    <img src="https://raw.githubusercontent.com/cltl/ml4nlp_tutorial_notebooks/refs/heads/main/figures/rnn_figs/bi_rnn.png" alt="bi_rnn_fig" style="max-width:40%; background-color: white;">
+</p>
+<ul class="simple">
+<li><p><strong>Use case:</strong> Tasks where full sequence context improves performance</p></li>
+<li><p><strong>Architecture:</strong> Two RNNs process the sequence in opposite directions</p></li>
+<li><p><strong>Advantage:</strong> Access to both past and future context at each position</p></li>
+<li><p><strong>Example:</strong> Sentiment classification with bidirectional RNN</p></li>
+</ul>
+<p>To construct the model we can use the build in package from keras, and just use function <code class="docutils literal notranslate"><span class="pre">layers.Bidirectional()</span></code> and wrap it around the <code class="docutils literal notranslate"><span class="pre">SimpleRNN()</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Build Bidirectional RNN model</span>
+<span class="n">model_birnn</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">Sequential</span><span class="p">([</span>
+    <span class="n">layers</span><span class="o">.</span><span class="n">Embedding</span><span class="p">(</span><span class="n">input_dim</span><span class="o">=</span><span class="n">max_words</span><span class="p">,</span> <span class="n">output_dim</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span> <span class="n">input_length</span><span class="o">=</span><span class="n">max_len</span><span class="p">),</span>
+    <span class="n">layers</span><span class="o">.</span><span class="n">Bidirectional</span><span class="p">(</span><span class="n">layers</span><span class="o">.</span><span class="n">SimpleRNN</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="n">return_sequences</span><span class="o">=</span><span class="kc">False</span><span class="p">)),</span>
+    <span class="n">layers</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="mf">0.3</span><span class="p">),</span>
+    <span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s2">&quot;sigmoid&quot;</span><span class="p">)</span>
+<span class="p">])</span>
+
+<span class="n">model_birnn</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+    <span class="n">optimizer</span><span class="o">=</span><span class="s2">&quot;adam&quot;</span><span class="p">,</span>
+    <span class="n">loss</span><span class="o">=</span><span class="s2">&quot;binary_crossentropy&quot;</span><span class="p">,</span>
+    <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;accuracy&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="n">model_birnn</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Model: &quot;sequential_4&quot;
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ embedding_4 (Embedding)     (None, 200, 64)           640000    
+                                                                 
+ bidirectional (Bidirection  (None, 128)               16512     
+ al)                                                             
+                                                                 
+ dropout_4 (Dropout)         (None, 128)               0         
+                                                                 
+ dense_4 (Dense)             (None, 1)                 129       
+                                                                 
+=================================================================
+Total params: 656641 (2.50 MB)
+Trainable params: 656641 (2.50 MB)
+Non-trainable params: 0 (0.00 Byte)
+_________________________________________________________________
+</pre></div>
+</div>
+</div>
+</div>
+<section id="train-bidirectional-rnn">
+<h4>Train Bidirectional RNN<a class="headerlink" href="#train-bidirectional-rnn" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">history_birnn</span> <span class="o">=</span> <span class="n">model_birnn</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
+    <span class="n">X_train_pad</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span>
+    <span class="n">epochs</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+    <span class="n">batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span>
+    <span class="n">validation_data</span><span class="o">=</span><span class="p">(</span><span class="n">X_val_pad</span><span class="p">,</span> <span class="n">y_val</span><span class="p">),</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 1/5
+125/125 [==============================] - 5s 37ms/step - loss: 0.7046 - accuracy: 0.5013 - val_loss: 0.6997 - val_accuracy: 0.4940
+Epoch 2/5
+125/125 [==============================] - 4s 35ms/step - loss: 0.6427 - accuracy: 0.6357 - val_loss: 0.6959 - val_accuracy: 0.5350
+Epoch 3/5
+125/125 [==============================] - 4s 35ms/step - loss: 0.5733 - accuracy: 0.7035 - val_loss: 0.6901 - val_accuracy: 0.5620
+Epoch 4/5
+125/125 [==============================] - 4s 36ms/step - loss: 0.3091 - accuracy: 0.8907 - val_loss: 0.8787 - val_accuracy: 0.5580
+Epoch 5/5
+125/125 [==============================] - 4s 34ms/step - loss: 0.1710 - accuracy: 0.9433 - val_loss: 0.9092 - val_accuracy: 0.5720
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compare with unidirectional RNN</span>
+<span class="n">val_loss_birnn</span><span class="p">,</span> <span class="n">val_acc_birnn</span> <span class="o">=</span> <span class="n">model_birnn</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">X_val_pad</span><span class="p">,</span> <span class="n">y_val</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">val_loss_rnn</span><span class="p">,</span> <span class="n">val_acc_rnn</span> <span class="o">=</span> <span class="n">model_acceptor</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">X_val_pad</span><span class="p">,</span> <span class="n">y_val</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Unidirectional RNN Validation Accuracy: </span><span class="si">{</span><span class="n">val_acc_rnn</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Bidirectional RNN Validation Accuracy: </span><span class="si">{</span><span class="n">val_acc_birnn</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Improvement: </span><span class="si">{</span><span class="p">(</span><span class="n">val_acc_birnn</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">val_acc_rnn</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Unidirectional RNN Validation Accuracy: 0.4890
+Bidirectional RNN Validation Accuracy: 0.5720
+Improvement: 8.30%
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="long-short-term-memory-lstm">
+<h2>3. Long Short-Term Memory (LSTM)<a class="headerlink" href="#long-short-term-memory-lstm" title="Link to this heading">#</a></h2>
+<section id="why-lstm">
+<h3>3.1 Why LSTM?<a class="headerlink" href="#why-lstm" title="Link to this heading">#</a></h3>
+<p>Standard RNNs suffer from the <strong>vanishing gradient problem</strong>, making it difficult to learn long-range dependencies. LSTMs address this through a gating mechanism that controls information flow.</p>
+</section>
+<section id="lstm-architecture">
+<h3>3.2 LSTM Architecture<a class="headerlink" href="#lstm-architecture" title="Link to this heading">#</a></h3>
+<p align="center" >
+    <img src="https://raw.githubusercontent.com/cltl/ml4nlp_tutorial_notebooks/refs/heads/main/figures/rnn_figs/LSTM.webp" alt="LSTM_fig" style="max-width:40%; background-color: white;">
+</p>
+<p>An LSTM unit consists of:</p>
+<ol class="arabic simple">
+<li><p><strong>Cell state</strong> (<span class="math notranslate nohighlight">\(C_t\)</span>): Long-term memory</p></li>
+<li><p><strong>Hidden state</strong> (<span class="math notranslate nohighlight">\(h_t\)</span>): Short-term memory</p></li>
+<li><p><strong>Three gates</strong>:</p>
+<ul class="simple">
+<li><p><strong>Forget gate</strong> (<span class="math notranslate nohighlight">\(f_t\)</span>): What to forget from cell state</p></li>
+<li><p><strong>Input gate</strong> (<span class="math notranslate nohighlight">\(i_t\)</span>): What new information to store</p></li>
+<li><p><strong>Output gate</strong> (<span class="math notranslate nohighlight">\(o_t\)</span>): What to output</p></li>
+</ul>
+</li>
+</ol>
+<section id="id1">
+<h4>Mathematical Formulation<a class="headerlink" href="#id1" title="Link to this heading">#</a></h4>
+<div class="math notranslate nohighlight">
+\[f_t = \sigma(W_f \cdot [h_{t-1}, x_t] + b_f)\]</div>
+<div class="math notranslate nohighlight">
+\[i_t = \sigma(W_i \cdot [h_{t-1}, x_t] + b_i)\]</div>
+<div class="math notranslate nohighlight">
+\[\tilde{C}_t = \tanh(W_C \cdot [h_{t-1}, x_t] + b_C)\]</div>
+<div class="math notranslate nohighlight">
+\[C_t = f_t \odot C_{t-1} + i_t \odot \tilde{C}_t\]</div>
+<div class="math notranslate nohighlight">
+\[o_t = \sigma(W_o \cdot [h_{t-1}, x_t] + b_o)\]</div>
+<div class="math notranslate nohighlight">
+\[h_t = o_t \odot \tanh(C_t)\]</div>
+<p>Where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\sigma\)</span> is the sigmoid function</p></li>
+<li><p><span class="math notranslate nohighlight">\(\odot\)</span> denotes element-wise multiplication</p></li>
+<li><p><span class="math notranslate nohighlight">\([h_{t-1}, x_t]\)</span> is concatenation of hidden state and input</p></li>
+</ul>
+</section>
+</section>
+<section id="application-1-text-generation-with-lstm">
+<h3>3.3 Application 1: Text Generation with LSTM<a class="headerlink" href="#application-1-text-generation-with-lstm" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Task:</strong> Generate text character-by-character</p></li>
+<li><p><strong>Training:</strong> Predict the next character given previous characters</p></li>
+<li><p><strong>Dataset:</strong> Tiny Shakespeare - 40,000 lines of Shakespeare from various plays, url: <a class="reference external" href="https://huggingface.co/datasets/karpathy/tiny_shakespeare">https://huggingface.co/datasets/karpathy/tiny_shakespeare</a></p></li>
+</ul>
+<p>This dataset was featured in Andrej Karpathy’s influential blog post <a class="reference external" href="http://karpathy.github.io/2015/05/21/rnn-effectiveness/">“The Unreasonable Effectiveness of Recurrent Neural Networks”</a> where he demonstrated the power of character-level language modeling.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load Tiny Shakespeare dataset</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Loading Tiny Shakespeare dataset...&quot;</span><span class="p">)</span>
+<span class="n">shakespeare_dataset</span> <span class="o">=</span> <span class="n">load_dataset</span><span class="p">(</span><span class="s2">&quot;tiny_shakespeare&quot;</span><span class="p">)</span>
+<span class="c1"># print(f&quot;Dataset splits: {shakespeare_dataset.keys()}, &quot;)</span>
+
+<span class="c1"># use_perc = 0.1</span>
+<span class="c1"># shakespeare_dataset = shakespeare_dataset.shuffle(seed=42).select(range(int(len(shakespeare_dataset[&#39;train&#39;]) * use_perc)))</span>
+
+<span class="c1"># Get the text</span>
+<span class="n">text</span> <span class="o">=</span> <span class="n">shakespeare_dataset</span><span class="p">[</span><span class="s2">&quot;train&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;text&quot;</span><span class="p">]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total text length: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2"> characters&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">First 500 characters:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">70</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">text</span><span class="p">[:</span><span class="mi">500</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loading Tiny Shakespeare dataset...
+Total text length: 1,003,854 characters
+
+First 500 characters:
+----------------------------------------------------------------------
+First Citizen:
+Before we proceed any further, hear me speak.
+
+All:
+Speak, speak.
+
+First Citizen:
+You are all resolved rather to die than to famish?
+
+All:
+Resolved. resolved.
+
+First Citizen:
+First, you know Caius Marcius is chief enemy to the people.
+
+All:
+We know&#39;t, we know&#39;t.
+
+First Citizen:
+Let us kill him, and we&#39;ll have corn at our own price.
+Is&#39;t a verdict?
+
+All:
+No more talking on&#39;t; let it be done: away, away!
+
+Second Citizen:
+One word, good citizens.
+
+First Citizen:
+We are accounted poor
+</pre></div>
+</div>
+</div>
+</div>
+<section id="prepare-character-level-data">
+<h4>Prepare Character-Level Data<a class="headerlink" href="#prepare-character-level-data" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Prepare character-level data</span>
+<span class="n">chars</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">text</span><span class="p">))</span>
+<span class="n">char_to_idx</span> <span class="o">=</span> <span class="p">{</span><span class="n">ch</span><span class="p">:</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ch</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">chars</span><span class="p">)}</span>
+<span class="n">idx_to_char</span> <span class="o">=</span> <span class="p">{</span><span class="n">i</span><span class="p">:</span> <span class="n">ch</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ch</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">chars</span><span class="p">)}</span>
+
+<span class="n">vocab_size_char</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">chars</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Vocabulary size: </span><span class="si">{</span><span class="n">vocab_size_char</span><span class="si">}</span><span class="s2"> unique characters&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Characters: </span><span class="si">{</span><span class="nb">repr</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">chars</span><span class="p">))</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Vocabulary size: 65 unique characters
+Characters: &quot;\n !$&amp;&#39;,-.3:;?ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz&quot;
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="create-training-sequences">
+<h4>Create Training Sequences<a class="headerlink" href="#create-training-sequences" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create sequences for training</span>
+<span class="n">seq_length</span> <span class="o">=</span> <span class="mi">10</span>  <span class="c1"># Length of input sequences</span>
+<span class="n">step</span> <span class="o">=</span> <span class="mi">3</span>  <span class="c1"># Step between sequences (smaller step = more training data)</span>
+
+<span class="n">sequences</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">next_chars</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Creating sequences with length </span><span class="si">{</span><span class="n">seq_length</span><span class="si">}</span><span class="s2">...&quot;</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">-</span> <span class="n">seq_length</span><span class="p">,</span> <span class="n">step</span><span class="p">):</span>
+    <span class="n">sequences</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">char_to_idx</span><span class="p">[</span><span class="n">ch</span><span class="p">]</span> <span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="n">text</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span> <span class="o">+</span> <span class="n">seq_length</span><span class="p">]])</span>
+    <span class="n">next_chars</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">char_to_idx</span><span class="p">[</span><span class="n">text</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">seq_length</span><span class="p">]])</span>
+
+<span class="n">X_gen</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">sequences</span><span class="p">)</span>
+<span class="n">y_gen</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">next_chars</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of training sequences: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">sequences</span><span class="p">)</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Input shape: </span><span class="si">{</span><span class="n">X_gen</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Target shape: </span><span class="si">{</span><span class="n">y_gen</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Show an example sequence</span>
+<span class="n">example_idx</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Example sequence </span><span class="si">{</span><span class="n">example_idx</span><span class="si">}</span><span class="s2">:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Input text:&quot;</span><span class="p">,</span> <span class="nb">repr</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="n">example_idx</span><span class="p">:</span><span class="n">example_idx</span> <span class="o">+</span> <span class="n">seq_length</span><span class="p">]))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Target char:&quot;</span><span class="p">,</span> <span class="nb">repr</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="n">example_idx</span> <span class="o">+</span> <span class="n">seq_length</span><span class="p">]))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Creating sequences with length 10...
+Number of training sequences: 334,615
+Input shape: (334615, 10)
+Target shape: (334615,)
+
+Example sequence 0:
+Input text: &#39;First Citi&#39;
+Target char: &#39;z&#39;
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="build-character-level-lstm">
+<h4>Build Character-Level LSTM<a class="headerlink" href="#build-character-level-lstm" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model_char_lstm</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">Sequential</span><span class="p">([</span>
+    <span class="n">layers</span><span class="o">.</span><span class="n">Embedding</span><span class="p">(</span><span class="n">vocab_size_char</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="n">input_length</span><span class="o">=</span><span class="n">seq_length</span><span class="p">),</span>
+    <span class="n">layers</span><span class="o">.</span><span class="n">LSTM</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="n">return_sequences</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+    <span class="n">layers</span><span class="o">.</span><span class="n">LSTM</span><span class="p">(</span><span class="mi">128</span><span class="p">),</span>
+    <span class="n">layers</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="mf">0.2</span><span class="p">),</span>
+    <span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="n">vocab_size_char</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s2">&quot;softmax&quot;</span><span class="p">)</span>
+<span class="p">])</span>
+
+<span class="n">model_char_lstm</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+    <span class="n">optimizer</span><span class="o">=</span><span class="s2">&quot;adam&quot;</span><span class="p">,</span>
+    <span class="n">loss</span><span class="o">=</span><span class="s2">&quot;sparse_categorical_crossentropy&quot;</span><span class="p">,</span>
+    <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;accuracy&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="n">model_char_lstm</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Model: &quot;sequential_1&quot;
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ embedding_1 (Embedding)     (None, 10, 32)            2080      
+                                                                 
+ lstm_2 (LSTM)               (None, 10, 128)           82432     
+                                                                 
+ lstm_3 (LSTM)               (None, 128)               131584    
+                                                                 
+ dropout_1 (Dropout)         (None, 128)               0         
+                                                                 
+ dense_1 (Dense)             (None, 65)                8385      
+                                                                 
+=================================================================
+Total params: 224481 (876.88 KB)
+Trainable params: 224481 (876.88 KB)
+Non-trainable params: 0 (0.00 Byte)
+_________________________________________________________________
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="train-character-lstm">
+<h4>Train Character LSTM<a class="headerlink" href="#train-character-lstm" title="Link to this heading">#</a></h4>
+<p>Note: Training on the full Shakespeare dataset will take some time.</p>
+<p>For a quicker demo, you can reduce the number of epochs or use a smaller subset of the data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">history_char</span> <span class="o">=</span> <span class="n">model_char_lstm</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
+    <span class="n">X_gen</span><span class="p">,</span> <span class="n">y_gen</span><span class="p">,</span>
+    <span class="n">epochs</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>  <span class="c1"># Can be increased for better results</span>
+    <span class="n">batch_size</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span>
+    <span class="n">validation_split</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 1/5
+2353/2353 [==============================] - 50s 21ms/step - loss: 2.0015 - accuracy: 0.4193 - val_loss: 1.9157 - val_accuracy: 0.4324
+Epoch 2/5
+2353/2353 [==============================] - 49s 21ms/step - loss: 1.8241 - accuracy: 0.4646 - val_loss: 1.8019 - val_accuracy: 0.4658
+Epoch 3/5
+2353/2353 [==============================] - 49s 21ms/step - loss: 1.7242 - accuracy: 0.4900 - val_loss: 1.7367 - val_accuracy: 0.4825
+Epoch 4/5
+2353/2353 [==============================] - 49s 21ms/step - loss: 1.6586 - accuracy: 0.5069 - val_loss: 1.6988 - val_accuracy: 0.4952
+Epoch 5/5
+2353/2353 [==============================] - 49s 21ms/step - loss: 1.6098 - accuracy: 0.5181 - val_loss: 1.6660 - val_accuracy: 0.5033
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot training history</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">history_char</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="s2">&quot;loss&quot;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Training Loss&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">history_char</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="s2">&quot;val_loss&quot;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Validation Loss&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Character LSTM - Training Loss&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Epoch&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Loss&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">history_char</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="s2">&quot;accuracy&quot;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Training Accuracy&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">history_char</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="s2">&quot;val_accuracy&quot;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Validation Accuracy&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Character LSTM - Training Accuracy&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Epoch&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Accuracy&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/ddaaa70343a4a65a7e269bf93a9a4a2758e709a140ef860cf9e17bf393dba75c.png" src="../_images/ddaaa70343a4a65a7e269bf93a9a4a2758e709a140ef860cf9e17bf393dba75c.png" />
+</div>
+</div>
+</section>
+<section id="generate-shakespeare-style-text">
+<h4>Generate Shakespeare-Style Text<a class="headerlink" href="#generate-shakespeare-style-text" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">generate_text</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">start_string</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generate text using trained LSTM.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        model: Trained Keras model</span>
+<span class="sd">        start_string: Initial string to start generation</span>
+<span class="sd">        length: Number of characters to generate</span>
+<span class="sd">        temperature: Controls randomness (lower = more conservative, higher = more random)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">generated</span> <span class="o">=</span> <span class="n">start_string</span>
+    <span class="n">input_seq</span> <span class="o">=</span> <span class="p">[</span><span class="n">char_to_idx</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">ch</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="n">start_string</span><span class="p">]</span>
+    
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">length</span><span class="p">):</span>
+        <span class="c1"># Pad sequence to correct length</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">input_seq</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">seq_length</span><span class="p">:</span>
+            <span class="n">padded</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">seq_length</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">input_seq</span><span class="p">))</span> <span class="o">+</span> <span class="n">input_seq</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">padded</span> <span class="o">=</span> <span class="n">input_seq</span><span class="p">[</span><span class="o">-</span><span class="n">seq_length</span><span class="p">:]</span>
+        
+        <span class="c1"># Predict next character</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">padded</span><span class="p">])</span>
+        <span class="n">predictions</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        
+        <span class="c1"># Apply temperature for diversity</span>
+        <span class="n">predictions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">predictions</span> <span class="o">+</span> <span class="mf">1e-10</span><span class="p">)</span> <span class="o">/</span> <span class="n">temperature</span>
+        <span class="n">predictions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">predictions</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">predictions</span><span class="p">))</span>
+        
+        <span class="c1"># Sample from distribution</span>
+        <span class="n">next_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">predictions</span><span class="p">),</span> <span class="n">p</span><span class="o">=</span><span class="n">predictions</span><span class="p">)</span>
+        <span class="n">next_char</span> <span class="o">=</span> <span class="n">idx_to_char</span><span class="p">[</span><span class="n">next_idx</span><span class="p">]</span>
+        
+        <span class="n">generated</span> <span class="o">+=</span> <span class="n">next_char</span>
+        <span class="n">input_seq</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">next_idx</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">generated</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate text samples with different settings</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Generated Shakespeare-style text:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="mi">70</span><span class="p">)</span>
+
+<span class="n">start_strings</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;ROMEO:&quot;</span><span class="p">,</span> <span class="s2">&quot;To be or not to be&quot;</span><span class="p">,</span> <span class="s2">&quot;The &quot;</span><span class="p">]</span>
+<span class="n">temperatures</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">start</span> <span class="ow">in</span> <span class="n">start_strings</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">Starting with: &#39;</span><span class="si">{</span><span class="n">start</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">70</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">temp</span> <span class="ow">in</span> <span class="n">temperatures</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Temperature: </span><span class="si">{</span><span class="n">temp</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">generated</span> <span class="o">=</span> <span class="n">generate_text</span><span class="p">(</span><span class="n">model_char_lstm</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="n">temp</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">generated</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generated Shakespeare-style text:
+
+======================================================================
+
+
+Starting with: &#39;ROMEO:&#39;
+----------------------------------------------------------------------
+
+Temperature: 0.5
+ROMEO:
+The sunder to the crown,
+On that my lord,
+And not the hay send,
+And another country becare a send,
+The sand he good king some to the hand in what we have a vorse the behald me not the encount and man
+
+
+Temperature: 1.0
+ROMEO:
+Seme thy courtion metudes our fruth.
+
+RAMELES:
+All here I ap: twere out in fall eacured will-wim, by redbed?
+
+WARWICK:
+We meads as, the heart fomel-lores! thoud speed; God thou Lary, on anoved;
+What 
+
+
+Temperature: 1.5
+ROMEO:
+O, Evuy-On Chirge you so!
+Nod; eyes by the
+messuenous.
+
+AllaR:
+Shall boin Piliesar ig.n
+In! &#39;bh gade oot a ot warns; budoning sabe thy cosnirazun; Gad:-Will yet himly dit&#39;rne, valw these go;
+reserdve
+
+
+
+Starting with: &#39;To be or not to be&#39;
+----------------------------------------------------------------------
+
+Temperature: 0.5
+To be or not to be conferion all the see a warms of your son that could the world and his cow with the string say the death, be so lord, there I were in mine his hand so may that streather him on the such of me;
+Which 
+
+
+Temperature: 1.0
+To be or not to be,n and a umience theldain.&#39;
+
+POLIXENES:
+There hay; the restece in?
+
+GLOUCESTER:
+In, shall from the send in by what anchidase yets ade they of might in that Ferdne,
+could knee,
+The king:
+Therefore. Ran
+
+
+Temperature: 1.5
+To be or not to be son Lod.
+You good Rone
+Aves, about Ioukt! oth gseeelfs agpmastmy slound mylN,
+To kound fortiom.
+
+QuEER LERCGUT
+Y RAWILBBry:
+Stoned
+Thoir! Goilk; are Jerquige, I moys: my honour&#39;d
+-uch wears the Nooll
+
+
+
+Starting with: &#39;The &#39;
+----------------------------------------------------------------------
+
+Temperature: 0.5
+The KANNG, and all the manth of all the sweet our can the stand of the hind that fall his despains of the contressed to the cannot served with seared and the most that a consling will the did the becourth
+
+
+Temperature: 1.0
+The KRORCHeur: Cicizen: on what this daughter words amm own are but the firgs of she have son for bethigh:
+Naad age, by all our wanders.
+
+RUTAN:
+And he befains.
+
+LADY MONWARD IV:
+A: heaven, come; what or 
+
+
+Temperature: 1.5
+The KANNd, Anle help, you karwab, a sigo.-
+Whow you man; the bakes go&#39;d,
+Iving, fall youd.
+Nay, weaves, bemengeox, soul thrubt.
+GuRhour either
+you Hour storrich in fatuate&#39; lot Mead tritch.
+hear upfin! I,
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="application-2-text-classification-with-lstm">
+<h3>3.4 Application 2: Text Classification with LSTM<a class="headerlink" href="#application-2-text-classification-with-lstm" title="Link to this heading">#</a></h3>
+<p><strong>Task:</strong> Sentiment classification</p>
+<p><strong>Advantage:</strong> LSTM can capture long-range dependencies better than simple RNN</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Build LSTM classifier</span>
+<span class="n">model_lstm_classifier</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">Sequential</span><span class="p">([</span>
+    <span class="n">layers</span><span class="o">.</span><span class="n">Embedding</span><span class="p">(</span><span class="n">input_dim</span><span class="o">=</span><span class="n">max_words</span><span class="p">,</span> <span class="n">output_dim</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span> <span class="n">input_length</span><span class="o">=</span><span class="n">max_len</span><span class="p">),</span>
+    <span class="n">layers</span><span class="o">.</span><span class="n">LSTM</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="n">return_sequences</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+    <span class="n">layers</span><span class="o">.</span><span class="n">LSTM</span><span class="p">(</span><span class="mi">32</span><span class="p">),</span>
+    <span class="n">layers</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="mf">0.5</span><span class="p">),</span>
+    <span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s2">&quot;sigmoid&quot;</span><span class="p">)</span>
+<span class="p">])</span>
+
+<span class="n">model_lstm_classifier</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+    <span class="n">optimizer</span><span class="o">=</span><span class="s2">&quot;adam&quot;</span><span class="p">,</span>
+    <span class="n">loss</span><span class="o">=</span><span class="s2">&quot;binary_crossentropy&quot;</span><span class="p">,</span>
+    <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;accuracy&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="n">model_lstm_classifier</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Model: &quot;sequential_2&quot;
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ embedding_2 (Embedding)     (None, 200, 128)          1280000   
+                                                                 
+ lstm_4 (LSTM)               (None, 200, 64)           49408     
+                                                                 
+ lstm_5 (LSTM)               (None, 32)                12416     
+                                                                 
+ dropout_2 (Dropout)         (None, 32)                0         
+                                                                 
+ dense_2 (Dense)             (None, 1)                 33        
+                                                                 
+=================================================================
+Total params: 1341857 (5.12 MB)
+Trainable params: 1341857 (5.12 MB)
+Non-trainable params: 0 (0.00 Byte)
+_________________________________________________________________
+</pre></div>
+</div>
+</div>
+</div>
+<section id="train-lstm-classifier">
+<h4>Train LSTM Classifier<a class="headerlink" href="#train-lstm-classifier" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">history_lstm_classifier</span> <span class="o">=</span> <span class="n">model_lstm_classifier</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
+    <span class="n">X_train_pad</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span>
+    <span class="n">epochs</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+    <span class="n">batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span>
+    <span class="n">validation_data</span><span class="o">=</span><span class="p">(</span><span class="n">X_val_pad</span><span class="p">,</span> <span class="n">y_val</span><span class="p">),</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 1/5
+125/125 [==============================] - 11s 77ms/step - loss: 0.6936 - accuracy: 0.5038 - val_loss: 0.6927 - val_accuracy: 0.5280
+Epoch 2/5
+125/125 [==============================] - 9s 74ms/step - loss: 0.6436 - accuracy: 0.6130 - val_loss: 0.7216 - val_accuracy: 0.6100
+Epoch 3/5
+125/125 [==============================] - 9s 73ms/step - loss: 0.6767 - accuracy: 0.5570 - val_loss: 0.6854 - val_accuracy: 0.5310
+Epoch 4/5
+125/125 [==============================] - 10s 77ms/step - loss: 0.6475 - accuracy: 0.5922 - val_loss: 0.6012 - val_accuracy: 0.6090
+Epoch 5/5
+125/125 [==============================] - 9s 74ms/step - loss: 0.5205 - accuracy: 0.7690 - val_loss: 0.5795 - val_accuracy: 0.7360
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="compare-rnn-vs-lstm-performance">
+<h4>Compare RNN vs LSTM Performance<a class="headerlink" href="#compare-rnn-vs-lstm-performance" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Evaluate all models</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="mi">70</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;MODEL COMPARISON&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="mi">70</span><span class="p">)</span>
+
+<span class="n">models</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;Simple RNN&quot;</span><span class="p">:</span> <span class="n">model_acceptor</span><span class="p">,</span>
+    <span class="s2">&quot;Bidirectional RNN&quot;</span><span class="p">:</span> <span class="n">model_birnn</span><span class="p">,</span>
+    <span class="s2">&quot;LSTM&quot;</span><span class="p">:</span> <span class="n">model_lstm_classifier</span>
+<span class="p">}</span>
+
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">models</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">val_loss</span><span class="p">,</span> <span class="n">val_acc</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">X_val_pad</span><span class="p">,</span> <span class="n">y_val</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">:</span><span class="s2">20s</span><span class="si">}</span><span class="s2"> - Validation Accuracy: </span><span class="si">{</span><span class="n">val_acc</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>======================================================================
+MODEL COMPARISON
+======================================================================
+Simple RNN           - Validation Accuracy: 0.5090
+Bidirectional RNN    - Validation Accuracy: 0.4960
+LSTM                 - Validation Accuracy: 0.7360
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="visualize-training-history">
+<h4>Visualize Training History<a class="headerlink" href="#visualize-training-history" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+
+<span class="c1"># Plot LSTM training history</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">history_lstm_classifier</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="s2">&quot;accuracy&quot;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Train&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">history_lstm_classifier</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="s2">&quot;val_accuracy&quot;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Validation&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;LSTM Classifier - Accuracy&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Epoch&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Accuracy&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">history_lstm_classifier</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="s2">&quot;loss&quot;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Train&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">history_lstm_classifier</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="s2">&quot;val_loss&quot;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Validation&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;LSTM Classifier - Loss&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Epoch&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Loss&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/c479dff67e45db59075343a2b43af3be3713f4226a8b175904a4a14be1c242fd.png" src="../_images/c479dff67e45db59075343a2b43af3be3713f4226a8b175904a4a14be1c242fd.png" />
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="self-check-questions">
+<h2>4. Self-Check Questions<a class="headerlink" href="#self-check-questions" title="Link to this heading">#</a></h2>
+<p><strong>RNNs and LSTMs</strong></p>
+<ol class="arabic simple">
+<li><p>What is the main difference between a simple RNN and an LSTM?</p></li>
+<li><p>Why do RNNs struggle with long-range dependencies?</p></li>
+<li><p>What are the roles of the forget, input, and output gates in an LSTM?</p></li>
+<li><p>How does a bidirectional RNN differ from a standard RNN?</p></li>
+</ol>
+<p><strong>Application Types</strong></p>
+<ol class="arabic simple" start="5">
+<li><p>What is the difference between an acceptor and a transducer architecture?</p></li>
+<li><p>In what scenarios would you use an encoder-decoder model?</p></li>
+<li><p>Why might you choose a bidirectional RNN for sentiment analysis?</p></li>
+<li><p>What are the trade-offs between using LSTM and simple RNNs?</p></li>
+</ol>
+<!-- ## Summary
+
+### Key Takeaways
+
+#### RNN Architectures
+1. **Acceptor**: Sequence → Single output (classification tasks)
+2. **Transducer**: Sequence → Sequence, same length (tagging tasks)
+3. **Encoder-Decoder**: Sequence → Sequence, different length (translation)
+4. **Bidirectional**: Better context understanding with forward + backward processing
+
+
+
+#### LSTM Advantages
+- Gates control information flow (forget, input, output)
+- Better at capturing long-range dependencies
+- More stable gradients during training
+- Generally outperforms simple RNNs on complex tasks
+
+#### Practical Considerations
+- LSTMs have more parameters → slower training, more data needed
+- Simple RNNs can work well for shorter sequences
+- Bidirectional models cannot be used for real-time prediction
+- Modern alternatives: GRU (simpler), Transformers (attention-based) --></section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./my_notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="m3_1_convolutional_neural_network.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">M3.1 Convolutional Neural Network</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="m3_3_transformer.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">M3.3 Transformers</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-objectives">Learning Objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup-and-imports">Setup and Imports</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recurrent-neural-networks">1. Recurrent Neural Networks</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-an-rnn">1.1 What is an RNN?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mathematical-formulation">Mathematical Formulation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#training-rnns-backpropagation-through-time">1.2 Training RNNs: Backpropagation Through Time</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rnn-application-types">2. RNN Application Types</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#acceptor-sequence-classification">2.1 Acceptor: Sequence Classification</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#text-preprocessing">Text Preprocessing</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#build-rnn-acceptor-model">Build RNN Acceptor Model</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#train-the-acceptor">Train the Acceptor</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#test-prediction">Test Prediction</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#transducer-sequence-labeling">2.2 Transducer: Sequence Labeling</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#prepare-pos-tagging-data">Prepare POS Tagging Data</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#build-rnn-transducer-model-for-pos-tagging">Build RNN Transducer Model for POS Tagging</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#train-the-transducer">Train the Transducer</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#encoder-decoder-sequence-to-sequence">2.3 Encoder-Decoder: Sequence-to-Sequence</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#prepare-sequence-to-sequence-data">Prepare Sequence-to-Sequence Data</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#build-encoder-decoder-model">Build Encoder-Decoder Model</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#train-encoder-decoder">Train Encoder-Decoder</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bidirectional-rnn">2.4 Bidirectional RNN</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#train-bidirectional-rnn">Train Bidirectional RNN</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#long-short-term-memory-lstm">3. Long Short-Term Memory (LSTM)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-lstm">3.1 Why LSTM?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lstm-architecture">3.2 LSTM Architecture</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Mathematical Formulation</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#application-1-text-generation-with-lstm">3.3 Application 1: Text Generation with LSTM</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#prepare-character-level-data">Prepare Character-Level Data</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#create-training-sequences">Create Training Sequences</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#build-character-level-lstm">Build Character-Level LSTM</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#train-character-lstm">Train Character LSTM</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-shakespeare-style-text">Generate Shakespeare-Style Text</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#application-2-text-classification-with-lstm">3.4 Application 2: Text Classification with LSTM</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#train-lstm-classifier">Train LSTM Classifier</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#compare-rnn-vs-lstm-performance">Compare RNN vs LSTM Performance</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#visualize-training-history">Visualize Training History</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#self-check-questions">4. Self-Check Questions</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By The Jupyter Book Community
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

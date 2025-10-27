@@ -1,0 +1,1540 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>M1.3 Naive Bayes Classifier &#8212; My sample book</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=e01d92e3" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'my_notebooks/m1_3_naive_bayes';</script>
+    <script src="../_static/toggle_sidebar.js?v=490e729f"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="M2.1 Support Vector Machines" href="m2_1_support_vector_machines.html" />
+    <link rel="prev" title="M1.2 Linear and Logistic Regression" href="m1_2_linear_and_logistic_regression.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo_vu.png" class="logo__image only-light" alt="My sample book - Home"/>
+    <script>document.write(`<img src="../_static/logo_vu.png" class="logo__image only-dark" alt="My sample book - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Module 1 - Basic ML models</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="m1_1_feature_engineering.html">M1.1 Feature Engineering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="m1_2_linear_and_logistic_regression.html">M1.2 Linear and Logistic Regression</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">M1.3 Naive Bayes Classifier</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Module 2 - Advanced ML models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="m2_1_support_vector_machines.html">M2.1 Support Vector Machines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="m2_2_embeddings.html">M2.1 Word Embeddings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="m2_3_neural_networks.html">M2.3 Neural Networks</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Module 3 - Deep Learning models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="m3_1_convolutional_neural_network.html">M3.1 Convolutional Neural Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="m3_2_recurrent_neural_network.html">M3.2 Recurrent Neural Networks and LSTMs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="m3_3_transformer.html">M3.3 Transformers</a></li>
+
+
+
+
+
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/my_notebooks/m1_3_naive_bayes.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>M1.3 Naive Bayes Classifier</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-objectives">Learning Objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#load-general-packages">Load general packages</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">1. Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#understanding-probabilities-bayes-theorem">2. Understanding Probabilities &amp; Bayes’ Theorem</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#task-formalization">2.1 Task Formalization</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#bag-of-words-bow">Bag-Of-Words (BOW)</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#types-of-probabilities">2.2 Types of probabilities</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bayes-theorem">2.3 Bayes’ Theorem</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-manual-example-of-applying-bayes-theorem">2.4. A Manual Example of applying Bayes’ Theorem</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#naive-bayes-classifier-for-spam-detection-dataset">3: Naive Bayes’ Classifier for Spam detection dataset</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#load-process-dataset-bag-of-words">3.1 Load &amp; Process Dataset: Bag-of-Words</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-prior-probabilities-p-class">3.2 Computing Prior Probabilities <code class="docutils literal notranslate"><span class="pre">P(Class)</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-likelihood-probabilities">3.3 Computing Likelihood Probabilities</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#practically-with-naive-bayes-we-count-the-frequencies-of-each-word">Practically with Naive Bayes we count the frequencies of each word</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#coding-implementation">Coding implementation:</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-tokenization-and-vocabulary-building">Step 1: Tokenization and Vocabulary Building</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-count-word-frequencies-per-class">Step 2: Count Word Frequencies per Class</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-calculate-probabilities">Step 3: Calculate Probabilities</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#likelihood-probabilities-p-text-word-mid-text-class-smoothing">Likelihood probabilities (<span class="math notranslate nohighlight">\(P(\text{word} \mid \text{Class})\)</span>) -  <strong>Smoothing</strong></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#making-predictions">3.4 Making Predictions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-existing-package-scikit-learn">3.5 Using existing package: scikit-learn</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#test-on-the-test-set">Test on the test set</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extra-material">4. Extra Material</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#another-classification-task-sentiment-analysis">4.1. Another classification task: Sentiment Analysis</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variants-of-naive-bayes">4.2. Variants of Naive Bayes</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#multinomialnb-what-we-used">MultinomialNB (What we used)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#bernoullinb">BernoulliNB</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#gaussiannb">GaussianNB</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-exercise">4.3. (optional) Exercise</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#self-check-questions">Self-Check Questions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#further-reading">Further Reading</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="m1-3-naive-bayes-classifier">
+<h1>M1.3 Naive Bayes Classifier<a class="headerlink" href="#m1-3-naive-bayes-classifier" title="Link to this heading">#</a></h1>
+<p><a class="reference external" href="https://github.com/cltl/ml4nlp_tutorial_notebooks/blob/main/my_notebooks/m1_3_naive_bayes.ipynb"><img alt="View notebooks on Github" src="https://img.shields.io/static/v1.svg?logo=github&amp;label=Repo&amp;message=View%20On%20Github&amp;color=lightgrey" /></a>
+<a class="reference external" href="https://colab.research.google.com/github/cltl/ml4nlp_tutorial_notebooks/blob/main/my_notebooks/m1_3_naive_bayes.ipynb"><img alt="Open In Collab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p>
+<section id="learning-objectives">
+<h2>Learning Objectives<a class="headerlink" href="#learning-objectives" title="Link to this heading">#</a></h2>
+<p>By working through this notebook, you will learn:</p>
+<ol class="arabic simple">
+<li><p>Basics of probability theory: prior probabilities, conditional probabilities</p></li>
+<li><p>What Bayes’ theorem is and how to use it to calculate the likelihood of an event</p></li>
+<li><p>What the naive bayes assumption is</p></li>
+<li><p>How we can construct a Naive Bayes’ Classifier and use it for text classification</p></li>
+</ol>
+</section>
+<section id="load-general-packages">
+<h2>Load general packages<a class="headerlink" href="#load-general-packages" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ignore warning messages for cleaner output of the website</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+
+<span class="c1"># import necessary libraries</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+
+<span class="c1"># Counter is a useful package takes as input a list of elements (e.g. a list of words in a text) and </span>
+<span class="c1">#  returns a dictionary how many times each element occurs with key (e.g. &quot;apple&quot; ): value ( e.g. 5) .</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span><span class="p">,</span> <span class="n">defaultdict</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_dataset</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="introduction">
+<h2>1. Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
+<p>Machine Learning often boiles down to simply learning the statistics of our datasets. For many especially for classification tasks, we want to know:</p>
+<p>What is the probability that:</p>
+<ol class="arabic simple">
+<li><p>This sentiment of this review is positive/negative?</p></li>
+<li><p>That this email is spam?</p></li>
+<li><p>This social media post contains hate speech?</p></li>
+</ol>
+<p>Luckily we don’t need to reinvent the wheel and can borrow much theory from probability theory.
+In this notebook we will walk through the steps of computing probabilities, discuss a few different type of probabilities and finally use it to constructe an algorithm we can use for classification, the <strong>Naive Bayes Classifier</strong>. Despite its simplicity, Naive Bayes often performs remarkably well for NLP tasks like spam detection, sentiment analysis, and document categorization.</p>
+</section>
+<hr class="docutils" />
+<section id="understanding-probabilities-bayes-theorem">
+<h2>2. Understanding Probabilities &amp; Bayes’ Theorem<a class="headerlink" href="#understanding-probabilities-bayes-theorem" title="Link to this heading">#</a></h2>
+<p>Imagine you receive an email with the words: “winner”, “free”, “click”, “now”.
+Your intuition probably tells you this is spam! Why? Because you’ve learned from experience that these words appear much more frequently in spam than in legitimate emails.
+Naive Bayes formalizes this intuition using probability theory.</p>
+<p><strong>Core Question:</strong> Given a text document, we want to answer: <strong>What is the probability that this document belongs to class C?</strong></p>
+<section id="task-formalization">
+<h3>2.1 Task Formalization<a class="headerlink" href="#task-formalization" title="Link to this heading">#</a></h3>
+<p>Let’s say we have a list of documents:</p>
+<ul class="simple">
+<li><p>The <strong>Evidence</strong>: <code class="docutils literal notranslate"><span class="pre">Documents</span> <span class="pre">=</span> <span class="pre">[document_1,</span> <span class="pre">document_2,</span> <span class="pre">...,</span> <span class="pre">document_3]</span></code>.</p></li>
+<li><p>The <strong>Classes</strong>: <code class="docutils literal notranslate"><span class="pre">Classes</span> <span class="pre">=</span> <span class="pre">[spam,</span> <span class="pre">not_spam]</span></code></p></li>
+</ul>
+<section id="bag-of-words-bow">
+<h4>Bag-Of-Words (BOW)<a class="headerlink" href="#bag-of-words-bow" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p>For now also let’s assume that each document is represented as a <strong>Bag-Of-Words (BOW)</strong></p></li>
+<li><p>In the BOW we neglect the order of the words in a document and only count for each word in the document how often it appears. As you may realize we loose a lot of information this way, but it makes it very easy to process text for simple machine learning models.</p></li>
+</ul>
+<p><img alt="bow_fig" src="https://miro.medium.com/v2/0*cf1wq8eIix-Z2qIf.png" /></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_bag_of_words</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; We want to count how many words there are in the text&quot;&quot;&quot;</span>
+    <span class="n">words</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">Counter</span><span class="p">(</span><span class="n">words</span><span class="p">)</span>
+
+<span class="c1"># Example text: biggest pop song of all time</span>
+<span class="n">example_text</span> <span class="o">=</span> <span class="s2">&quot;We were both young when I first saw you </span><span class="se">\n</span><span class="s2"> I close my eyes and the flashback starts </span><span class="se">\n</span><span class="s2"> I&#39;m standing there </span><span class="se">\n</span><span class="s2"> On a balcony in summer air</span><span class="se">\n</span><span class="s2"> See the lights, see the party, the ball gowns </span><span class="se">\n</span><span class="s2"> See you make your way through the crowd </span><span class="se">\n</span><span class="s2"> And say hello </span><span class="se">\n</span><span class="s2"> Little did I know </span><span class="se">\n</span><span class="s2"> That you were Romeo, you were throwing pebbles </span><span class="se">\n</span><span class="s2"> And my daddy said, &#39;Stay away from Juliet&#39; </span><span class="se">\n</span><span class="s2"> And I was crying on the staircase </span><span class="se">\n</span><span class="s2"> Begging you, &#39;Please don&#39;t go,&#39; and I said </span><span class="se">\n</span><span class="s2"> &#39;Romeo, take me somewhere we can be alone </span><span class="se">\n</span><span class="s2"> I&#39;ll be waiting, all that&#39;s left to do is run </span><span class="se">\n</span><span class="s2"> You&#39;ll be the prince and I&#39;ll be the princess </span><span class="se">\n</span><span class="s2"> It&#39;s a love story, baby, just say, &#39;Yes&#39;&#39;&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">get_bag_of_words</span><span class="p">(</span><span class="n">example_text</span><span class="p">))</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">plot_top_counts</span><span class="p">(</span><span class="n">counter</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Plot the counts of the top N elements in a Counter object.&quot;&quot;&quot;</span>
+    <span class="n">top_items</span> <span class="o">=</span> <span class="n">counter</span><span class="o">.</span><span class="n">most_common</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+    <span class="n">labels</span><span class="p">,</span> <span class="n">counts</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">top_items</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">counts</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Word&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Count&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Top </span><span class="si">{</span><span class="n">N</span><span class="si">}</span><span class="s1"> Word Counts in Love Story Excerpt&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># Example (thought the word count distribution is a bit boring here since the text is so short):</span>
+<span class="n">word_counts</span> <span class="o">=</span> <span class="n">get_bag_of_words</span><span class="p">(</span><span class="n">example_text</span><span class="p">)</span>
+<span class="n">plot_top_counts</span><span class="p">(</span><span class="n">word_counts</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Counter({&#39;the&#39;: 8, &#39;and&#39;: 6, &#39;i&#39;: 5, &#39;you&#39;: 4, &#39;be&#39;: 4, &#39;were&#39;: 3, &#39;see&#39;: 3, &#39;we&#39;: 2, &#39;my&#39;: 2, &#39;on&#39;: 2, &#39;a&#39;: 2, &quot;i&#39;ll&quot;: 2, &#39;both&#39;: 1, &#39;young&#39;: 1, &#39;when&#39;: 1, &#39;first&#39;: 1, &#39;saw&#39;: 1, &#39;close&#39;: 1, &#39;eyes&#39;: 1, &#39;flashback&#39;: 1, &#39;starts&#39;: 1, &quot;i&#39;m&quot;: 1, &#39;standing&#39;: 1, &#39;there&#39;: 1, &#39;balcony&#39;: 1, &#39;in&#39;: 1, &#39;summer&#39;: 1, &#39;air&#39;: 1, &#39;lights,&#39;: 1, &#39;party,&#39;: 1, &#39;ball&#39;: 1, &#39;gowns&#39;: 1, &#39;make&#39;: 1, &#39;your&#39;: 1, &#39;way&#39;: 1, &#39;through&#39;: 1, &#39;crowd&#39;: 1, &#39;say&#39;: 1, &#39;hello&#39;: 1, &#39;little&#39;: 1, &#39;did&#39;: 1, &#39;know&#39;: 1, &#39;that&#39;: 1, &#39;romeo,&#39;: 1, &#39;throwing&#39;: 1, &#39;pebbles&#39;: 1, &#39;daddy&#39;: 1, &#39;said,&#39;: 1, &quot;&#39;stay&quot;: 1, &#39;away&#39;: 1, &#39;from&#39;: 1, &quot;juliet&#39;&quot;: 1, &#39;was&#39;: 1, &#39;crying&#39;: 1, &#39;staircase&#39;: 1, &#39;begging&#39;: 1, &#39;you,&#39;: 1, &quot;&#39;please&quot;: 1, &quot;don&#39;t&quot;: 1, &quot;go,&#39;&quot;: 1, &#39;said&#39;: 1, &quot;&#39;romeo,&quot;: 1, &#39;take&#39;: 1, &#39;me&#39;: 1, &#39;somewhere&#39;: 1, &#39;can&#39;: 1, &#39;alone&#39;: 1, &#39;waiting,&#39;: 1, &#39;all&#39;: 1, &quot;that&#39;s&quot;: 1, &#39;left&#39;: 1, &#39;to&#39;: 1, &#39;do&#39;: 1, &#39;is&#39;: 1, &#39;run&#39;: 1, &quot;you&#39;ll&quot;: 1, &#39;prince&#39;: 1, &#39;princess&#39;: 1, &quot;it&#39;s&quot;: 1, &#39;love&#39;: 1, &#39;story,&#39;: 1, &#39;baby,&#39;: 1, &#39;just&#39;: 1, &#39;say,&#39;: 1, &quot;&#39;yes&#39;&#39;&quot;: 1})
+</pre></div>
+</div>
+<img alt="../_images/96e069d7ba01a9dfb0fcdad938a0b6d84e1e5ddfd98905f60b9c8fd9c05da088.png" src="../_images/96e069d7ba01a9dfb0fcdad938a0b6d84e1e5ddfd98905f60b9c8fd9c05da088.png" />
+</div>
+</div>
+</section>
+</section>
+<section id="types-of-probabilities">
+<h3>2.2 Types of probabilities<a class="headerlink" href="#types-of-probabilities" title="Link to this heading">#</a></h3>
+<p>Imagine we have a tiny dataset of 10 emails: 2 are spam, 8 are legitimate.</p>
+<p><strong>Prior Probability P(Class):</strong> The baseline probability of a class before seeing any evidence.</p>
+<ul class="simple">
+<li><p>P(spam) = 6/10 = 0.2</p></li>
+<li><p>P(not spam) = 4/10 = 0.8</p></li>
+</ul>
+<p>These tell us: “Without reading the email, what are the chances it’s spam?”</p>
+<p>Another type of probabilities are  <strong>Conditional Probabilities</strong>, written as P(A|B), what is the probability of A <em>given</em> I already know B to be true.
+For NB classification we distinghuish between two types of conditional probabilities, as they tell us something different for classification. While it is good to understand these terms know that probability theory does not really care what values we are talking about, it can just be any abstract A or B. For classifcation though we want to predict the probability of a <em>Class</em>, given the observed <em>Evidence</em> .</p>
+<p>Thus we disthinghuish between the two conditional probabilities:</p>
+<ol class="arabic simple">
+<li><p><strong>Likelihood P(Evidence | Class):</strong> How likely is our evidence if we know the class?</p>
+<ul class="simple">
+<li><p>So if we see the word “FREE” in an email, we ask: “How often does ‘FREE’ appear in spam (or in non-spam emails)?”</p></li>
+</ul>
+</li>
+<li><p><strong>Posterior Probability P(Class | Evidence):</strong> What we actually want! Given the evidence (the email content), what’s the probability of each class?</p></li>
+</ol>
+</section>
+<section id="bayes-theorem">
+<h3>2.3 Bayes’ Theorem<a class="headerlink" href="#bayes-theorem" title="Link to this heading">#</a></h3>
+<p>Bayes’ Theorem lets us flip conditional probabilities:</p>
+<div class="math notranslate nohighlight">
+\[
+P(\text{Class} \mid \text{Evidence}) = \frac{P(\text{Evidence} \mid \text{Class}) \times P(\text{Class})}{P(\text{Evidence})}
+\]</div>
+<p>In plain English:</p>
+<blockquote>
+<div><p>The probability of spam given this email = (How likely this email is if it’s spam × How common spam is) / How common this email is in general</p>
+</div></blockquote>
+<p>Since we’re comparing classes, <span class="math notranslate nohighlight">\(P(\text{Evidence})\)</span> is the same for both, so we can ignore it:</p>
+<div class="math notranslate nohighlight">
+\[
+P(\text{Class} \mid \text{Evidence}) \propto P(\text{Evidence} \mid \text{Class}) \times P(\text{Class})
+\]</div>
+<p><strong>The “Naive” Assumption:</strong> To make this practical, we assume all words are independent. For an email with words <span class="math notranslate nohighlight">\(w_1, w_2, ..., w_n\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+P(\text{Email} \mid \text{Class}) = P(w_1 \mid \text{Class}) \times P(w_2 \mid \text{Class}) \times \ldots \times P(w_n \mid \text{Class})
+\]</div>
+<p>This is clearly false in reality (for example if you see “free” you’re more likely to see “prize”), but it works surprisingly well!</p>
+</section>
+<section id="a-manual-example-of-applying-bayes-theorem">
+<h3>2.4. A Manual Example of applying Bayes’ Theorem<a class="headerlink" href="#a-manual-example-of-applying-bayes-theorem" title="Link to this heading">#</a></h3>
+<p>It is good to work out some of these examples on paper to really understand what is happening. Check <a class="reference external" href="https://www.lesswrong.com/w/bayes-rule?lens=high-speed-intro-to-bayes-s-rule">this website</a> for some further material and examples. I copied one example below, if you don’t get the answer immidiately that totally normal. Give yourself some time to work it out.</p>
+<p>Suppose you’re screening a set of patients for a disease, which we’ll call Diseasitis.[1] Your initial test is a tongue depressor containing a chemical strip, which usually turns black if the patient has Diseasitis.</p>
+<ul class="simple">
+<li><p>Based on prior epidemiology, you expect that around 20% of patients in the screening population have Diseasitis.</p></li>
+<li><p>Among patients with Diseasitis, 90% turn the tongue depressor black.</p></li>
+<li><p>30% of the patients without Diseasitis will also turn the tongue depressor black.</p></li>
+</ul>
+<p>What fraction of patients with black tongue depressors have Diseasitis?</p>
+ <!-- <details open> -->
+ <details>
+   <summary><b>Answer</b>: Don't look without coming up with your own solution first </summary>
+<p>3/7 or 43%, quickly obtainable as follows: In the screened population, there’s 1 sick patient for 4 healthy patients. Sick patients are 3 times more likely to turn the tongue depressor black than healthy patients. (1:4)⋅(3:1)=(3:4) or 3 sick patients to 4 healthy patients among those that turn the tongue depressor black, corresponding to a probability of 3/7=43% that the patient is sick.</p>
+ </details>
+</section>
+</section>
+<hr class="docutils" />
+<section id="naive-bayes-classifier-for-spam-detection-dataset">
+<h2>3: Naive Bayes’ Classifier for Spam detection dataset<a class="headerlink" href="#naive-bayes-classifier-for-spam-detection-dataset" title="Link to this heading">#</a></h2>
+<section id="load-process-dataset-bag-of-words">
+<h3>3.1 Load &amp; Process Dataset: Bag-of-Words<a class="headerlink" href="#load-process-dataset-bag-of-words" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load a spam detection dataset from huggingface datasets. </span>
+<span class="c1"># Again URL is obtained from link in load_dataset: https://huggingface.co/datasets/Deysi/spam-detection-dataset</span>
+<span class="n">full_dataset</span> <span class="o">=</span> <span class="n">load_dataset</span><span class="p">(</span><span class="s1">&#39;Deysi/spam-detection-dataset&#39;</span><span class="p">,</span> <span class="n">split</span><span class="o">=</span><span class="s1">&#39;train&#39;</span><span class="p">)</span>  <span class="c1"># Load only first 100 examples for speed</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Dataset loaded! Number of examples: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">full_dataset</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># shuffle and take the first 1000 examples for quicker processing</span>
+<span class="n">full_dataset</span> <span class="o">=</span> <span class="n">full_dataset</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">full_dataset</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Number of examples after selection: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">dataset</span><span class="p">]</span>  <span class="c1"># labelse are &quot;spam&quot; or &quot;not_spam&quot;</span>
+<span class="n">text_data</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">dataset</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dataset loaded! Number of examples: 8175
+
+Number of examples after selection: 100
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">example</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="c1"># we can also print it as is, but this is a bit easier to read (put all sentences below each other)</span>
+<span class="n">example_text</span> <span class="o">=</span> <span class="n">example</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">]</span>
+<span class="n">example_text_formatted</span> <span class="o">=</span> <span class="n">example_text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="s1">&#39;.</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;!&#39;</span><span class="p">,</span> <span class="s1">&#39;!</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;## Example text and label:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;- Example text:</span><span class="se">\n</span><span class="s2"> </span><span class="se">\&quot;\&quot;\&quot;</span><span class="si">{</span><span class="n">example_text_formatted</span><span class="si">}</span><span class="se">\&quot;\&quot;\&quot;</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;- Example label: </span><span class="si">{</span><span class="n">example</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>## Example text and label:
+- Example text:
+ &quot;&quot;&quot;Looking for quick cash? Look no further!
+ Join our exclusive money-making community and start earning thousands today.
+ All you need is a computer and internet connection!
+ Don&#39;t miss out on this amazing opportunity.
+&quot;&quot;&quot;
+- Example label: spam
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="computing-prior-probabilities-p-class">
+<h3>3.2 Computing Prior Probabilities <code class="docutils literal notranslate"><span class="pre">P(Class)</span></code><a class="headerlink" href="#computing-prior-probabilities-p-class" title="Link to this heading">#</a></h3>
+<!-- ## Probabilities step 1: Prior Probabilities `P(Class)`  -->
+<p><code class="docutils literal notranslate"><span class="pre">P(Class)</span></code> allows us to say for each class its probability. Specifically this means what is the frequency of this class in the dataset. While we write it here as the general variable <code class="docutils literal notranslate"><span class="pre">Class</span></code>, when we write it for a specific instance we write it as <code class="docutils literal notranslate"><span class="pre">P(Class=&quot;spam&quot;)</span></code>, or if it is clear for which variable the instance is we can just say <code class="docutils literal notranslate"><span class="pre">P(&quot;spam&quot;)</span></code>.</p>
+<ul class="simple">
+<li><p>To compute the prior probability of the “spam” class, we count the number of spam documents and divide by the total number of documents:</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+P(\text{Class} = \text{spam}) = \frac{\# \text{Spam documents}}{\#\text{Spam documents} + \# \text{Non spam documents}}
+\]</div>
+<ul class="simple">
+<li><p>Notation remark: Sometimes we can use “#” as an abbreviation for “Number of”, and as this reads easier (and I am lazy), I write it us such.</p></li>
+</ul>
+ <!-- <details open> -->
+ <details>
+   <summary><b>Remark</b>: Calculating P(Document) - issues </summary>
+<p><strong>Computing <code class="docutils literal notranslate"><span class="pre">P(Document)</span></code></strong></p>
+<p>For our Naive Bayes Classifier we don’t need the prior pobability of a Document but it is nevertheless good to note what it would mean.
+So for the BOW model the probability of a document would be the combined probability of the individual words.
+This computes P(Document) based purely on the overall word distribution in the dataset, without considering class labels.</p>
+<div class="math notranslate nohighlight">
+\[
+P(\text{word}_i) = \frac{\# \text{word}_i \text{ across all documents}}{\# \text{ word instances (so not just unique) across all documents}}
+\]</div>
+<p>Then, assuming independence between words (the Naive Bayes assumption), the probability of a document is the product of the probabilities of its words:
+$<span class="math notranslate nohighlight">\(
+P(\text{Document}) = \prod_{i=1}^{n} P(\text{word}_i)^{c_i}
+\)</span>$</p>
+<p>where <span class="math notranslate nohighlight">\(c_i\)</span> is the count of word <span class="math notranslate nohighlight">\(i\)</span> in the document, and <span class="math notranslate nohighlight">\(n\)</span> is the size of our vocabulary.</p>
+<p><strong>Note:</strong> In practice, this probability will be extremely small, so we often work with log probabilities instead.</p>
+<div class="math notranslate nohighlight">
+\[
+log (P(\text{Document}) )= \sum_{i=1}^{n} log(P(\text{word}_i)^{c_i})
+\]</div>
+ </details><div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">labels_bin</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;spam&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">dataset</span><span class="p">]</span>  <span class="c1"># 1 for spam, 0 for not_spam</span>
+<span class="n">prob_spam</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">labels_bin</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
+<span class="n">prob_not_spam</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">prob_spam</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Prior probability of spam: P(spam) = </span><span class="si">{</span><span class="n">prob_spam</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Prior probability of not spam: P(not spam) = </span><span class="si">{</span><span class="n">prob_not_spam</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Prior probability of spam: P(spam) = 0.500
+Prior probability of not spam: P(not spam) = 0.500
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Observation:</strong> In this case we see that the dataset is well balanced, which is great! But as you can imagine for many real tasks we will work with very imbalanced datasets. In such imbalanced cases the impact of Naive Bayes really shows it’s imporance (remember the manual example in section 3). Interestingly, I just found out that our 50/50 class split is not as unrealistic, as <a class="reference external" href="https://www.statista.com/statistics/420400/spam-email-traffic-share-annual/">this source </a>mentions spam is about 45% of all email traffic.</p>
+</section>
+<section id="computing-likelihood-probabilities">
+<h3>3.3 Computing Likelihood Probabilities<a class="headerlink" href="#computing-likelihood-probabilities" title="Link to this heading">#</a></h3>
+<p>Here’s where the “naive” part comes in. We assume that <strong>all words in a document are independent</strong> given the class. Of course in the real world this is not true, for example if a review contains a negative word like “awful” it is much more likely that other negative words will be in that review than positive words. However, like all things in science, this method offers approximation of the truth (the probability of a class in this case), which it turns out is very useful so we keep using it, but do be aware of this limitation.</p>
+<p>For a document with words w₁, w₂, …, wₙ:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>P(Document | Class) = P(w₁ | Class) × P(w₂ | Class) × ... × P(wₙ | Class)
+</pre></div>
+</div>
+<p>This probability function is a Conditional Probability, as we are computing: what is the probability of having this document, knowing that it belongs to class X (e.g. spam). So if this document looks nothing like other spam documents its probability will be very low.</p>
+<p>For our case we can just count how often each word in our vocabulary appears in each of the class, then we can calculate the probability of w1 given class=”spam”, by counting how often w1 appears in all the spam documents, and normalizing (dividing) by the total words in that class.</p>
+<!-- $$
+ P(\text{word}_i | Class=\text{"spam"}) = \frac{\text{\# Occurences word}_i \text{ in all spam documents}}{\text{\# Occurences of word instances (so not just unique) in all spam documents}}
+$$ -->
+<div class="math notranslate nohighlight">
+\[
+P(\text{word}_i\,|\,\text{Class=spam}) = \frac{\#\text{times word}_i \text{ in all spam documents}}{\#\text{total words in all spam documents}}
+\]</div>
+<section id="practically-with-naive-bayes-we-count-the-frequencies-of-each-word">
+<h4>Practically with Naive Bayes we count the frequencies of each word<a class="headerlink" href="#practically-with-naive-bayes-we-count-the-frequencies-of-each-word" title="Link to this heading">#</a></h4>
+<p>Practical training steps:</p>
+<ol class="arabic simple">
+<li><p><strong>Count word frequencies</strong> in each class</p></li>
+<li><p><strong>Calculate probabilities</strong>:</p>
+<ul class="simple">
+<li><p>P(Class): How common is each class?</p></li>
+<li><p>P(word | Class): How often does each word appear in each class?</p></li>
+</ul>
+</li>
+<li><p><strong>Apply smoothing</strong> to handle unseen words</p></li>
+</ol>
+<p>For Prediction:</p>
+<ol class="arabic simple">
+<li><p><strong>For each class</strong>, calculate: P(Class) × ∏ P(word | Class) for all words</p></li>
+<li><p><strong>Choose the class</strong> with the highest probability</p></li>
+</ol>
+</section>
+<section id="coding-implementation">
+<h4>Coding implementation:<a class="headerlink" href="#coding-implementation" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">train_data</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">text_data</span><span class="p">,</span> <span class="n">labels</span><span class="p">))</span>
+<span class="n">train_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">train_data</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">,</span> <span class="s1">&#39;label&#39;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Dataset shape: </span><span class="si">{</span><span class="n">train_df</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Class distribution:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">train_df</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">First few examples:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">train_df</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dataset shape: (100, 2)
+
+Class distribution:
+label
+spam        50
+not_spam    50
+Name: count, dtype: int64
+
+First few examples:
+                                                text     label
+0  Looking for quick cash? Look no further! Join ...      spam
+1  Our DaaS platform Quandl is a free and open in...  not_spam
+2  Should I worry about having a good IQ to becom...  not_spam
+3  Hi all,\nworking on a research project to iden...  not_spam
+4  Does anyone know the sources for raw data?\n\n...  not_spam
+</pre></div>
+</div>
+</div>
+</div>
+<section id="step-1-tokenization-and-vocabulary-building">
+<h5>Step 1: Tokenization and Vocabulary Building<a class="headerlink" href="#step-1-tokenization-and-vocabulary-building" title="Link to this heading">#</a></h5>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">tokenize</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Simple tokenization: lowercase and split by spaces&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">text</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+
+<span class="c1"># Build vocabulary</span>
+<span class="n">vocabulary</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">text</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">train_data</span><span class="p">:</span>
+    <span class="n">vocabulary</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">tokenize</span><span class="p">(</span><span class="n">text</span><span class="p">))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Vocabulary size: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">vocabulary</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;First 20 words in vocabulary: </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">vocabulary</span><span class="p">))[:</span><span class="mi">20</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Vocabulary size: 2073
+First 20 words in vocabulary: [&#39;&quot;&#39;, &#39;&quot;buy&#39;, &#39;&quot;dataisbeautiful&quot;&#39;, &#39;&quot;friends&quot;&#39;, &#39;&quot;get&#39;, &#39;&quot;hey&#39;, &#39;&quot;hoarding&quot;,&#39;, &#39;&quot;howdy&#39;, &#39;&quot;inappropriate&#39;, &#39;&quot;lose&#39;, &#39;&quot;spam&#39;, &#39;&quot;upgrade&#39;, &#39;&quot;urgent!&#39;, &#39;&quot;want&#39;, &#39;#&#39;, &#39;##&#39;, &#39;#baliadventure&#39;, &#39;#beachbody&#39;, &#39;#fitness&#39;, &#39;#followers4life&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="step-2-count-word-frequencies-per-class">
+<h5>Step 2: Count Word Frequencies per Class<a class="headerlink" href="#step-2-count-word-frequencies-per-class" title="Link to this heading">#</a></h5>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Count documents per class</span>
+<span class="n">class_counts</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">([</span><span class="n">label</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">train_data</span><span class="p">])</span>
+<span class="n">total_docs</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">train_data</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Class distribution:&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="bp">cls</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">class_counts</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="bp">cls</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">count</span><span class="si">}</span><span class="s2"> documents&quot;</span><span class="p">)</span>
+
+<span class="c1"># Count word frequencies per class</span>
+<span class="n">word_counts</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">int</span><span class="p">))</span>
+<span class="n">total_words</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">text</span><span class="p">,</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">train_data</span><span class="p">:</span>
+    <span class="n">words</span> <span class="o">=</span> <span class="n">tokenize</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">words</span><span class="p">:</span>
+        <span class="n">word_counts</span><span class="p">[</span><span class="n">label</span><span class="p">][</span><span class="n">word</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">total_words</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Word counts per class:&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;spam&#39;</span><span class="p">,</span> <span class="s1">&#39;not_spam&#39;</span><span class="p">]:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s2">:&quot;</span><span class="p">)</span>
+    <span class="c1"># Show only top 5 most common words per class (since vocabulary is much larger)</span>
+    <span class="n">label_word_counts</span> <span class="o">=</span> <span class="n">word_counts</span><span class="p">[</span><span class="n">label</span><span class="p">]</span>
+    <span class="n">top_words</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">label_word_counts</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)[:</span><span class="mi">5</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">word</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">top_words</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  &#39;</span><span class="si">{</span><span class="n">word</span><span class="si">}</span><span class="s2">&#39;: </span><span class="si">{</span><span class="n">count</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Class distribution:
+  spam: 50 documents
+  not_spam: 50 documents
+
+Word counts per class:
+
+spam:
+  &#39;and&#39;: 120
+  &#39;you&#39;: 91
+  &#39;to&#39;: 73
+  &#39;our&#39;: 70
+  &#39;the&#39;: 67
+
+not_spam:
+  &#39;to&#39;: 95
+  &#39;the&#39;: 94
+  &#39;i&#39;: 91
+  &#39;a&#39;: 86
+  &#39;of&#39;: 78
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="step-3-calculate-probabilities">
+<h5>Step 3: Calculate Probabilities<a class="headerlink" href="#step-3-calculate-probabilities" title="Link to this heading">#</a></h5>
+<p><strong>Prior probabilities</strong> (P(Class)):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Prior probabilities</span>
+<span class="n">priors</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="bp">cls</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">class_counts</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">priors</span><span class="p">[</span><span class="bp">cls</span><span class="p">]</span> <span class="o">=</span> <span class="n">count</span> <span class="o">/</span> <span class="n">total_docs</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;P(</span><span class="si">{</span><span class="bp">cls</span><span class="si">}</span><span class="s2">) = </span><span class="si">{</span><span class="n">count</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">total_docs</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">priors</span><span class="p">[</span><span class="bp">cls</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>P(spam) = 50/100 = 0.500
+P(not_spam) = 50/100 = 0.500
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="likelihood-probabilities-p-text-word-mid-text-class-smoothing">
+<h5>Likelihood probabilities (<span class="math notranslate nohighlight">\(P(\text{word} \mid \text{Class})\)</span>) -  <strong>Smoothing</strong><a class="headerlink" href="#likelihood-probabilities-p-text-word-mid-text-class-smoothing" title="Link to this heading">#</a></h5>
+<p>The basic likelihood probability <span class="math notranslate nohighlight">\(P(\text{word} \mid \text{Class})\)</span>, which provides the likelihood of word <span class="math notranslate nohighlight">\(\text{word}\)</span> in a document given that we are in class <span class="math notranslate nohighlight">\(\text{Class}\)</span>, is:</p>
+<div class="math notranslate nohighlight">
+\[
+P(\text{word} \mid \text{class}) = \frac{\text{count}(\text{word}, \text{class})}{\text{total words in class}}
+\]</div>
+<p>However, since a word can also appear <span class="math notranslate nohighlight">\(0\)</span> times for a specific class, to avoid zero probabilities for unseen words, we use <strong>Laplace smoothing</strong> (add-one smoothing):</p>
+<div class="math notranslate nohighlight">
+\[
+P(\text{word} \mid \text{class}) = \frac{\text{count}(\text{word}, \text{class}) + \alpha}{\text{total words in class} + \text{vocabulary size}*\alpha}
+\]</div>
+<p>For our case we use <span class="math notranslate nohighlight">\(\alpha = 1\)</span> for simplicity (though keep in mind that varying this parameter might be relevant in other cases)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Likelihood probabilities with Laplace smoothing</span>
+<span class="n">alpha</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># Smoothing parameter</span>
+<span class="n">vocab_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">vocabulary</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">calculate_likelihood</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="bp">cls</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate P(word | class) with Laplace smoothing&quot;&quot;&quot;</span>
+    <span class="n">word_count</span> <span class="o">=</span> <span class="n">word_counts</span><span class="p">[</span><span class="bp">cls</span><span class="p">][</span><span class="n">word</span><span class="p">]</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="n">total_words</span><span class="p">[</span><span class="bp">cls</span><span class="p">]</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">word_count</span> <span class="o">+</span> <span class="n">alpha</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">total</span> <span class="o">+</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">vocab_size</span><span class="p">)</span>
+
+<span class="c1"># Show some examples</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Likelihood probabilities P(word | class):&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Vocabulary size: </span><span class="si">{</span><span class="n">vocab_size</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Pick some characteristic spam/not_spam words for examples</span>
+<span class="n">example_words</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;free&#39;</span><span class="p">,</span> <span class="s1">&#39;call&#39;</span><span class="p">,</span> <span class="s1">&#39;win&#39;</span><span class="p">,</span> <span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="s1">&#39;urgent&#39;</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;spam&#39;</span><span class="p">,</span> <span class="s1">&#39;not_spam&#39;</span><span class="p">]:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Total words in </span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">total_words</span><span class="p">[</span><span class="n">label</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Examples for </span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s2">:&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">example_words</span><span class="p">:</span>
+        <span class="n">prob</span> <span class="o">=</span> <span class="n">calculate_likelihood</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span>
+        <span class="n">count</span> <span class="o">=</span> <span class="n">word_counts</span><span class="p">[</span><span class="n">label</span><span class="p">][</span><span class="n">word</span><span class="p">]</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  P(&#39;</span><span class="si">{</span><span class="n">word</span><span class="si">}</span><span class="s2">&#39; | </span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s2">) = (</span><span class="si">{</span><span class="n">count</span><span class="si">}</span><span class="s2"> + 1) / (</span><span class="si">{</span><span class="n">total_words</span><span class="p">[</span><span class="n">label</span><span class="p">]</span><span class="si">}</span><span class="s2"> + </span><span class="si">{</span><span class="n">vocab_size</span><span class="si">}</span><span class="s2">) = </span><span class="si">{</span><span class="n">prob</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Likelihood probabilities P(word | class):
+
+Vocabulary size: 2073
+
+Total words in spam: 2909
+Examples for spam:
+  P(&#39;free&#39; | spam) = (8 + 1) / (2909 + 2073) = 0.001807
+  P(&#39;call&#39; | spam) = (0 + 1) / (2909 + 2073) = 0.000201
+  P(&#39;win&#39; | spam) = (8 + 1) / (2909 + 2073) = 0.001807
+  P(&#39;click&#39; | spam) = (5 + 1) / (2909 + 2073) = 0.001204
+  P(&#39;urgent&#39; | spam) = (1 + 1) / (2909 + 2073) = 0.000401
+
+Total words in not_spam: 3339
+Examples for not_spam:
+  P(&#39;free&#39; | not_spam) = (5 + 1) / (3339 + 2073) = 0.001109
+  P(&#39;call&#39; | not_spam) = (0 + 1) / (3339 + 2073) = 0.000185
+  P(&#39;win&#39; | not_spam) = (0 + 1) / (3339 + 2073) = 0.000185
+  P(&#39;click&#39; | not_spam) = (0 + 1) / (3339 + 2073) = 0.000185
+  P(&#39;urgent&#39; | not_spam) = (0 + 1) / (3339 + 2073) = 0.000185
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="making-predictions">
+<h3>3.4 Making Predictions<a class="headerlink" href="#making-predictions" title="Link to this heading">#</a></h3>
+<!-- ### Step 4: Make Predictions -->
+<p>Now let’s classify some new emails!</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">predict_naive_bayes</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Predict the class for a text message&quot;&quot;&quot;</span>
+    <span class="n">words</span> <span class="o">=</span> <span class="n">tokenize</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    
+    <span class="n">scores</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="bp">cls</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;spam&#39;</span><span class="p">,</span> <span class="s1">&#39;not_spam&#39;</span><span class="p">]:</span>
+        <span class="c1"># Start with prior probability (in log space to avoid underflow)</span>
+        <span class="n">score</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">priors</span><span class="p">[</span><span class="bp">cls</span><span class="p">])</span>
+        
+        <span class="c1"># Multiply by likelihood of each word (add in log space)</span>
+        <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">words</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">vocabulary</span><span class="p">:</span>
+                <span class="n">score</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">calculate_likelihood</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="bp">cls</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># Unseen word: use smoothing</span>
+                <span class="n">score</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">alpha</span> <span class="o">/</span> <span class="p">(</span><span class="n">total_words</span><span class="p">[</span><span class="bp">cls</span><span class="p">]</span> <span class="o">+</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">vocab_size</span><span class="p">))</span>
+        
+        <span class="n">scores</span><span class="p">[</span><span class="bp">cls</span><span class="p">]</span> <span class="o">=</span> <span class="n">score</span>
+    
+    <span class="c1"># Return class with highest score</span>
+    <span class="n">predicted_class</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">scores</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">scores</span><span class="o">.</span><span class="n">get</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">predicted_class</span><span class="p">,</span> <span class="n">scores</span>
+
+<span class="c1"># Test on new messages</span>
+<span class="n">test_messages</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;Congratulations! You won a free prize. Click here now!&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Hi, are we still meeting for lunch tomorrow?&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;URGENT: Your account will be closed. Call immediately!&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Thanks for the document you sent yesterday&quot;</span>
+<span class="p">]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;=&quot;</span><span class="o">*</span><span class="mi">60</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;PREDICTIONS&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="o">*</span><span class="mi">60</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">message</span> <span class="ow">in</span> <span class="n">test_messages</span><span class="p">:</span>
+    <span class="n">predicted_class</span><span class="p">,</span> <span class="n">scores</span> <span class="o">=</span> <span class="n">predict_naive_bayes</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Message: &#39;</span><span class="si">{</span><span class="n">message</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Log probabilities:&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="bp">cls</span><span class="p">,</span> <span class="n">score</span> <span class="ow">in</span> <span class="n">scores</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="bp">cls</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">score</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Predicted: </span><span class="si">{</span><span class="n">predicted_class</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>============================================================
+PREDICTIONS
+============================================================
+
+Message: &#39;Congratulations! You won a free prize. Click here now!&#39;
+Log probabilities:
+  spam: -61.54
+  not_spam: -67.06
+Predicted: spam
+
+Message: &#39;Hi, are we still meeting for lunch tomorrow?&#39;
+Log probabilities:
+  spam: -59.18
+  not_spam: -58.89
+Predicted: not_spam
+
+Message: &#39;URGENT: Your account will be closed. Call immediately!&#39;
+Log probabilities:
+  spam: -59.67
+  not_spam: -64.41
+Predicted: spam
+
+Message: &#39;Thanks for the document you sent yesterday&#39;
+Log probabilities:
+  spam: -47.91
+  not_spam: -47.01
+Predicted: not_spam
+</pre></div>
+</div>
+</div>
+</div>
+<hr class="docutils" />
+<!-- ## 5. Implementation with scikit-learn -->
+</section>
+<section id="using-existing-package-scikit-learn">
+<h3>3.5 Using existing package: scikit-learn<a class="headerlink" href="#using-existing-package-scikit-learn" title="Link to this heading">#</a></h3>
+<p>While building our own Naive Bayes classifier from scratch is valuable for understanding, in practice we use well-tested libraries like <strong>scikit-learn</strong>. Let’s see how the professional version compares to our handmade one.</p>
+<p>The scikit-learn implementation involves three components working together:</p>
+<p><strong>CountVectorizer</strong> handles all the messy text preprocessing for us. It takes raw text and converts it into a matrix of word counts—exactly the Bag-of-Words representation we built manually. When you call <code class="docutils literal notranslate"><span class="pre">fit()</span></code>, it builds a vocabulary from your training data, then <code class="docutils literal notranslate"><span class="pre">transform()</span></code> converts any text into counts using that vocabulary. It returns a sparse matrix, which is important: if your vocabulary has 10,000 words but a document only contains 50 unique words, why store 9,950 zeros?</p>
+<p><strong>MultinomialNB</strong> is scikit-learn’s Naive Bayes for count data. Under the hood, it’s doing exactly what we coded earlier: calculating P(Class) and P(word|Class) for every word in the vocabulary, with Laplace smoothing (controlled by the <code class="docutils literal notranslate"><span class="pre">alpha</span></code> parameter, defaulting to 1.0). The “Multinomial” refers to the statistical distribution it assumes for word counts.</p>
+<p><strong>Pipeline</strong> chains these steps together elegantly. Think of it as a recipe: “First vectorize the text, then classify it.” This has a subtle but important benefit—when you call <code class="docutils literal notranslate"><span class="pre">fit()</span></code> on the pipeline, it learns the vocabulary from training data only. When you call <code class="docutils literal notranslate"><span class="pre">predict()</span></code>, it uses that same vocabulary, ensuring train-test consistency. Without a pipeline, you might accidentally introduce data leakage by letting test data influence your vocabulary.</p>
+<p>Here’s how it all works together:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.feature_extraction.text</span><span class="w"> </span><span class="kn">import</span> <span class="n">CountVectorizer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.naive_bayes</span><span class="w"> </span><span class="kn">import</span> <span class="n">MultinomialNB</span><span class="p">,</span> <span class="n">BernoulliNB</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.pipeline</span><span class="w"> </span><span class="kn">import</span> <span class="n">Pipeline</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Prepare data</span>
+<span class="n">X_train</span> <span class="o">=</span> <span class="p">[</span><span class="n">text</span> <span class="k">for</span> <span class="n">text</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">train_data</span><span class="p">]</span>
+<span class="n">y_train</span> <span class="o">=</span> <span class="p">[</span><span class="n">label</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">train_data</span><span class="p">]</span>
+
+<span class="c1"># Create a pipeline</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([</span>
+    <span class="p">(</span><span class="s1">&#39;vectorizer&#39;</span><span class="p">,</span> <span class="n">CountVectorizer</span><span class="p">()),</span>
+    <span class="p">(</span><span class="s1">&#39;classifier&#39;</span><span class="p">,</span> <span class="n">MultinomialNB</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">1.0</span><span class="p">))</span>
+<span class="p">])</span>
+
+<span class="c1"># Train</span>
+<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+<span class="c1"># Predict on the same test messages</span>
+<span class="n">test_messages_sklearn</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;Congratulations! You won a free prize. Click here now!&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Hi, are we still meeting for lunch tomorrow?&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;URGENT: Your account will be closed. Call immediately!&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Thanks for the document you sent yesterday&quot;</span>
+<span class="p">]</span>
+
+<span class="n">predictions</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">test_messages_sklearn</span><span class="p">)</span>
+<span class="n">probabilities</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">test_messages_sklearn</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;=&quot;</span><span class="o">*</span><span class="mi">60</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;SCIKIT-LEARN PREDICTIONS&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="o">*</span><span class="mi">60</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">message</span><span class="p">,</span> <span class="n">pred</span><span class="p">,</span> <span class="n">probs</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">test_messages_sklearn</span><span class="p">,</span> <span class="n">predictions</span><span class="p">,</span> <span class="n">probabilities</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Message: &#39;</span><span class="si">{</span><span class="n">message</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+    <span class="c1"># Note: class order is alphabetically sorted in sklearn</span>
+    <span class="n">class_labels</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">classes_</span>
+    <span class="n">prob_str</span> <span class="o">=</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="n">prob</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">label</span><span class="p">,</span> <span class="n">prob</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">class_labels</span><span class="p">,</span> <span class="n">probs</span><span class="p">)])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Probabilities: </span><span class="si">{</span><span class="n">prob_str</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>============================================================
+SCIKIT-LEARN PREDICTIONS
+============================================================
+
+Message: &#39;Congratulations! You won a free prize. Click here now!&#39;
+Probabilities: not_spam=0.000, spam=1.000
+
+Message: &#39;Hi, are we still meeting for lunch tomorrow?&#39;
+Probabilities: not_spam=0.860, spam=0.140
+
+Message: &#39;URGENT: Your account will be closed. Call immediately!&#39;
+Probabilities: not_spam=0.002, spam=0.998
+
+Message: &#39;Thanks for the document you sent yesterday&#39;
+Probabilities: not_spam=0.817, spam=0.183
+</pre></div>
+</div>
+</div>
+</div>
+<section id="test-on-the-test-set">
+<h4>Test on the test set<a class="headerlink" href="#test-on-the-test-set" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#  Load the test set</span>
+<span class="n">full_dataset_test</span> <span class="o">=</span> <span class="n">load_dataset</span><span class="p">(</span><span class="s1">&#39;Deysi/spam-detection-dataset&#39;</span><span class="p">,</span> <span class="n">split</span><span class="o">=</span><span class="s1">&#39;test&#39;</span><span class="p">)</span>  <span class="c1"># Load only first 100 examples for speed</span>
+
+<span class="n">full_dataset_test</span> <span class="o">=</span> <span class="n">full_dataset_test</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="c1"># dataset_test = full_dataset_test.select(range(100)) # If you want use a subset for speed</span>
+<span class="n">dataset_test</span> <span class="o">=</span> <span class="n">full_dataset_test</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Number of examples after selection: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">dataset_test</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">labels_test</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;spam&quot;</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">dataset_test</span><span class="p">]</span>  <span class="c1"># 1 for spam, 0 for not_spam</span>
+<span class="n">text_data_test</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">dataset_test</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Number of examples after selection: 2725
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">calculate_test_accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">text_data_test</span><span class="p">,</span> <span class="n">labels_test</span><span class="p">):</span>
+
+    <span class="c1"># Convert boolean labels to string labels if needed</span>
+    <span class="n">y_test</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;spam&#39;</span> <span class="k">if</span> <span class="n">label</span> <span class="k">else</span> <span class="s1">&#39;not_spam&#39;</span> <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">labels_test</span><span class="p">]</span>
+    
+    <span class="c1"># Make predictions</span>
+    <span class="n">y_pred</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">text_data_test</span><span class="p">)</span>
+    
+    <span class="c1"># Calculate accuracy</span>
+    <span class="n">correct</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">pred</span> <span class="o">==</span> <span class="n">true</span> <span class="k">for</span> <span class="n">pred</span><span class="p">,</span> <span class="n">true</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">y_pred</span><span class="p">,</span> <span class="n">y_test</span><span class="p">))</span>
+    <span class="n">accuracy</span> <span class="o">=</span> <span class="n">correct</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">y_test</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">accuracy</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">y_test</span>
+
+<span class="c1"># Calculate test accuracy</span>
+<span class="n">accuracy</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">calculate_test_accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">text_data_test</span><span class="p">,</span> <span class="n">labels_test</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;=&quot;</span><span class="o">*</span><span class="mi">60</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;TEST SET EVALUATION&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="o">*</span><span class="mi">60</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Test Accuracy: </span><span class="si">{</span><span class="n">accuracy</span><span class="si">:</span><span class="s2">.2%</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">accuracy</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nb">len</span><span class="p">(</span><span class="n">y_test</span><span class="p">))</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">y_test</span><span class="p">)</span><span class="si">}</span><span class="s2"> correct)&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>============================================================
+TEST SET EVALUATION
+============================================================
+Test Accuracy: 99.41% (2709/2725 correct)
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Observation:</strong></p>
+<ul class="simple">
+<li><p>Wow! we see that for this dataset the model already obtains nearly perfect accuracy on the test set (2709 example), while the NB classifier is only trained on 100 example.</p></li>
+<li><p>Likely this dataset is fairly simple though. Potential follow-up experiments: 1. Which words are most indicative of a specific class? If we only evaluated 10 or a 100 words in our vocabulator, what would the test accuracy be?</p></li>
+</ul>
+</section>
+</section>
+</section>
+<hr class="docutils" />
+<section id="extra-material">
+<h2>4. Extra Material<a class="headerlink" href="#extra-material" title="Link to this heading">#</a></h2>
+<p>If you walked through all the above material and feel comfortable implementing similar systems your self this is already great! Below are some extra code samples to help you get familiar with additional tasks and other classifiers.</p>
+<section id="another-classification-task-sentiment-analysis">
+<h3>4.1. Another classification task: Sentiment Analysis<a class="headerlink" href="#another-classification-task-sentiment-analysis" title="Link to this heading">#</a></h3>
+<p>While the spam dataset we used was a nice toy example, it is not a very popular dataset, nor very challenging if our Naive Bayes classifier already has 100% accuracy when trained on only 100 examples.</p>
+<p>Let’s try with more data to see realistic performance:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load IMDB dataset and train Naive Bayes classifier</span>
+<span class="n">imdb_dataset</span> <span class="o">=</span> <span class="n">load_dataset</span><span class="p">(</span><span class="s1">&#39;imdb&#39;</span><span class="p">,</span> <span class="n">split</span><span class="o">=</span><span class="s1">&#39;train&#39;</span><span class="p">)</span>  <span class="c1"># Use 5000 samples for speed</span>
+<span class="n">imdb_test</span> <span class="o">=</span> <span class="n">load_dataset</span><span class="p">(</span><span class="s1">&#39;imdb&#39;</span><span class="p">,</span> <span class="n">split</span><span class="o">=</span><span class="s1">&#39;test&#39;</span><span class="p">)</span>  <span class="c1"># Use 1000 test samples</span>
+
+<span class="c1"># Prepare data</span>
+<span class="n">X_train_imdb</span> <span class="o">=</span> <span class="n">imdb_dataset</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">]</span>
+<span class="n">y_train_imdb</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;positive&#39;</span> <span class="k">if</span> <span class="n">label</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="s1">&#39;negative&#39;</span> <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">imdb_dataset</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]]</span>
+<span class="n">X_test_imdb</span> <span class="o">=</span> <span class="n">imdb_test</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">]</span>
+<span class="n">y_test_imdb</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;positive&#39;</span> <span class="k">if</span> <span class="n">label</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="s1">&#39;negative&#39;</span> <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">imdb_test</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]]</span>
+
+<span class="c1"># Train model</span>
+<span class="n">mn_nb_model_imdb</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([</span>
+    <span class="p">(</span><span class="s1">&#39;vectorizer&#39;</span><span class="p">,</span> <span class="n">CountVectorizer</span><span class="p">(</span><span class="n">max_features</span><span class="o">=</span><span class="mi">5000</span><span class="p">)),</span>  <span class="c1"># Limit features for speed</span>
+    <span class="p">(</span><span class="s1">&#39;classifier&#39;</span><span class="p">,</span> <span class="n">MultinomialNB</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">1.0</span><span class="p">))</span>
+<span class="p">])</span>
+
+<span class="n">mn_nb_model_imdb</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_imdb</span><span class="p">,</span> <span class="n">y_train_imdb</span><span class="p">)</span>
+
+<span class="c1"># Calculate test accuracy</span>
+<span class="n">y_pred_imdb_mn</span> <span class="o">=</span> <span class="n">mn_nb_model_imdb</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test_imdb</span><span class="p">)</span>
+<span class="n">accuracy_imdb_mn</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">pred</span> <span class="o">==</span> <span class="n">true</span> <span class="k">for</span> <span class="n">pred</span><span class="p">,</span> <span class="n">true</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">y_pred_imdb_mn</span><span class="p">,</span> <span class="n">y_test_imdb</span><span class="p">))</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">y_test_imdb</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;=&quot;</span><span class="o">*</span><span class="mi">60</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;IMDB SENTIMENT CLASSIFICATION&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="o">*</span><span class="mi">60</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Training samples: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">X_train_imdb</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Test samples: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">X_test_imdb</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Test Accuracy: </span><span class="si">{</span><span class="n">accuracy_imdb_mn</span><span class="si">:</span><span class="s2">.2%</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Show example predictions</span>
+<span class="n">test_examples</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;This movie was absolutely fantastic! Great acting and story.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Terrible film, waste of time and money.&quot;</span>
+<span class="p">]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">### Example predictions:&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">test_examples</span><span class="p">:</span>
+    <span class="n">pred</span> <span class="o">=</span> <span class="n">mn_nb_model_imdb</span><span class="o">.</span><span class="n">predict</span><span class="p">([</span><span class="n">text</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">probs</span> <span class="o">=</span> <span class="n">mn_nb_model_imdb</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">([</span><span class="n">text</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Review: &#39;</span><span class="si">{</span><span class="n">text</span><span class="p">[:</span><span class="mi">60</span><span class="p">]</span><span class="si">}</span><span class="s2">...&#39;&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Predicted: </span><span class="si">{</span><span class="n">pred</span><span class="si">}</span><span class="s2"> (confidence: </span><span class="si">{</span><span class="nb">max</span><span class="p">(</span><span class="n">probs</span><span class="p">)</span><span class="si">:</span><span class="s2">.2%</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>============================================================
+IMDB SENTIMENT CLASSIFICATION
+============================================================
+Training samples: 25000
+Test samples: 25000
+Test Accuracy: 82.34%
+
+### Example predictions:
+
+Review: &#39;This movie was absolutely fantastic! Great acting and story....&#39;
+Predicted: positive (confidence: 78.95%)
+
+Review: &#39;Terrible film, waste of time and money....&#39;
+Predicted: negative (confidence: 99.21%)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="variants-of-naive-bayes">
+<h3>4.2. Variants of Naive Bayes<a class="headerlink" href="#variants-of-naive-bayes" title="Link to this heading">#</a></h3>
+<p>There are different variants depending on the type of features:</p>
+<section id="multinomialnb-what-we-used">
+<h4>MultinomialNB (What we used)<a class="headerlink" href="#multinomialnb-what-we-used" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p>For <strong>count data</strong> (word frequencies)</p></li>
+<li><p>Best for text classification</p></li>
+<li><p>Assumes features follow a multinomial distribution</p></li>
+</ul>
+</section>
+<section id="bernoullinb">
+<h4>BernoulliNB<a class="headerlink" href="#bernoullinb" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p>For <strong>binary features</strong> (word present/absent)</p></li>
+<li><p>Can work well with short documents</p></li>
+<li><p>Assumes features are binary</p></li>
+</ul>
+</section>
+<section id="gaussiannb">
+<h4>GaussianNB<a class="headerlink" href="#gaussiannb" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p>For <strong>continuous features</strong></p></li>
+<li><p>Assumes features follow a Gaussian (normal) distribution</p></li>
+<li><p>Not typically used for text , very compute heavy as well</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># BernoulliNB</span>
+<span class="n">bernoulli_model</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([</span>
+    <span class="p">(</span><span class="s1">&#39;vectorizer&#39;</span><span class="p">,</span> <span class="n">CountVectorizer</span><span class="p">(</span><span class="n">binary</span><span class="o">=</span><span class="kc">True</span><span class="p">)),</span>
+    <span class="p">(</span><span class="s1">&#39;classifier&#39;</span><span class="p">,</span> <span class="n">BernoulliNB</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">1.0</span><span class="p">))</span>
+<span class="p">])</span>
+<span class="n">bernoulli_model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_imdb</span><span class="p">,</span> <span class="n">y_train_imdb</span><span class="p">)</span>
+<span class="n">bernoulli_pred</span> <span class="o">=</span> <span class="n">bernoulli_model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test_imdb</span><span class="p">)</span>
+<span class="n">accuracy_bernoulli</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">bernoulli_pred</span> <span class="o">==</span> <span class="n">y_test_imdb</span><span class="p">)</span>
+
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Test Accuracy Comparison:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;MultinomialNB: </span><span class="si">{</span><span class="n">accuracy_imdb_mn</span><span class="si">:</span><span class="s2">.2%</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BernoulliNB  : </span><span class="si">{</span><span class="n">accuracy_bernoulli</span><span class="si">:</span><span class="s2">.2%</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Test Accuracy Comparison:
+MultinomialNB: 82.34%
+BernoulliNB  : 82.60%
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="optional-exercise">
+<h3>4.3. (optional) Exercise<a class="headerlink" href="#optional-exercise" title="Link to this heading">#</a></h3>
+<p><strong>Task</strong>: Use the Naive Bayes classifier to build a language identifier!</p>
+<p>Given the following training data of sentences in different languages, train a classifier to identify the language of new sentences.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Training data: (sentence, language)</span>
+<span class="n">language_data</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="s2">&quot;hello how are you&quot;</span><span class="p">,</span> <span class="s2">&quot;english&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;good morning everyone&quot;</span><span class="p">,</span> <span class="s2">&quot;english&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;bonjour comment allez vous&quot;</span><span class="p">,</span> <span class="s2">&quot;french&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;bonne journée à tous&quot;</span><span class="p">,</span> <span class="s2">&quot;french&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;hola cómo estás&quot;</span><span class="p">,</span> <span class="s2">&quot;spanish&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;buenos días a todos&quot;</span><span class="p">,</span> <span class="s2">&quot;spanish&quot;</span><span class="p">),</span>
+<span class="p">]</span>
+
+<span class="c1"># Your code here:</span>
+<span class="c1"># 1. Split into X_train and y_train</span>
+<span class="c1"># 2. Create and train a Naive Bayes classifier</span>
+<span class="c1"># 3. Test on new sentences: &quot;hello world&quot;, &quot;buenos amigos&quot;, &quot;bonjour monde&quot;</span>
+
+<span class="c1"># Solution (try yourself first!)</span>
+<span class="n">X_lang</span> <span class="o">=</span> <span class="p">[</span><span class="n">sent</span> <span class="k">for</span> <span class="n">sent</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">language_data</span><span class="p">]</span>
+<span class="n">y_lang</span> <span class="o">=</span> <span class="p">[</span><span class="n">lang</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">lang</span> <span class="ow">in</span> <span class="n">language_data</span><span class="p">]</span>
+
+<span class="n">lang_model</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([</span>
+    <span class="p">(</span><span class="s1">&#39;vectorizer&#39;</span><span class="p">,</span> <span class="n">CountVectorizer</span><span class="p">(</span><span class="n">analyzer</span><span class="o">=</span><span class="s1">&#39;char&#39;</span><span class="p">,</span> <span class="n">ngram_range</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">))),</span>
+    <span class="p">(</span><span class="s1">&#39;classifier&#39;</span><span class="p">,</span> <span class="n">MultinomialNB</span><span class="p">())</span>
+<span class="p">])</span>
+
+<span class="n">lang_model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_lang</span><span class="p">,</span> <span class="n">y_lang</span><span class="p">)</span>
+
+<span class="n">test_sentences</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;hello world&quot;</span><span class="p">,</span> <span class="s2">&quot;buenos amigos&quot;</span><span class="p">,</span> <span class="s2">&quot;bonjour monde&quot;</span><span class="p">]</span>
+<span class="n">lang_predictions</span> <span class="o">=</span> <span class="n">lang_model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">test_sentences</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;=&quot;</span><span class="o">*</span><span class="mi">60</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;LANGUAGE IDENTIFICATION&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="o">*</span><span class="mi">60</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">sentence</span><span class="p">,</span> <span class="n">lang</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">test_sentences</span><span class="p">,</span> <span class="n">lang_predictions</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">sentence</span><span class="si">}</span><span class="s2">&#39; → </span><span class="si">{</span><span class="n">lang</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>============================================================
+LANGUAGE IDENTIFICATION
+============================================================
+&#39;hello world&#39; → english
+&#39;buenos amigos&#39; → spanish
+&#39;bonjour monde&#39; → french
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="self-check-questions">
+<h2>Self-Check Questions<a class="headerlink" href="#self-check-questions" title="Link to this heading">#</a></h2>
+<p>Test your understanding of Naive Bayes and its application in this notebook:</p>
+<ol class="arabic simple">
+<li><p>What does the “naive” assumption in Naive Bayes refer to? Why is it important for the algorithm?</p></li>
+<li><p>How do you compute the prior probability <span class="math notranslate nohighlight">\(P(\text{Class})\)</span> from a labeled dataset?</p></li>
+<li><p>Explain how Laplace (add-one) smoothing helps when calculating <span class="math notranslate nohighlight">\(P(\text{word} \mid \text{Class})\)</span>.</p></li>
+<li><p>Given a new email, describe the steps Naive Bayes uses to predict whether it is spam or not.</p></li>
+<li><p>Why do we often use log probabilities instead of multiplying raw probabilities directly?</p></li>
+<li><p>What are some limitations of Naive Bayes for text classification?</p></li>
+<li><p>How does the Bag-of-Words representation affect the information available to the classifier?</p></li>
+<li><p>How does the vocabulary size influence the likelihood calculations and smoothing?</p></li>
+<li><p>If a word in a test document was never seen in training, how does Naive Bayes handle it?</p></li>
+</ol>
+<hr class="docutils" />
+<section id="further-reading">
+<h3>Further Reading<a class="headerlink" href="#further-reading" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://scikit-learn.org/stable/modules/naive_bayes.html">Scikit-learn Naive Bayes Documentation</a></p></li>
+<li><p>Jurafsky &amp; Martin, “Speech and Language Processing” (Chapter on Text Classification)</p></li>
+<li><p>Manning et al., “Introduction to Information Retrieval” (Chapter 13)</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./my_notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="m1_2_linear_and_logistic_regression.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">M1.2 Linear and Logistic Regression</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="m2_1_support_vector_machines.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">M2.1 Support Vector Machines</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-objectives">Learning Objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#load-general-packages">Load general packages</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">1. Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#understanding-probabilities-bayes-theorem">2. Understanding Probabilities &amp; Bayes’ Theorem</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#task-formalization">2.1 Task Formalization</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#bag-of-words-bow">Bag-Of-Words (BOW)</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#types-of-probabilities">2.2 Types of probabilities</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bayes-theorem">2.3 Bayes’ Theorem</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-manual-example-of-applying-bayes-theorem">2.4. A Manual Example of applying Bayes’ Theorem</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#naive-bayes-classifier-for-spam-detection-dataset">3: Naive Bayes’ Classifier for Spam detection dataset</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#load-process-dataset-bag-of-words">3.1 Load &amp; Process Dataset: Bag-of-Words</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-prior-probabilities-p-class">3.2 Computing Prior Probabilities <code class="docutils literal notranslate"><span class="pre">P(Class)</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-likelihood-probabilities">3.3 Computing Likelihood Probabilities</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#practically-with-naive-bayes-we-count-the-frequencies-of-each-word">Practically with Naive Bayes we count the frequencies of each word</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#coding-implementation">Coding implementation:</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-tokenization-and-vocabulary-building">Step 1: Tokenization and Vocabulary Building</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-count-word-frequencies-per-class">Step 2: Count Word Frequencies per Class</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-calculate-probabilities">Step 3: Calculate Probabilities</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#likelihood-probabilities-p-text-word-mid-text-class-smoothing">Likelihood probabilities (<span class="math notranslate nohighlight">\(P(\text{word} \mid \text{Class})\)</span>) -  <strong>Smoothing</strong></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#making-predictions">3.4 Making Predictions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-existing-package-scikit-learn">3.5 Using existing package: scikit-learn</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#test-on-the-test-set">Test on the test set</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extra-material">4. Extra Material</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#another-classification-task-sentiment-analysis">4.1. Another classification task: Sentiment Analysis</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variants-of-naive-bayes">4.2. Variants of Naive Bayes</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#multinomialnb-what-we-used">MultinomialNB (What we used)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#bernoullinb">BernoulliNB</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#gaussiannb">GaussianNB</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-exercise">4.3. (optional) Exercise</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#self-check-questions">Self-Check Questions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#further-reading">Further Reading</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By The Jupyter Book Community
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
